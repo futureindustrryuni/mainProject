@@ -1,7 +1,7 @@
 import { FiArrowLeft, FiPhone, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import { CircleFadingPlus } from "lucide-react"
 import { useState } from "react"
-import {Swiper ,SwiperSlide} from "swiper/react"
+import { Swiper, SwiperSlide } from "swiper/react"
 import 'swiper/css'
 
 // imgaes
@@ -17,6 +17,7 @@ import Chart from '../../public/icons/chart.svg'
 import DeviceMessage from '../../public/icons/device-message.svg'
 import User from '../../public/icons/enhance-user-ai.svg'
 import MedalStar from '../../public/icons/medal-star.svg'
+import Header from "../components/Header"
 
 // import { div } from "framer-motion/client"
 // import { div } from "framer-motion/client"
@@ -131,8 +132,8 @@ export default function Developer() {
                     <div className="flex justify-between">
                         <p className="font-IranYekanBold text-2xl">برخی از توسعه دهندگان پروجه</p>
                         <div className="flex gap-5 *:size-8 *:bg-[#F7EBFF] *:text-[#833AB4] *:rounded-2xl *:cursor-pointer *:p-6 ">
-                            <FiChevronRight className="hidden"/>
-                            <FiChevronLeft className="hidden"/>
+                            <FiChevronRight className="hidden" />
+                            <FiChevronLeft className="hidden" />
                         </div>
                     </div>
                     <Swiper spaceBetween={16} slidesPerView={'auto'} grabCursor={true}>
