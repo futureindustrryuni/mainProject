@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\SavedProduct;
+
+class SavedProductController extends Controller
+{
+    public function index(Request $request)
+    {
+        $saved = $request->user()->savedProducts()->with('product')->get();
+
+        return response()->json([
+            'message' => 'Saved products retrieved successfully',
+            'data' => $saved
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id'
+        ]);
+
+        $saved = SavedProduct::firstOrCreate([
+            'user_id' => $request->user()->id,
+            'product_id' => $request->product_id
+        ]);
+
+        return response()->json([
+            'message' => 'Product saved successfully',
+            'data' => $saved
+        ]);
+    }
+
+    public function destroy(Request $request, $productId)
+    {
+        $saved = SavedProduct::where('user_id', $request->user()->id)
+            ->where('product_id', $productId)
+            ->firstOrFail();
+
+        $saved->delete();
+
+        return response()->json([
+            'message' => 'Product removed from saved successfully'
+        ]);
+    }
+}
