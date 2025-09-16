@@ -398,3 +398,7 @@ body {
   scrollbar-width: none; /* برای Firefox */
 }
 
+
+.projectItem:hover .projectInfo{
+  opacity: 1;
+}
