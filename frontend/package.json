@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.8",
     "aos": "^2.3.4",
     "axios": "^1.12.2",
+    "framer-motion": "^12.23.13",
     "gridjs": "^6.2.0",
     "gridjs-react": "^6.1.1",
     "lucide-react": "^0.540.0",
