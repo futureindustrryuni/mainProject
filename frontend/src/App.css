@@ -1,0 +1,400 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --color-primary: #ffa500;
+  --color-primaryLight: #ffa50020;
+  --color-secondery: #2e3192;
+  --color-thirdry: #fff7e3;
+  --color-dark: #0d1321;
+  --color-light: #eee;
+  --color-second-light: #8e8e8e;
+  --font-IranRegular: IRANYekanRegular;
+  --fotn-IranMedium: IRANYekanBlack;
+  --font-IranYekanBold: IRANYekanBold;
+
+  --breakpoint-xsm: 400px;
+  --breakpoint-msm: 500px;
+  --breakpoint-xmd: 940px;
+}
+
+.fadeInAnimation {
+  animation: fadeIn 1s ease-in-out 3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeInAnimation2 {
+  animation: fadeIn 1s ease-in-out 1s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 0.3rem;
+}
+
+@font-face {
+  font-family: IRANYekanBlack;
+  src: url(/public/fonts/IRANYekanBlack.ttf);
+}
+@font-face {
+  font-family: IRANYekanBold;
+  src: url(/public/fonts/IRANYekanBold.ttf);
+}
+@font-face {
+  font-family: IRANYekanMedium;
+  src: url(/public/fonts/IRANYekanMedium.ttf);
+}
+@font-face {
+  font-family: IRANYekanLight;
+  src: url(/public/fonts/IRANYekanLight.ttf);
+}
+@font-face {
+  font-family: IRANYekanRegular;
+  src: url(/public/fonts/IRANYekanRegular.ttf);
+}
+@font-face {
+  font-family: IRANYekanThin;
+  src: url(/public/fonts/IRANYekanThin.ttf);
+}
+
+@font-face {
+  font-family: Morabba;
+  src: url(/public/fonts/Morabba-Medium.ttf);
+}
+
+body {
+  font-family: IRANYekanMedium;
+  overflow-x: hidden;
+}
+
+.Morabba {
+  font-family: Morabba;
+}
+
+/*loading*/
+.loader {
+  width: 30px;
+  height: 30px;
+  border-radius: 100rem;
+  position: relative;
+  animation: rotate 1s linear infinite;
+}
+.loader::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 100rem;
+  border: 4px solid #fff;
+  animation: prixClipFix 2s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  }
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.animated-check {
+  height: 2em;
+  width: 2em;
+}
+
+.animated-check path {
+  fill: none;
+  stroke: white;
+  stroke-width: 3;
+  stroke-dasharray: 23;
+  stroke-dashoffset: 23;
+  animation: draw 0.5s linear forwards;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/*team us section*/
+.aboutList li .active {
+  background-color: red;
+}
+
+.galleryImages {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas:
+    "img1 img1 img1 img1 img1 img1"
+    "img2 img2 img2 img3 img3 img3"
+    "img4 img4 img5 img5 img6 img6";
+}
+.galleryImages img {
+  border-radius: 2rem;
+  object-fit: cover;
+}
+.galleryImages img:nth-child(1) {
+  grid-area: img1;
+  height: 40rem;
+  width: 100%;
+}
+.galleryImages img:nth-child(2) {
+  grid-area: img2;
+  height: 25rem;
+}
+.galleryImages img:nth-child(3) {
+  grid-area: img3;
+  height: 25rem;
+}
+.galleryImages img:nth-child(4) {
+  grid-area: img4;
+  height: 17rem;
+}
+.galleryImages img:nth-child(5) {
+  grid-area: img5;
+  height: 17rem;
+}
+.galleryImages img:nth-child(6) {
+  grid-area: img6;
+  height: 17rem;
+}
+
+@media (max-width: 1200px) {
+  .galleryImages img:nth-child(1) {
+    grid-area: img1;
+    height: 30rem;
+  }
+  .galleryImages img:nth-child(2) {
+    grid-area: img2;
+    height: 18rem;
+  }
+  .galleryImages img:nth-child(3) {
+    grid-area: img3;
+    height: 18rem;
+  }
+  .galleryImages img:nth-child(4) {
+    grid-area: img4;
+    height: 13rem;
+  }
+  .galleryImages img:nth-child(5) {
+    grid-area: img5;
+    height: 13rem;
+  }
+  .galleryImages img:nth-child(6) {
+    grid-area: img6;
+    height: 13rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .galleryImages img:nth-child(1) {
+    grid-area: img1;
+    height: 20rem;
+  }
+  .galleryImages img:nth-child(2) {
+    grid-area: img2;
+    height: 15rem;
+  }
+  .galleryImages img:nth-child(3) {
+    grid-area: img3;
+    height: 15rem;
+  }
+  .galleryImages img:nth-child(4) {
+    grid-area: img4;
+    height: 10rem;
+  }
+  .galleryImages img:nth-child(5) {
+    grid-area: img5;
+    height: 10rem;
+  }
+  .galleryImages img:nth-child(6) {
+    grid-area: img6;
+    height: 10rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .galleryImages img {
+    border-radius: 1rem;
+  }
+  .galleryImages {
+    display: grid;
+    gap: 1rem;
+    grid-template-areas:
+      "img1 img1 img1 img2 img2 img2"
+      "img3 img3 img3 img4 img4 img4"
+      "img5 img5 img5 img6 img6 img6";
+  }
+  .galleryImages img:nth-child(1) {
+    grid-area: img1;
+    height: 10rem;
+    width: 100%;
+  }
+  .galleryImages img:nth-child(2) {
+    grid-area: img2;
+    height: 10rem;
+    width: 100%;
+  }
+  .galleryImages img:nth-child(3) {
+    grid-area: img3;
+    height: 10rem;
+    width: 100%;
+  }
+  .galleryImages img:nth-child(4) {
+    grid-area: img4;
+    height: 10rem;
+    width: 100%;
+  }
+  .galleryImages img:nth-child(5) {
+    grid-area: img5;
+    height: 10rem;
+    width: 100%;
+  }
+  .galleryImages img:nth-child(6) {
+    grid-area: img6;
+    height: 10rem;
+    width: 100%;
+  }
+}
+
+/* slider css */
+.swiper-pagination-bullet {
+  background-color: #eee;
+}
+.swiper-pagination-bullet-active {
+  width: 20px;
+  border-radius: 12px;
+  opacity: 1;
+}
+
+/* برای همه جدول‌های کاربران */
+.gridjs-input .gridjs-search-input {
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  text-align: right;
+  direction: rtl;
+}
+.gridjs-input:focus {
+  box-shadow: none !important;
+}
+
+.gridjs-th-content,
+.gridjs-td {
+  direction: rtl;
+  text-align: right;
+}
+
+.gridjs-footer {
+  direction: ltr;
+}
+
+.gridjs-head {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.gridjs-table {
+  background-color: white; /* Light mode */
+  border-collapse: none;
+}
+.gridjs-wrapper {
+  border: none;
+}
+.dark .gridjs-table {
+  background-color: #374151; /* Dark mode خاکستری تیره */
+}
+.dark .gridjs-th {
+  background-color: #1f2937; /* Dark mode هدر */
+  color: #f9fafb;
+  border: 1px solid #1f2937;
+}
+.dark .gridjs-th .gridjs-sort {
+  color: #fff;
+  opacity: 1;
+}
+.dark .gridjs-th-content {
+  padding-right: 0.5rem;
+}
+.dark .gridjs-th:hover {
+  background-color: #1f2937; /* Dark mode هدر */
+}
+.dark .gridjs-th:blur {
+  background-color: #1f2937; /* Dark mode هدر */
+}
+.gridjs-td {
+  background-color: white;
+  color: #111827;
+}
+.dark .gridjs-td {
+  background-color: #374151;
+  color: #e5e7eb;
+  border: 1px solid #1f2937;
+}
+.gridjs-tr:hover {
+  background-color: #f3f4f6;
+}
+.dark .gridjs-tr:hover {
+  background-color: #4b5563;
+}
+.dark .gridjs-input {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+.dark .gridjs-footer,
+.dark .gridjs-summary {
+  background-color: #1f2937;
+  color: #fff;
+  border: 1px solid #1f2937;
+}
+.dark .gridjs-input {
+  border: none !important;
+}
+
+
+/**/
+ .scrollbar-hide::-webkit-scrollbar {
+  display: none; /* برای Chrome, Safari */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* برای IE و Edge */
+  scrollbar-width: none; /* برای Firefox */
+}
+
