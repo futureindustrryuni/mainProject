@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.8",
     "aos": "^2.3.4",
+    "axios": "^1.12.2",
     "gridjs": "^6.2.0",
     "gridjs-react": "^6.1.1",
     "lucide-react": "^0.540.0",
@@ -19,6 +20,7 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.2",
+    "sweetalert2": "^11.23.0",
     "swiper": "^11.2.10",
     "tailwindcss": "^4.1.8"
   },
