@@ -30,6 +30,7 @@ Route::get('/me/projects', [UserPanelController::class, 'myProjects']);         
 
 Route::get('/user/{id}', [UserPanelController::class, 'show']);
 Route::post('/users/store',[UserController::class,'store']);
+Route::post('user/checkmail', [UserController::class, 'checkEmail']);
 
 Route::prefix('products')->group(function () {
 Route::post('/create', [ProductController::class, 'store']);

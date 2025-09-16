@@ -9,8 +9,7 @@ class UserController extends Controller
 {
     public function store(Request $request)
 {
-
-    $emailRule = 'required|email|unique:users,email';
+$emailRule = 'required|email|unique:users,email';
 
 if ($request->filled('id')) {
     $emailRule .= ',' . $request->id;
@@ -35,5 +34,12 @@ if ($request->filled('id')) {
     );
 
     return response()->json(['user' => $user], 200);
+}
+public function checkEmail(Request $request)
+{
+    $request->validate(['email' => 'required|email']);
+    $exists = User::where('email', $request->email)->exists();
+    return response()->json(['email' => $request->email,
+                             'exists' => $exists]);
 }
 }

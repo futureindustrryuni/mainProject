@@ -10,7 +10,7 @@ class ProductController extends Controller
 
     public function index()
         {
-            $products = Product::with(['category'])->orderBy('created_at', 'desc')->get();
+            $products = Product::orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'message' => 'List Of All Avaiable Products :',
@@ -22,6 +22,8 @@ class ProductController extends Controller
 {
     $validated = $request->validate([
         'title' => 'required|string',
+        'description' => 'required|string',
+        'technologies' => 'required|string',
         'price' => 'required|numeric',
         'stock' => 'required|integer',
         'category_id' => 'required|exists:categories,id',
