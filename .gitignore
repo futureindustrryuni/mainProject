@@ -1,0 +1,16 @@
+# Node (frontend)
+node_modules/
+build/
+.env
+.env.local
+
+# Laravel (backend)
+/vendor/
+/node_modules/
+.env
+/storage/*.key
+/public/storage
+Homestead.yaml
+Homestead.json
+.idea/
+.vscode/
