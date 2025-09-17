@@ -216,4 +216,11 @@ class adminController extends Controller
             'data' => $admin
         ]);
     }
+    public function checkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $exists = Admin::where('email', $request->email)->exists();
+        return response()->json(['email' => $request->email,
+                                'exists' => $exists]);
+    }
 }

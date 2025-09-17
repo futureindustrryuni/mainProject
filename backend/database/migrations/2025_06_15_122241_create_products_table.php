@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamps();
+            $table->integer('views')->default(0);
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });

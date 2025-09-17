@@ -13,33 +13,30 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SavedProductController;
-
+use App\Http\Controllers\ProductLikesController;
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();}) ->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->group(function () {
-Route::post('/developer/profile', [DevController::class, 'store']);
-});
+Route::get('/user/{id}', [UserPanelController::class, 'show']);
+Route::post('/users/store',[UserController::class,'store']);
+Route::post('user/checkmail', [UserController::class, 'checkEmail']);    
+Route::get('/store', [StoreController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/me/profile', [UserPanelController::class, 'showProfile']);
 Route::get('/me/projects', [UserPanelController::class, 'myProjects']);             # Its For Phase 2 Right Now And Its Not Working Corrently
+Route::post('/developer/profile', [DevController::class, 'store']);
 });
-
-Route::get('/user/{id}', [UserPanelController::class, 'show']);
-Route::post('/users/store',[UserController::class,'store']);
-Route::post('user/checkmail', [UserController::class, 'checkEmail']);
 
 Route::prefix('products')->group(function () {
 Route::post('/create', [ProductController::class, 'store']);
 Route::get('/{id}',[ProductController::class, 'show']);
 Route::post('/{id}/approve',[ApproveController::class,'approve']);
+Route::middleware('auth:sanctum')->post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
 Route::get('/', [ProductController::class, 'index']);
 });
-
-Route::get('/store', [StoreController::class, 'index']);
 
 #Authentication API's
 Route::prefix('auth')->group(function () {
@@ -60,6 +57,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::delete('/users/{id}', [adminController::class, 'destroy']);
     Route::get('/products', [adminController::class, 'showProduct']);
     Route::get('/products/{id}', [adminController::class, 'searchProduct']);
+    Route::post('/checkmail', [adminController::class, 'checkEmail']);
 });
 
 #Ticket API's

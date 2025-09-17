@@ -10,7 +10,14 @@ class ProductController extends Controller
 
     public function index()
         {
-            $products = Product::orderBy('created_at', 'desc')->get();
+            $userId = auth()->id();
+            $products = Product::withCount('likes')->with('likes')
+            ->orderBy('created_at', 'desc')->get()
+            ->map(function ($product) use ($userId) {
+            $product->liked = $product->likes->where('user_id', $userId)->isNotEmpty();
+            unset($product->likes);
+            return $product;
+    });
 
             return response()->json([
                 'message' => 'List Of All Avaiable Products :',
@@ -47,9 +54,13 @@ class ProductController extends Controller
 
     public function show($id){
         $product = Product::with(['images','comments.user','category.products'])->findOrFail($id);
+        $product->increment('views');
         return response()->json(['product'=>$product]);
     }
     
+
+
+
     // public function search(Request $request){
     //     $query = $request->input('srch');
 
@@ -60,5 +71,4 @@ class ProductController extends Controller
 
     //     return response()->json(['products' => $products]);
     // }
-
 }

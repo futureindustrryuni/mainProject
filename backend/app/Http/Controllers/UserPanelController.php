@@ -40,7 +40,6 @@ class UserPanelController extends Controller
         }
     }
 
-
     public function show($id)
     {
         $user = User::with('developer')->findOrFail($id);

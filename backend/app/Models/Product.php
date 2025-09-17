@@ -19,7 +19,12 @@ class Product extends Model
     
     public function savedByUsers() {
     return $this->hasMany(SavedProduct::class);
-}
+    }
+
+     public function likes()
+    {
+        return $this->hasMany(ProductLike::class);
+    }
 
     protected $fillable = [
         'title','price','stock','description','technologies','category_id','is_approved'
