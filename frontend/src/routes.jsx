@@ -27,6 +27,7 @@ import Tickets from "./pages/panel/Tickets";
 import MyTransactions from "./pages/panel/MyTransactions";
 // import { path } from "framer-motion/client";
 import Developer from "./pages/Developer";
+import ProjectsList from "./pages/Projects";
 
 let routes = [
     { path: "/", element: <Home /> },
@@ -37,9 +38,10 @@ let routes = [
     { path: "/profile", element: <Profile /> },
     { path: "/Payment", element: <Payment /> },
     { path: "/Weblog", element: <Weblog /> },
-    { path: "/MoreArticles", element: <MoreArticles /> },
+    { path: "/MoreArticles/*", element: <MoreArticles /> },
     { path: "/ArticleInfo", element: <ArticleInfo /> },
     { path: "/ProductDetails", element: <ProductDetails/> },
+    { path: "/Projects", element: <ProjectsList/> },
     // panel
     { path: "/panel/userInfo", element: <PrivateRoute><UserInfo /></PrivateRoute> },
     { path: "/panel/skills", element: <PrivateRoute><Skills /></PrivateRoute> },

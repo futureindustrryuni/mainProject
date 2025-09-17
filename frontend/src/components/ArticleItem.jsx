@@ -1,11 +1,19 @@
+import Aos from "aos";
 import React from "react";
 import { FiEye } from "react-icons/fi";
 import { IoTimeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-export default function ArticleItem() {
+export default function ArticleItem({id}) {
+  Aos.init({
+    once: true,
+  });
   return (
-    <div className="flex items-center flex-col-reverse gap-5 dark:bg-white/2.5 bg-dark/3 rounded-2xl p-3 mb-3 border-1 border-zinc-200 dark:border-zinc-800 ">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-delay={`${id}00`}
+      className="flex items-center flex-col-reverse gap-5 dark:bg-white/2.5 bg-dark/3 rounded-2xl p-3 mb-3 border-1 border-zinc-200 dark:border-zinc-800 ">
       <div className="flex-1/3 px-1">
         <div className="flex items-center gap-3">
           <p className="bg-primary text-white px-2.5 py-1.5 text-[.6rem] rounded-md ">

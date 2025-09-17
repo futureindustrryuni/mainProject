@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { BiBookmark } from "react-icons/bi";
 import { LuHeart } from "react-icons/lu";
 
-export default function ProjectItem({ id, img, username }) {
+export default function ProjectItem({ id, img, username ,title}) {
   Aos.init({
     once: true,
   });
@@ -28,7 +28,7 @@ export default function ProjectItem({ id, img, username }) {
             <LuHeart className="hover:bg-zinc-200 duration-200" />
             <BiBookmark className="hover:bg-zinc-200 duration-200" />
           </div>
-          <p className="text-[1.3rem] text-white ">AI Agent</p>
+          <p className="text-[1.3rem] text-white ">{title}</p>
         </div>
       </Link>
       <div className="flex items-center justify-between w-full mt-3 ">

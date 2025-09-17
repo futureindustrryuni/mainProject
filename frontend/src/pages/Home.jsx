@@ -11,7 +11,7 @@ import {
   BsStars,
 } from "react-icons/bs";
 import { IoArrowDownCircle, IoCodeSlashOutline } from "react-icons/io5";
-import { Link, NavLink } from "react-router-dom";
+import { data, Link, NavLink } from "react-router-dom";
 
 import "aos/dist/aos.css";
 import Aos from "aos";
@@ -20,15 +20,34 @@ import { FiArrowUpLeft } from "react-icons/fi";
 import { TiHeartFullOutline } from "react-icons/ti";
 import { FaEye } from "react-icons/fa";
 import ProjectItem from "../components/ProjectItem";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Header from "../components/Header";
 
 export default function Home() {
   Aos.init({
     once: true,
   });
+  // const [products, setProducts] = useState([]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/api/products")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setProducts(data.data);
+  //     });
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log(products);
+  // }, [products]);
 
   return (
     <>
       <div className="bg-white dark:bg-dark pb-10">
+        {/*Header*/}
+        <Header />
+
         {/* hiro */}
         <div className="relative h-[100vh]">
           <div className="absolute top-0 right-0 h-full w-full flex items-center justify-center overflow-hidden  ">
@@ -47,73 +66,8 @@ export default function Home() {
                 ></div>
               ))}
             </div>
-            <div className="flex items-center justify-between h-[5rem] z-50 w-full fixed top-0 py-3 px-10 ">
-              <img
-                data-aos="fade-right"
-                data-aos-duration="1000"
-                data-aos-delay="1700"
-                src="/images/logo.png"
-                className="size-[4rem]"
-                alt=""
-              />
-              <ul className="flex items-center justify-center gap-1 text-black dark:text-white">
-                <li
-                  data-aos="fade-right"
-                  data-aos-duration="1000"
-                  data-aos-delay="2000"
-                >
-                  <NavLink className="px-5" to="/">
-                    خانه
-                  </NavLink>
-                </li>
-                <li
-                  data-aos="fade-right"
-                  data-aos-duration="1000"
-                  data-aos-delay="2100"
-                >
-                  <NavLink className="px-5" to="/projects">
-                    پروژه ها
-                  </NavLink>
-                </li>
-                <li
-                  data-aos="fade-right"
-                  data-aos-duration="1000"
-                  data-aos-delay="2200"
-                >
-                  <NavLink className="px-5" to="/teams">
-                    تیم ها
-                  </NavLink>
-                </li>
-                <li
-                  data-aos="fade-right"
-                  data-aos-duration="1000"
-                  data-aos-delay="2300"
-                >
-                  <NavLink className="px-5" to="/support">
-                    پشتیبانی
-                  </NavLink>
-                </li>
-                <li
-                  data-aos="fade-right"
-                  data-aos-duration="1000"
-                  data-aos-delay="2400"
-                >
-                  <NavLink className="px-5" to="/weblog">
-                    مقالات
-                  </NavLink>
-                </li>
-              </ul>
-              <Link
-                to="/auth"
-                data-aos="fade-right"
-                data-aos-duration="1000"
-                data-aos-delay="2500"
-                className="flex items-center gap-1 bg-primary hover:bg-primaryLight hover:text-primary duration-300 px-4 py-1 text-[.9rem] rounded-lg text-white"
-              >
-                <LiaUserSolid className="size-[1.2rem]" />
-                عضویت
-              </Link>
-            </div>
+
+
 
             <div className="absolute h-full w-full *:text[3rem] opacity-0 md:opacity-100 ">
               <BsBackpack2
@@ -224,14 +178,14 @@ export default function Home() {
             </Link>
           </div>
           <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
-            <ProjectItem id={1} img="/images/project1.png" username="Kamraan" />
-            <ProjectItem id={2} img="/images/project2.png" username="Amin" />
-            <ProjectItem id={3} img="/images/project3.png" username="Sara" />
-            <ProjectItem id={4} img="/images/project4.png" username="Sohrab" />
-            <ProjectItem id={5} img="/images/project5.png" username="Fariba" />
-            <ProjectItem id={6} img="/images/project6.png" username="Morteza" />
-            <ProjectItem id={7} img="/images/project7.png" username="Mahdi" />
-            <ProjectItem id={8} img="/images/project8.png" username="Fatemeh" />
+            <ProjectItem id={1} img="/images/project1.png" title="AI Agent" username="Kamraan" />
+            <ProjectItem id={2} img="/images/project2.png" title="AI Agent" username="Amin" />
+            <ProjectItem id={3} img="/images/project3.png" title="AI Agent" username="Sara" />
+            <ProjectItem id={4} img="/images/project4.png" title="AI Agent" username="Sohrab" />
+            <ProjectItem id={5} img="/images/project5.png" title="AI Agent" username="Fariba" />
+            <ProjectItem id={6} img="/images/project6.png" title="AI Agent" username="Morteza" />
+            <ProjectItem id={7} img="/images/project7.png" title="AI Agent" username="Mahdi" />
+            <ProjectItem id={8} img="/images/project8.png" title="AI Agent" username="Fatemeh" />
           </ul>
         </div>
 
