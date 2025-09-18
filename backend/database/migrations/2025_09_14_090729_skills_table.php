@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_skills', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('skill', ['Next JS','C++','Figma','MySQL','Jquery','CSS','Python','CSS','React','PHP','Html','Javascript','Laravel']);
             $table->unsignedTinyInteger('percentage');
             $table->timestamps();
