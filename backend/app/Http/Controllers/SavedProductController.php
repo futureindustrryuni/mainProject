@@ -9,11 +9,13 @@ class SavedProductController extends Controller
 {
     public function index(Request $request)
     {
-        $saved = $request->user()->savedProducts()->with('product')->get();
+        $user = auth()->user();
+        $savedProducts = $user->savedProducts()->get();
 
         return response()->json([
+            'status' => true,
             'message' => 'Saved products retrieved successfully',
-            'data' => $saved
+            'data' => $savedProducts
         ]);
     }
 

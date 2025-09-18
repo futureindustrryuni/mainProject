@@ -5,13 +5,15 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Developer;
 class User extends Authenticatable
+
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens,HasFactory, Notifiable;
+    use HasApiTokens,HasFactory, Notifiable , SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -25,12 +27,18 @@ class User extends Authenticatable
     
     protected $fillable = [
         'name',
+        'family',
+        'role',
+        'birth_date',
+        'meli_code',
+        'phone',
+        'education',
+        'address',
+        'bio',
         'email',
         'password',
-        'phone',
-        'purchase_count',
-        'status',
         'last_login',
+        'status',
     ];
 
     /**
@@ -41,6 +49,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
     ];
 
     /**
@@ -53,17 +62,18 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
-    }
-
-    public function developer()
-    {
-    return $this->hasOne(Developer::class);
     }
 
     public function developerProfile()
     {
     return $this->hasOne(Developer::class);
+    }
+
+    public function developer()
+    {
+        return $this->hasOne(Developer::class);
     }
 
     public function savedProducts() {

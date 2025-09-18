@@ -25,16 +25,14 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'subject' => 'required|string|max:255',
             'text' => 'required|string',
-        ]);
-
-        $ticket = Ticket::create([
-            'subject' => $request->subject,
-            'text' => $request->text,
             'status' => 'closed',
         ]);
+        $validated['user_id'] = auth()->id();
+
+        $ticket = Ticket::create($validated);
 
         return response()->json([
             'message' => 'Ticket created successfully',

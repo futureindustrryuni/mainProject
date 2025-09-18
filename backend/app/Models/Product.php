@@ -18,7 +18,7 @@ class Product extends Model
     }
     
     public function savedByUsers() {
-    return $this->hasMany(SavedProduct::class);
+        return $this->hasMany(SavedProduct::class);
     }
 
      public function likes()
@@ -26,7 +26,16 @@ class Product extends Model
         return $this->hasMany(ProductLike::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected $fillable = [
-        'title','price','stock','description','technologies','category_id','is_approved'
+        'title','price','description','technologies','category_id','is_approved','user_id'
+    ];
+
+    protected $casts = [
+        'is_approved' => 'string',
     ];
 }
