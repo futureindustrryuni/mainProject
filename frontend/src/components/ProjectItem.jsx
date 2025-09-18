@@ -6,13 +6,18 @@ import { Link } from "react-router-dom";
 import { BiBookmark } from "react-icons/bi";
 import { LuHeart } from "react-icons/lu";
 
-export default function ProjectItem({ id, img, username ,title}) {
+export default function ProjectItem({ id, img, username, title }) {
   Aos.init({
     once: true,
   });
   //  data-aos="fade-up" data-aos-duration="1000" data-aos-delay={`${id}00`}
   return (
-    <li className="projectItem">
+    <li
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-delay={`${id}00`}
+      className="projectItem"
+    >
       <Link
         to=""
         className="relative flex items-center justify-center flex-col overflow-hidden"
