@@ -16,6 +16,7 @@ use App\Http\Controllers\SavedProductController;
 use App\Http\Controllers\ProductLikesController;
 
 
+
 Route::get('/user', function (Request $request) {
     return $request->user();}) ->middleware('auth:sanctum');
 
@@ -74,5 +75,9 @@ Route::middleware('auth:sanctum')->prefix('indexes')->group(function () {
     Route::post('save', [SavedProductController::class, 'store']);
     Route::delete('delete/{projectId}', [SavedProductController::class, 'destroy']);
 });
+
+
+
+
 
 

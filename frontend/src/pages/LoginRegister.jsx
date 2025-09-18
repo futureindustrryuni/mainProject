@@ -171,7 +171,7 @@ export default function LoginRegister() {
       Toast.fire({ icon: "success", title: "ورود موفق" });
       navigate("/");
     } catch (err) {
-      Toast.fire({ icon: "error", title: err.message || "خطای غیرمنتظره" });
+      Toast.fire({ icon: "error", title: "خطای غیرمنتظره" });
     } finally {
       setLoginLoading(false);
     }

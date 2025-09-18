@@ -28,6 +28,22 @@ export default function Home() {
   Aos.init({
     once: true,
   });
+  const [projects, setProjects] = useState([]);
+  
+
+  const fetchproject=() => {
+    fetch("http://127.0.0.1:8000/api/products")
+       .then((res) => res.json())
+     .then((data) => {
+         console.log(" دیتا از API:", data);
+         console.log("Projects:", data);
+        setProjects(data.data);
+      });
+  };
+ 
+   useEffect(() => {
+    fetchproject()
+ }, []);
   // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
@@ -176,16 +192,16 @@ export default function Home() {
               نمایش همه
               <FiArrowUpLeft className="text-[1.1rem]" />
             </Link>
-          </div>
-          <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
-            <ProjectItem id={1} img="/images/project1.png" title="AI Agent" username="Kamraan" />
-            <ProjectItem id={2} img="/images/project2.png" title="AI Agent" username="Amin" />
-            <ProjectItem id={3} img="/images/project3.png" title="AI Agent" username="Sara" />
-            <ProjectItem id={4} img="/images/project4.png" title="AI Agent" username="Sohrab" />
-            <ProjectItem id={5} img="/images/project5.png" title="AI Agent" username="Fariba" />
-            <ProjectItem id={6} img="/images/project6.png" title="AI Agent" username="Morteza" />
-            <ProjectItem id={7} img="/images/project7.png" title="AI Agent" username="Mahdi" />
-            <ProjectItem id={8} img="/images/project8.png" title="AI Agent" username="Fatemeh" />
+          </div><ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
+          {projects.map((project) => (
+          <ProjectItem
+           
+            id={project.id}
+            img={project.img}
+            title={project.title}
+            username={project.username} 
+          />
+        ))}
           </ul>
         </div>
 
