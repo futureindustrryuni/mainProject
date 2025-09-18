@@ -51,7 +51,7 @@ export default function ProjectItem({ id, img, username, title }) {
           <p className="dark:text-white">{username}</p>
           <img
             src="/images/User.jpg"
-            alt=""
+            alt={title}
             className="rounded-full size-[1.5rem] "
           />
         </Link>

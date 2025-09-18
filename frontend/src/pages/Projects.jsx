@@ -5,20 +5,12 @@ import ProjectItem from "../components/ProjectItem";
 import Header from "../components/Header";
 
 // ساختن 40 پروژه تستی
-const projects = Array.from({ length: 40 }, (_, i) => ({
-    id: i + 1,
-    title: `پروژه شماره ${i + 1}`,
-    desc: "توضیح کوتاه درباره پروژه...",
-    username: "Amin",
-    price: `${(100 + i) * 1000} تومان`,
-    img: "/images/project6.png"
-}));
 
 export default function Projects() {
     const [search, setSearch] = useState("");
     const [visibleCount, setVisibleCount] = useState(16);
     const [loading, setLoading] = useState(false);
-
+    const [projects, setProjects] = useState([]);
     const filteredProjects = projects.filter((p) =>
         p.title.toLowerCase().includes(search.toLowerCase())
     );
@@ -32,7 +24,21 @@ export default function Projects() {
             setLoading(false);
         }, 1000); // ⏳ شبیه‌سازی تاخیر سرور (1 ثانیه)
     };
-
+    useEffect(() => {
+        const fetchProjects = async () => {
+          try {
+            const res = await fetch("http://127.0.0.1:8000/api/products");
+            const json = await res.json();
+            console.log("دیتا از API:", json);
+      
+            setProjects(json.data || []);
+          } catch (error) {
+            console.error("خطا تو گرفتن دیتا:", error);
+          }
+        };
+      
+        fetchProjects();
+      }, []);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
