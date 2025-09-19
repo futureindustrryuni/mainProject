@@ -40,7 +40,7 @@ let routes = [
     { path: "/Weblog", element: <Weblog /> },
     { path: "/MoreArticles/*", element: <MoreArticles /> },
     { path: "/ArticleInfo", element: <ArticleInfo /> },
-    { path: "/ProductDetails", element: <ProductDetails/> },
+    { path: "/ProductDetails/:id", element: <ProductDetails/> },
     { path: "/Projects", element: <ProjectsList/> },
     // panel
     { path: "/panel/userInfo", element: <PrivateRoute><UserInfo /></PrivateRoute> },

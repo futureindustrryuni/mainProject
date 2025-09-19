@@ -13,7 +13,9 @@ export default function Header() {
       } else {
         setFixHeader(false);
       }
+
     };
+    scrollTo(0, 0);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -23,7 +25,6 @@ export default function Header() {
     once: true,
   });
 
-  
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   fetch("http://localhost:8000/api/me/profile", {

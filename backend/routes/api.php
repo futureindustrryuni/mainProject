@@ -14,6 +14,11 @@ use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SavedProductController;
 use App\Http\Controllers\ProductLikesController;
+use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\ArticleController;
 
 
 
@@ -77,6 +82,50 @@ Route::middleware('auth:sanctum')->prefix('indexes')->group(function () {
 });
 
 
+//Products
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::post('/products', [ProductController::class, 'store']);
+Route::put('/products/{id}', [ProductController::class, 'update']);
+Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+Route::post('/products/{id}/approve', [ProductController::class, 'approve']);
+Route::get('/store', [StoreController::class, 'index']);
+
+
+// Product Images
+Route::get('/products/{id}/images', [ProductImageController::class, 'index']);
+Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
+Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']);
+
+
+//Comments
+Route::get('/products/{id}/comments', [CommentController::class, 'index']);
+Route::post('/products/{id}/comments', [CommentController::class, 'store']);
+Route::put('/comments/{id}', [CommentController::class, 'update']);
+Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+
+// Categories
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+
+// Professors
+Route::get('/professors', [ProfessorController::class, 'index']);
+Route::get('/professors/{id}', [ProfessorController::class, 'show']);
+Route::post('/professors', [ProfessorController::class, 'store']);
+Route::put('/professors/{id}', [ProfessorController::class, 'update']);
+Route::delete('/professors/{id}', [ProfessorController::class, 'destroy']);
+
+// Articles
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles/{id}', [ArticleController::class, 'show']);
+Route::post('/articles', [ArticleController::class, 'store']);
+Route::put('/articles/{id}', [ArticleController::class, 'update']);
+Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
 
 

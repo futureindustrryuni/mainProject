@@ -13,7 +13,6 @@ export default function AboutUs() {
     setHash(href);
   }
 
-
   return (
     <>
       {/*header*/}

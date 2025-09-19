@@ -128,7 +128,7 @@ export default function Projects() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                         >
-                            <ProjectItem id={project.id} title={project.title} username={project.username} img={project.img} />
+                            <ProjectItem id={project.id} title={project.title} user_id={project.user_id} img={project.img} />
                         </motion.div>
                     ))}
                 </div>

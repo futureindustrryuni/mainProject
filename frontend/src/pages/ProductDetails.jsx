@@ -9,12 +9,81 @@ import "swiper/css/pagination";
 import { FaRegBookmark, FaRegHeart, FaShoppingBasket } from "react-icons/fa";
 import { HiOutlineDownload } from "react-icons/hi";
 import ProjectItem from "../components/ProjectItem.jsx";
+import Header from "../components/Header.jsx";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 // import { div } from "framer-motion/m";
 
 export default function ProductDetails() {
+  scrollTo(0, 0); 
+  const { id } = useParams(); // گرفتن id از URL
+  const [product, setProduct] = useState(null);
+  const [similarProduct, setSimilarProduct] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
+
+  // گرفتن اطلاعات محصول
+  useEffect(() => {
+    async function getDetails() {
+      try {
+        const res = await fetch(`http://localhost:8000/api/products/${id}`);
+        const data = await res.json();
+        setProduct(data.product);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+    getDetails();
+  }, [id]);
+
+  //کتگوری های محصول
+  useEffect(() => {
+    async function getSimilarProduct() {
+      if (!product) return; // وقتی هنوز محصول نیومده اجرا نشه
+      try {
+        const res = await fetch(`http://localhost:8000/api/products`);
+        const { data } = await res.json();
+
+        const similarFiltered = data.filter(
+          (item) =>
+            item.category_id === product.category_id && item.id !== product.id
+        );
+
+        setSimilarProduct(similarFiltered);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+    getSimilarProduct();
+
+    //گرفتن اطلاعات کاربر
+    async function getUserInfo() {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/user/${product.user_id}`
+        );
+        const data = await res.json();
+        setUserInfo(data);
+        console.log(data);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+    getUserInfo();
+  }, [product]);
+
+  if (!product) {
+    return (
+      <div className="w-full h-screen bg-white flex items-center justify-center flex-col gap-2">
+        <p className="loader bg-primary !size-[2.5rem]"></p>
+        <p>در حال بارگذاری</p>
+      </div>
+    );
+  }
+
   return (
     <div className="dark:bg-dark">
-      <div className="bg-white pt-10 mx-auto container dark:bg-dark">
+      <Header />
+      <div className="bg-white pt-10 mx-auto container dark:bg-dark mt-20">
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ">
             <div className="w-full h-full">
@@ -23,15 +92,20 @@ export default function ProductDetails() {
             <div className="space-y-5">
               <div className="mt-12 flex items-center justify-between md:mt-0">
                 <div className="flex items-center gap-4">
-                  <img src={User} alt="" className="w-14 h-14 rounded-full" />
+                  <img
+                    src={
+                      userInfo.profile_photo_url
+                        ? `images/${profile_photo_url}`
+                        : User
+                    }
+                    alt=""
+                    className="w-14 h-14 rounded-full"
+                  />
                   <h1 className="font-IranYekanBold dark:text-white text-black">
-                    سهیل شکریان
+                    {userInfo.email}
                   </h1>
                 </div>
                 <div className="flex gap-3 items-center *:cursor-pointer *:text-white *:bg-primary *:hover:bg-primary/70 *:duration-300 *:rounded-full *:p-1.5 *:size-[2rem] *:flex *:items-center *:justify-center ">
-                  <div>
-                    <HiOutlineDownload />
-                  </div>
                   <div>
                     <FaRegHeart />
                   </div>
@@ -40,26 +114,20 @@ export default function ProductDetails() {
                   </div>
                 </div>
               </div>
-              <h1 className="dark:text-white text-black">طراحی کارت بانکی</h1>
+              <h1 className="dark:text-white text-black">{product?.title}</h1>
               <p className="text-justify text-second-light line-clamp-4 font-IranYekanBold">
-                توضیحات بیشتر پروژه ی خود را در این قسمت تایپ کنید توضیحات بیشتر
-                پروژه توضیحات کامل تر درباره پروژه توضیحات کامل تر درباره پروژه
-                توضیحات بیشتر پروژه ی خود را در این قسمت تایپ کنید توضیحات بیشتر
-                توضیحات بیشتر پروژه ی خود را در این قسمت تایپ کنید توضیحات بیشتر
-                توضیحات کامل تر درباره پروژه توضیحات کامل تر درباره پروژه
-                توضیحات کامل تر درباره پروژه
+                {product.description}
               </p>
-              <div className="flex gap-2 text-sm text-white">
-                <p className="bg-second-light py-1 px-3 rounded-md">کامپیوتر</p>
-                <p className="bg-second-light py-1 px-3 rounded-md">
-                  طراحی سایت
-                </p>
-                <p className="bg-second-light py-1 px-3 rounded-md">طراحی</p>
-                <p className="bg-second-light py-1 px-3 rounded-md">فتوشاپ</p>
-              </div>
+              <ul className="flex gap-2 text-sm text-white">
+                {product.technologies.split("-").map((tech) => (
+                  <li key={tech} className="bg-zinc-400 px-3 py-1 rounded-md">
+                    {tech}
+                  </li>
+                ))}
+              </ul>
               <div className="flex justify-between mt-10 items-center md:mt-5">
-                <p className="text-primary font-IranYekanBold text-[1rem] md:text-[1.5rem]  ">
-                  1/450/000تومان
+                <p className="text-primary font-IranYekanBold text-[1rem] md:text-[1.5rem]">
+                  {product.price.toLocaleString()} تومان
                 </p>
                 <div className="flex gap-2 items-center bg-primary hover:bg-primary/80 duration-300 p-1.5 px-4 cursor-pointer rounded-md text-white text-sm">
                   <div>
@@ -75,13 +143,7 @@ export default function ProductDetails() {
             توضیحات تکمیلی درباره پروژه
           </h1>
           <p className="text-justify text-second-light mb-24">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-            استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
-            کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای زیادی
-            در شصت و سه درصد گذشته حال و آینده شناخت فراوان جامعه و متخصصان را
-            می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی
-            الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد
+            {product.description}
           </p>
           <h1 className="font-IranYekanBold dark:text-white text-black">
             نظرات
@@ -112,75 +174,23 @@ export default function ProductDetails() {
             پروژه های مشابه
           </h1>
 
-          <div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 ">
-            <ProjectItem id={1} img="/images/project1.png" username="Kamraan" />
-            <ProjectItem id={2} img="/images/project2.png" username="Amin" />
-            <ProjectItem id={3} img="/images/project3.png" username="Sara" />
-            <ProjectItem id={4} img="/images/project4.png" username="Sohrab" />
-          </div>
-
-          <h1 className="font-IranYekanBold mt-20 dark:text-white text-black text-2xl ">
-            مقالات
-          </h1>
-
-          <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-2 *:border-1 *:border-zinc-200 *:dark:border-zinc-800">
-            <li className="space-y-3 shadow-xl shadow-zinc-200/50 dark:shadow-none dark:bg-white/3 p-3 rounded-lg">
-              <img
-                src="/images/article1.png"
-                alt=""
-                className="w-full h-50 object-cover  rounded-md"
-              />
-              <h1 className="font-IranYekanBold dark:text-white text-black">
-                عنوان پروژه
-              </h1>
-              <p className="text-sm text-second-light line-clamp-3">
-                توضیحات کامل تر درباره پروژه توضیحات کامل تر درباره پروژه
-                توضیحات کامل تر{" "}
-              </p>
-            </li>
-            <li className="space-y-3 shadow-xl shadow-zinc-200/50 dark:shadow-none dark:bg-white/3 p-3 rounded-lg">
-              <img
-                src="/images/article1.png"
-                alt=""
-                className="w-full h-50 object-cover  rounded-md"
-              />
-              <h1 className="font-IranYekanBold dark:text-white text-black">
-                عنوان پروژه
-              </h1>
-              <p className="text-sm text-second-light line-clamp-3">
-                توضیحات کامل تر درباره پروژه توضیحات کامل تر درباره پروژه
-                توضیحات کامل تر{" "}
-              </p>
-            </li>
-            <li className="space-y-3 shadow-xl shadow-zinc-200/50 dark:shadow-none dark:bg-white/3 p-3 rounded-lg">
-              <img
-                src="/images/article1.png"
-                alt=""
-                className="w-full h-50 object-cover  rounded-md"
-              />
-              <h1 className="font-IranYekanBold dark:text-white text-black">
-                عنوان پروژه
-              </h1>
-              <p className="text-sm text-second-light line-clamp-3">
-                توضیحات کامل تر درباره پروژه توضیحات کامل تر درباره پروژه
-                توضیحات کامل تر{" "}
-              </p>
-            </li>
-            <li className="space-y-3 shadow-xl shadow-zinc-200/50 dark:shadow-none dark:bg-white/3 p-3 rounded-lg">
-              <img
-                src="/images/article1.png"
-                alt=""
-                className="w-full h-50 object-cover  rounded-md"
-              />
-              <h1 className="font-IranYekanBold dark:text-white text-black">
-                عنوان پروژه
-              </h1>
-              <p className="text-sm text-second-light line-clamp-3">
-                توضیحات کامل تر درباره پروژه توضیحات کامل تر درباره پروژه
-                توضیحات کامل تر{" "}
-              </p>
-            </li>
-          </ul>
+          {similarProduct.length >= 1 ? (
+            <div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 ">
+              {similarProduct.map((item) => (
+                <ProjectItem
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  img="/images/project1.png"
+                  user_id={item.user_id}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="w-full text-red-700 -mt-[1rem] pb-[2rem]">
+              برای این پروژه، پروژه مشابهی ایجاد نشده است !
+            </p>
+          )}
         </div>
       </div>
     </div>
