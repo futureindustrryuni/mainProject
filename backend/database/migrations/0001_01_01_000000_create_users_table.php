@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->integer('meli_code')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس' ,'دکترا' , 'پرفسورا'])->default('دیپلم');
+            $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس' ,'دکترا' , 'پرفسورا'])->nullable();;
             $table->string('address')->nullable();
             $table->text('bio')->nullable();
             $table->string('email')->unique();
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('profile_photo_url') ->nullable();
             $table->timestamp('last_login')->nullable();
             $table->boolean('status')->default(true);
+            $table->boolean('profile_completed')->default(false);
             $table->timestamp('email_verified_at') ->nullable();
             $table->rememberToken();
             $table->softDeletes();

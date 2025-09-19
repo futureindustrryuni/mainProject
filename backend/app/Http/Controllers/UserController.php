@@ -8,7 +8,7 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function store(Request $request)
-{
+    {
 
         $emailRule = 'required|email|unique:users,email';
         if ($request->filled('id')) $emailRule .= ',' . $request->id;
@@ -43,6 +43,17 @@ class UserController extends Controller
             ]);
         }
 
+        $isProfileCompleted = 
+           !empty($validated['name'])
+        && !empty($validated['family'])
+        && !empty($validated['role'])
+        && !empty($validated['birth_date'])
+        && !empty($validated['meli_code'])
+        && !empty($validated['phone'])
+        && !empty($validated['education'])
+        && !empty($validated['address'])
+        && !empty($validated['bio']);
+        $validated['profile_completed'] = $isProfileCompleted;
         $validated['password'] = bcrypt($validated['password'] ?? Str::random(8));
         $validated['status'] = $validated['status'] ?? true;
         $user = User::create($validated);
@@ -51,7 +62,7 @@ class UserController extends Controller
         'message' => 'The Informations Have Beed Created',
         'data' => $user
         ]);
-}
+    }
 
 public function checkEmail(Request $request)
 {

@@ -44,6 +44,7 @@ class AuthController extends Controller
                     ? Carbon::parse($user->last_login)->diffForHumans()
                     : null,
                 'status' => $user->status,
+                'profile_completed' => "false",
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,
             ],

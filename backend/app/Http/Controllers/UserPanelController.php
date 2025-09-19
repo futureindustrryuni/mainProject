@@ -13,14 +13,11 @@ class UserPanelController extends Controller
     if (auth()->check()) {
     $user = auth()->user();
     return response()->json([
-        'name' => $user->name,
-        'email' => $user->email,
-        'profile_photo_url' => $user->profile_photo_url,
-        'joined_at' => $user->created_at->format('Y/m/d'),
-        'developers' => [
-            'address' => $user->developerProfile->address]
+            'message' => 'Your Profile Information',
+            'data' => $user
         ]);
     }
+    return response()->json(['message' => 'Unauthorized'], 401);
 }
 
     # This Sesction May Be Only For Phase 2 ! (Its For Developer's Projects)

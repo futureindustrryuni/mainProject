@@ -39,6 +39,7 @@ class User extends Authenticatable
         'password',
         'last_login',
         'status',
+        'profile_completed',
     ];
 
     /**
