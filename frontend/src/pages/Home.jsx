@@ -193,10 +193,11 @@ export default function Home() {
           <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
             {projects.map((project) => (
               <ProjectItem
+                key={project.id}
                 id={project.id}
+                user_id={project.user_id}
                 img={project.img}
                 title={project.title}
-                username={project.username}
               />
             ))}
           </ul>

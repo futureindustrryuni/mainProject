@@ -15,9 +15,11 @@ import { useParams } from "react-router-dom";
 // import { div } from "framer-motion/m";
 
 export default function ProductDetails() {
+  scrollTo(0, 0); 
   const { id } = useParams(); // گرفتن id از URL
   const [product, setProduct] = useState(null);
   const [similarProduct, setSimilarProduct] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
 
   // گرفتن اطلاعات محصول
   useEffect(() => {
@@ -52,7 +54,22 @@ export default function ProductDetails() {
       }
     }
     getSimilarProduct();
-  }, [product]); // به جای id
+
+    //گرفتن اطلاعات کاربر
+    async function getUserInfo() {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/user/${product.user_id}`
+        );
+        const data = await res.json();
+        setUserInfo(data);
+        console.log(data);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+    getUserInfo();
+  }, [product]);
 
   if (!product) {
     return (
@@ -61,8 +78,6 @@ export default function ProductDetails() {
         <p>در حال بارگذاری</p>
       </div>
     );
-  } else {
-    console.log(similarProduct);
   }
 
   return (
@@ -77,9 +92,17 @@ export default function ProductDetails() {
             <div className="space-y-5">
               <div className="mt-12 flex items-center justify-between md:mt-0">
                 <div className="flex items-center gap-4">
-                  <img src={User} alt="" className="w-14 h-14 rounded-full" />
+                  <img
+                    src={
+                      userInfo.profile_photo_url
+                        ? `images/${profile_photo_url}`
+                        : User
+                    }
+                    alt=""
+                    className="w-14 h-14 rounded-full"
+                  />
                   <h1 className="font-IranYekanBold dark:text-white text-black">
-                    {product.category_id}
+                    {userInfo.email}
                   </h1>
                 </div>
                 <div className="flex gap-3 items-center *:cursor-pointer *:text-white *:bg-primary *:hover:bg-primary/70 *:duration-300 *:rounded-full *:p-1.5 *:size-[2rem] *:flex *:items-center *:justify-center ">
@@ -159,7 +182,7 @@ export default function ProductDetails() {
                   id={item.id}
                   title={item.title}
                   img="/images/project1.png"
-                  username="Kamraan"
+                  user_id={item.user_id}
                 />
               ))}
             </div>
