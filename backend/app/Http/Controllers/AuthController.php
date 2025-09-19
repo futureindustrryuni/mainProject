@@ -70,6 +70,20 @@ class AuthController extends Controller
             return response()->json(['message' => 'Account is disabled'], 403);
         }
 
+        if ($user->tokens()->count() > 0) {
+            return response()->json([
+                'message' => 'You are already logged in.',
+                'user' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'last_login' => $user->last_login,
+                    'last_login_human' => $user->last_login
+                        ? Carbon::parse($user->last_login)->diffForHumans()
+                        : null,
+                ]
+            ], 403);
+        }
+
         $user->update(['last_login' => now()]);
 
         $token = $user->createToken('api_token')->plainTextToken;

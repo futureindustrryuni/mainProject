@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function index()
         {
             $userId = auth()->id();
-            $products = Product::select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id')->orderBy('created_at', 'desc')->get();
+            $products = Product::select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id','is_approved')->orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'message' => 'List Of All Avaiable Products :',
@@ -27,17 +27,16 @@ class ProductController extends Controller
         'technologies' => 'required|string',
         'price' => 'required|numeric',
         'category_id' => 'required|exists:categories,id',
+        'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
+
     $validated['user_id'] = auth()->id();
     $validated['is_approved'] = '1';
-
     $product = Product::create($validated);
 
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $imageFile) {
-
-            $path = $imageFile->store('products', 'public');
-
+            $path = $imageFile->store('product_images', 'public');
             $product->images()->create([
                 'path' => $path,
             ]);
