@@ -32,7 +32,7 @@ Route::post('/developer/profile', [DevController::class, 'store']);
 });
 
 Route::prefix('products')->group(function () {
-Route::post('/create', [ProductController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/create', [ProductController::class, 'store']);
 Route::get('/{id}',[ProductController::class, 'show']);
 Route::post('/{id}/approve',[ApproveController::class,'approve']);
 Route::middleware('auth:sanctum')->post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
@@ -55,7 +55,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::put('/updateprofile', [adminController::class, 'updateProfile']);
     Route::get('/users', [adminController::class, 'showUsers']);
     Route::get('/users/{id}', [adminController::class, 'searchUser']);
-    Route::delete('/users/{id}', [adminController::class, 'destroy']);
+    Route::delete('/users/{id}', [adminController::class, 'destroyUser']);
     Route::get('/products', [adminController::class, 'showProduct']);
     Route::get('/products/{id}', [adminController::class, 'searchProduct']);
     Route::post('/checkmail', [adminController::class, 'checkEmail']);
@@ -63,8 +63,8 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
 
 #Ticket API's
 Route::prefix('tickets')->group(function () {
-    Route::post('/create', [TicketController::class, 'store']);
-    Route::get('/{id}', [TicketController::class, 'show']);
+    Route::middleware('auth:sanctum')->get('/{id}', [TicketController::class, 'show']);
+    Route::middleware('auth:sanctum')->post('/create', [TicketController::class, 'store']);
     Route::middleware('auth:admin')->get('/', [TicketController::class, 'index']);
     Route::middleware('auth:admin')->delete('/{id}', [TicketController::class, 'destroy']);
     Route::middleware('auth:admin')->put('/approve/{id}', [TicketController::class, 'approve']);

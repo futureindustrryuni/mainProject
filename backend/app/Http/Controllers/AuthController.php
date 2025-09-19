@@ -13,15 +13,15 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $validated['name'] ?? null,
             'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
             'password' => Hash::make($validated['password']),
+            'status' => true,
+            'role' => 'user',
         ]);
 
         $token = $user->createToken('api_token')->plainTextToken;
@@ -30,20 +30,25 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'family' => $user->family,
                 'email' => $user->email,
+                'password' => $user->password,
                 'phone' => $user->phone,
+                'role' => $user->role,
+                'birth_day' =>$user->birth_day,
+                'meli_code' =>$user->meli_code,
+                'education' =>$user->education,
                 'profile_photo_url' => $user->profile_photo_url,
                 'last_login' => $user->last_login,
                 'last_login_human' => $user->last_login
                     ? Carbon::parse($user->last_login)->diffForHumans()
                     : null,
-                'purchase_count' => $user->purchase_count,
                 'status' => $user->status,
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,
             ],
             'token' => $token,
-        ]);
+        ], 201);
     }
 
     public function login(Request $request)
@@ -73,14 +78,15 @@ class AuthController extends Controller
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'family' => $user->family,
                 'email' => $user->email,
                 'phone' => $user->phone,
+                'role' => $user->role,
                 'profile_photo_url' => $user->profile_photo_url,
                 'last_login' => $user->last_login,
                 'last_login_human' => $user->last_login
                     ? Carbon::parse($user->last_login)->diffForHumans()
                     : null,
-                'purchase_count' => $user->purchase_count,
                 'status' => $user->status,
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,

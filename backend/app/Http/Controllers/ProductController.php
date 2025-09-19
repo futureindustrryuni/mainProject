@@ -11,13 +11,7 @@ class ProductController extends Controller
     public function index()
         {
             $userId = auth()->id();
-            $products = Product::withCount('likes')->with('likes')
-            ->orderBy('created_at', 'desc')->get()
-            ->map(function ($product) use ($userId) {
-            $product->liked = $product->likes->where('user_id', $userId)->isNotEmpty();
-            unset($product->likes);
-            return $product;
-    });
+            $products = Product::select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id')->orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'message' => 'List Of All Avaiable Products :',
@@ -32,9 +26,10 @@ class ProductController extends Controller
         'description' => 'required|string',
         'technologies' => 'required|string',
         'price' => 'required|numeric',
-        'stock' => 'required|integer',
         'category_id' => 'required|exists:categories,id',
     ]);
+    $validated['user_id'] = auth()->id();
+    $validated['is_approved'] = '1';
 
     $product = Product::create($validated);
 
