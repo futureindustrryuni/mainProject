@@ -52,6 +52,10 @@ class ProductController extends Controller
         $product->increment('views');
         return response()->json(['product'=>$product]);
     }
+
+    
+
+
     
 
 

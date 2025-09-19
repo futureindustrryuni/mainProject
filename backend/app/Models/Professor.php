@@ -16,15 +16,10 @@ class Professor extends Model
         'email',
         'phone_number',
         'password',
-        'profile_image',
-        'status',
-        'last_login',
-        'teaching_experience',
-        'confirmation',
     ];
 
-    public function projects()
+    public function products()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Product::class,'product_professor');
     }
 }
