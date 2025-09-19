@@ -25,20 +25,6 @@ class adminController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // if ($admin->tokens()->count() > 0) {
-        //     return response()->json([
-        //         'message' => 'You are already logged in.',
-        //         'user' => [
-        //             'id' => $admin->id,
-        //             'email' => $admin->email,
-        //             'last_login' => $admin->last_login,
-        //             'last_login_human' => $admin->last_login
-        //                 ? Carbon::parse($admin->last_login)->diffForHumans()
-        //                 : null,
-        //         ]
-        //     ], 403);
-        // }
-
         $token = $admin->createToken('admin-token')->plainTextToken;
 
         return response()->json([
