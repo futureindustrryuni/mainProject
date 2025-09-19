@@ -10,9 +10,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $emailRule = 'required|email|unique:users,email';
-        if ($request->filled('id')) $emailRule .= ',' . $request->id;
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'family' => 'nullable|string|max:255',
@@ -23,18 +20,15 @@ class UserController extends Controller
             'education' => 'nullable|in:دیپلم,فوق دیپلم,لیسانس,دکترا,پرفسورا',
             'address' => 'nullable|string|max:255',
             'bio' => 'nullable|string|max:500',
-            'email' => $emailRule,
-            'password' => 'nullable|string|min:6',
+            'email' => 'nullable|email|unique:users,email',
+            'password' => 'nullable',
             'last_login' => 'nullable|date',
             'status' => 'nullable|boolean',
         ]);
 
         if ($request->filled('id')) {
             $user = User::findOrFail($request->id);
-            if (!empty($validated['password'])) 
-                $validated['password'] = bcrypt($validated['password']);
-            else 
-                unset($validated['password']);
+            unset($validated['email'], $validated['password']);
 
             $user->update($validated);
             return response()->json([
@@ -54,7 +48,6 @@ class UserController extends Controller
         && !empty($validated['address'])
         && !empty($validated['bio']);
         $validated['profile_completed'] = $isProfileCompleted;
-        $validated['password'] = bcrypt($validated['password'] ?? Str::random(8));
         $validated['status'] = $validated['status'] ?? true;
         $user = User::create($validated);
 

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس' ,'دکترا' , 'پرفسورا'])->nullable();;
             $table->string('address')->nullable();
             $table->text('bio')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password') ->nullable();
             $table->string('profile_photo_url') ->nullable();
             $table->timestamp('last_login')->nullable();
