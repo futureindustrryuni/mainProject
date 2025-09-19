@@ -29,21 +29,20 @@ export default function Home() {
     once: true,
   });
   const [projects, setProjects] = useState([]);
-  
 
-  const fetchproject=() => {
+  const fetchproject = () => {
     fetch("http://127.0.0.1:8000/api/products")
-       .then((res) => res.json())
-     .then((data) => {
-         console.log(" دیتا از API:", data);
-         console.log("Projects:", data);
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(" دیتا از API:", data);
+        console.log("Projects:", data);
         setProjects(data.data);
       });
   };
- 
-   useEffect(() => {
-    fetchproject()
- }, []);
+
+  useEffect(() => {
+    fetchproject();
+  }, []);
   // const [products, setProducts] = useState([]);
 
   // useEffect(() => {
@@ -82,8 +81,6 @@ export default function Home() {
                 ></div>
               ))}
             </div>
-
-
 
             <div className="absolute h-full w-full *:text[3rem] opacity-0 md:opacity-100 ">
               <BsBackpack2
@@ -186,22 +183,22 @@ export default function Home() {
               data-aos="fade-right"
               data-aos-duration="1000"
               data-aos-delay="200"
-              to=""
+              to="/projects"
               className="flex items-center gap-2 mb-[1.8rem] text-[.8rem] sm:text-[.9rem] text-zinc-400 duration-300 hover:text-primary "
             >
               نمایش همه
               <FiArrowUpLeft className="text-[1.1rem]" />
             </Link>
-          </div><ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
-          {projects.map((project) => (
-          <ProjectItem
-           
-            id={project.id}
-            img={project.img}
-            title={project.title}
-            username={project.username} 
-          />
-        ))}
+          </div>
+          <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
+            {projects.map((project) => (
+              <ProjectItem
+                id={project.id}
+                img={project.img}
+                title={project.title}
+                username={project.username}
+              />
+            ))}
           </ul>
         </div>
 

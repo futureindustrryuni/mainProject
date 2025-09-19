@@ -1,5 +1,5 @@
 import Aos from "aos";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import { TiHeartFullOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ export default function ProjectItem({ id, img, username, title }) {
     once: true,
   });
   //  data-aos="fade-up" data-aos-duration="1000" data-aos-delay={`${id}00`}
+
   return (
     <li
       data-aos="fade-up"
@@ -19,7 +20,7 @@ export default function ProjectItem({ id, img, username, title }) {
       className="projectItem"
     >
       <Link
-        to=""
+        to={`/ProductDetails/${id}`}
         className="relative flex items-center justify-center flex-col overflow-hidden"
       >
         <img
