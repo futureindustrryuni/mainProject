@@ -57,6 +57,7 @@ Route::post('/admin/register', [adminController::class, 'register']);
 
 Route::middleware('auth:admin')->prefix('admin')->group(function () {
     Route::get('/profile', [adminController::class, 'profile']);
+    Route::get('/profiles', [adminController::class, 'allProfiles']);
     Route::put('/updateprofile', [adminController::class, 'updateProfile']);
     Route::get('/users', [adminController::class, 'showUsers']);
     Route::get('/users/{id}', [adminController::class, 'searchUser']);

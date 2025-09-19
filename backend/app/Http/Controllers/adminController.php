@@ -202,6 +202,17 @@ class adminController extends Controller
         ]);
     }
 
+    public function allProfiles()
+    {
+        $admins = Admin::select('id', 'name', 'email', 'created_at')
+            ->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'message' => 'All admins retrieved successfully',
+            'data' => $admins
+        ]);
+    }
+
     /**
      * Update admin profile
      */
