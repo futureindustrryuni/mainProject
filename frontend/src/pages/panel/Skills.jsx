@@ -179,7 +179,7 @@ export default function Skills() {
                         <div className="flex justify-between gap-2">
                           <button
                             type="button"
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => setModalIsOpen(false)}
                             className="flex-1 cursor-pointer px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-400 transition"
                           >
                             انصراف
