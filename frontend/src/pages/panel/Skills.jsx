@@ -3,6 +3,56 @@ import SideBar from "../../components/SideBar";
 import TopBar from "../../components/TopBar";
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from "../../components/Loader";
+import { BsTrash } from "react-icons/bs";
+import {
+  FaGitAlt,
+  FaGithub,
+  FaHtml5,
+  FaJs,
+  FaPython,
+  FaReact,
+  FaVuejs,
+} from "react-icons/fa";
+
+import { BiLogoDjango, BiLogoCPlusPlus, BiLogoGoLang } from "react-icons/bi";
+import { IoLogoCss3, IoLogoLaravel } from "react-icons/io5";
+import {
+  RiAngularjsFill,
+  RiNextjsFill,
+  RiNodejsLine,
+  RiPhpLine,
+} from "react-icons/ri";
+import { SiDart, SiNuxtdotjs } from "react-icons/si";
+import { CgFigma } from "react-icons/cg";
+import { TbBrandCSharp } from "react-icons/tb";
+import { FaFlutter } from "react-icons/fa6";
+
+const skillsIcon = [
+  { id: 1, name: "html", icon: <FaHtml5 /> },
+  { id: 2, name: "css", icon: <IoLogoCss3 /> },
+  { id: 3, name: "bootstrap", icon: <FaJs /> },
+  { id: 4, name: "tailwind", icon: <FaReact /> },
+  { id: 5, name: "js", icon: <FaReact /> },
+  { id: 6, name: "react", icon: <FaReact /> },
+  { id: 7, name: "nextJs", icon: <RiNextjsFill /> },
+  { id: 8, name: "vue", icon: <FaVuejs /> },
+  { id: 9, name: "nuxtJs", icon: <SiNuxtdotjs /> },
+  { id: 10, name: "nodeJs", icon: <RiNodejsLine /> },
+  { id: 11, name: "nestJs", icon: <FaReact /> },
+  { id: 12, name: "angular", icon: <RiAngularjsFill /> },
+  { id: 13, name: "php", icon: <RiPhpLine /> },
+  { id: 14, name: "laravel", icon: <IoLogoLaravel /> },
+  { id: 15, name: "python", icon: <FaPython /> },
+  { id: 16, name: "django", icon: <BiLogoDjango /> },
+  { id: 17, name: "git", icon: <FaGitAlt /> },
+  { id: 18, name: "github", icon: <FaGithub /> },
+  { id: 19, name: "figma", icon: <CgFigma /> },
+  { id: 20, name: "go", icon: <BiLogoGoLang /> },
+  { id: 21, name: "c++", icon: <BiLogoCPlusPlus /> },
+  { id: 22, name: "c#", icon: <TbBrandCSharp /> },
+  { id: 23, name: "dart", icon: <SiDart /> },
+  { id: 24, name: "flutter", icon: <FaFlutter /> },
+];
 
 export default function Skills() {
   const [isOpen, setIsOpen] = useState(1);
@@ -10,34 +60,32 @@ export default function Skills() {
   const [skill, setSkill] = useState("");
   const [percentage, setPercentage] = useState("");
   const [skills, setSkills] = useState(null);
+  const token = localStorage.getItem("token");
 
   // 📌 گرفتن لیست مهارت‌ها از API
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const fetchSkills = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/skills", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const fetchSkills = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/api/skills", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const data = await res.json();
+      console.log("API response:", data);
 
-        const data = await res.json();
-        console.log("API response:", data);
-
-        // همیشه آرایه بریزیم
-        if (res.ok) {
-          if (Array.isArray(data)) setSkills(data);
-          else if (Array.isArray(data.data)) setSkills(data.data);
-          else if (Array.isArray(data.skills)) setSkills(data.skills);
-          else setSkills([]); // fallback
-        }
-      } catch (err) {
-        console.error("مشکل در اتصال به سرور:", err);
+      if (res.ok) {
+        if (Array.isArray(data)) setSkills(data);
+        else if (Array.isArray(data.data)) setSkills(data.data);
+        else if (Array.isArray(data.skills)) setSkills(data.skills);
+        else setSkills([]); // fallback
       }
-    };
+    } catch (err) {
+      console.error("مشکل در اتصال به سرور:", err);
+    }
+  };
 
+  useEffect(() => {
     fetchSkills();
-  }, []);
+  }, [skills]);
 
   // 📌 ارسال مهارت جدید به API
   const handleSubmit = async (e) => {
@@ -71,8 +119,30 @@ export default function Skills() {
     }
   };
 
+  async function removeSkillHandler(id) {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/skills/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (!skills) return <Loader />;
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log("حذف موفق:", data); 
+        fetchSkills();
+      } else {
+        console.error("خطا در حذف مهارت:", data);
+      }
+    } catch (err) {
+      console.error("مشکل در اتصال به سرور:", err);
+    }
+  }
+
+  if (!skills) return <Loader />;
 
   return (
     <>
@@ -109,7 +179,7 @@ export default function Skills() {
               </div>
 
               {/* لیست مهارت‌ها */}
-              <div className="mt-6 grid grid-cols-3 gap-5">
+              <div className="mt-6 grid grid-cols-1 msm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
                 {!skills ? (
                   <p className="text-gray-500 text-sm text-center">
                     هنوز مهارتی اضافه نکرده‌اید.
@@ -119,10 +189,26 @@ export default function Skills() {
                   skills.map((item) => (
                     <div
                       key={item.id}
-                      className="p-3 bg-gray-100 rounded-xl shadow flex justify-between items-center"
+                      className="skillItem duration-300 p-3 bg-gray-100 rounded-xl shadow flex flex-row-reverse justify-between items-center"
                     >
-                      <span className="font-medium">{item.skill}</span>
+                      <div className="font-medium flex items-center justify-center gap-2">
+                        {item.skill}
+                        {skillsIcon.map((icon) => {
+                          if (
+                            icon.name.toLocaleLowerCase() ===
+                            item.skill.toLocaleLowerCase()
+                          ) {
+                            return icon.icon;
+                          }
+                        })}
+                      </div>
                       <div className="flex items-center gap-2">
+                        <BsTrash
+                          onClick={() => {
+                            removeSkillHandler(item.id);
+                          }}
+                          className="skillTrash w-0 duration-300 cursor-pointer hover:text-red-500"
+                        />
                         <div className="w-40 bg-gray-300 rounded-full h-3 overflow-hidden">
                           <div
                             className="bg-green-600 h-3"
