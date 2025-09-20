@@ -104,10 +104,9 @@ export default function Projects() {
                 data={products.map((p) => [
                   p.id,
                   p.title,
-                  p.developer,
+                  p.user_id,
                   p.image,
                   p.is_approved,
-                  p.create_at,
                   p.id,
                 ])}
                 columns={[
@@ -128,7 +127,7 @@ export default function Projects() {
                   {
                     name: "وضعیت",
                     formatter: (cell) =>
-                      cell == 2
+                      cell === 2
                         ? h(
                             "p",
                             {
@@ -137,7 +136,7 @@ export default function Projects() {
                             },
                             "تایید شده"
                           )
-                        : cell == 1
+                        : cell === 1
                         ? h(
                             "p",
                             {
@@ -155,15 +154,14 @@ export default function Projects() {
                             "رد شده"
                           ),
                   },
-                  "توسعه دهنده",
                   {
                     name: "عملیات",
                     formatter: (_, row, cell) => {
-                      const id = row.cells[6].data; // ستون id
-                      const is_approved = row.cells[4].data;
+                      const id = row.cells[5].data; // ستون id
+                      const status = row.cells[4].data;
 
                       return h("div", { className: "flex gap-2" }, [
-                        is_approved
+                        status==2
                           ? h(
                               "button",
                               {
@@ -179,7 +177,7 @@ export default function Projects() {
                                 }),
                               ]
                             )
-                          : h("div", { className: "flex gap-2" }, [
+                          : status==1 ? h("div", { className: "flex gap-2" }, [
                               h(
                                 "button",
                                 {
@@ -223,7 +221,7 @@ export default function Projects() {
                                   },
                                 })
                               ),
-                            ]),
+                            ]):"",
                       ]);
                     },
                   },
