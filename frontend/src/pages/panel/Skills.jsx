@@ -60,84 +60,84 @@ const skillsIcon = [
 export default function Skills() {
   const [isOpen, setIsOpen] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-const [skill, setSkill] = useState("");
-const [percentage, setPercentage] = useState("");
-const [skills, setSkills] = useState([]); // ✅ آرایه خالی
-const token = localStorage.getItem("token");
+  const [skill, setSkill] = useState("");
+  const [percentage, setPercentage] = useState("");
+  const [skills, setSkills] = useState(null); // ✅ آرایه خالی
+  const token = localStorage.getItem("token");
 
-// 📌 گرفتن لیست مهارت‌ها
-const fetchSkills = async () => {
-  try {
-    const res = await fetch("http://127.0.0.1:8000/api/skills", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  // 📌 گرفتن لیست مهارت‌ها
+  const fetchSkills = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/skills", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const data = await res.json();
-    console.log("API response:", data);
+      const data = await res.json();
+      console.log("API response:", data);
 
-    if (res.ok) {
-      if (Array.isArray(data)) setSkills(data);
-      else if (Array.isArray(data.data)) setSkills(data.data);
-      else if (Array.isArray(data.skills)) setSkills(data.skills);
-      else setSkills([]); 
+      if (res.ok) {
+        if (Array.isArray(data)) setSkills(data);
+        else if (Array.isArray(data.data)) setSkills(data.data);
+        else if (Array.isArray(data.skills)) setSkills(data.skills);
+        else setSkills([]);
+      }
+    } catch (err) {
+      console.error("مشکل در اتصال به سرور:", err);
     }
-  } catch (err) {
-    console.error("مشکل در اتصال به سرور:", err);
-  }
-};
+  };
 
-useEffect(() => {
-  fetchSkills();
-}, []);
+  useEffect(() => {
+    fetchSkills();
+  }, []);
 
-// 📌 افزودن
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch("http://127.0.0.1:8000/api/skill/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ skill, percentage }),
-    });
+  // 📌 افزودن
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/skill/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ skill, percentage }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      await fetchSkills(); // ✅ دوباره لیست بگیر
-      setSkill("");
-      setPercentage("");
-      setModalIsOpen(false);
-    } else {
-      console.error("خطا در ثبت مهارت:", data);
+      if (res.ok) {
+        await fetchSkills(); // ✅ دوباره لیست بگیر
+        setSkill("");
+        setPercentage("");
+        setModalIsOpen(false);
+      } else {
+        console.error("خطا در ثبت مهارت:", data);
+      }
+    } catch (err) {
+      console.error("مشکل در اتصال به سرور:", err);
     }
-  } catch (err) {
-    console.error("مشکل در اتصال به سرور:", err);
-  }
-};
+  };
 
-// 📌 حذف
-const removeSkillHandler = async (id) => {
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/api/skills/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  // 📌 حذف
+  const removeSkillHandler = async (id) => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/skills/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      console.log("حذف موفق:", data);
-      fetchSkills(); // ✅ لیست تازه
-    } else {
-      console.error("خطا در حذف مهارت:", data);
+      if (res.ok) {
+        console.log("حذف موفق:", data);
+        fetchSkills(); // ✅ لیست تازه
+      } else {
+        console.error("خطا در حذف مهارت:", data);
+      }
+    } catch (err) {
+      console.error("مشکل در اتصال به سرور:", err);
     }
-  } catch (err) {
-    console.error("مشکل در اتصال به سرور:", err);
-  }
-};
+  };
 
   if (!skills) return <Loader />;
 
