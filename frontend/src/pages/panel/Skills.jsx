@@ -9,6 +9,7 @@ import {
   FaGithub,
   FaHtml5,
   FaJs,
+  FaJsSquare,
   FaPython,
   FaReact,
   FaVuejs,
@@ -22,25 +23,27 @@ import {
   RiNodejsLine,
   RiPhpLine,
 } from "react-icons/ri";
-import { SiDart, SiNuxtdotjs } from "react-icons/si";
+import { SiDart, SiNestjs, SiNextdotjs, SiNuxtdotjs, SiPhp } from "react-icons/si";
 import { CgFigma } from "react-icons/cg";
-import { TbBrandCSharp } from "react-icons/tb";
+import { TbBrandCSharp, TbBrandNodejs, TbBrandReact } from "react-icons/tb";
 import { FaFlutter } from "react-icons/fa6";
+import { GrNode } from "react-icons/gr";
+
 
 const skillsIcon = [
   { id: 1, name: "html", icon: <FaHtml5 /> },
   { id: 2, name: "css", icon: <IoLogoCss3 /> },
   { id: 3, name: "bootstrap", icon: <FaJs /> },
   { id: 4, name: "tailwind", icon: <FaReact /> },
-  { id: 5, name: "js", icon: <FaReact /> },
-  { id: 6, name: "react", icon: <FaReact /> },
-  { id: 7, name: "nextJs", icon: <RiNextjsFill /> },
+  { id: 5, name: "js", icon: <FaJsSquare  /> },
+  { id: 6, name: "react", icon: <TbBrandReact  /> },
+  { id: 7, name: "nextJs", icon: <SiNextdotjs /> },
   { id: 8, name: "vue", icon: <FaVuejs /> },
   { id: 9, name: "nuxtJs", icon: <SiNuxtdotjs /> },
-  { id: 10, name: "nodeJs", icon: <RiNodejsLine /> },
-  { id: 11, name: "nestJs", icon: <FaReact /> },
+  { id: 10, name: "nodeJs", icon: <GrNode   /> },
+  { id: 11, name: "nestJs", icon: <SiNestjs  /> },
   { id: 12, name: "angular", icon: <RiAngularjsFill /> },
-  { id: 13, name: "php", icon: <RiPhpLine /> },
+  { id: 13, name: "php", icon: <SiPhp  /> },
   { id: 14, name: "laravel", icon: <IoLogoLaravel /> },
   { id: 15, name: "python", icon: <FaPython /> },
   { id: 16, name: "django", icon: <BiLogoDjango /> },
@@ -85,7 +88,7 @@ export default function Skills() {
 
   useEffect(() => {
     fetchSkills();
-  }, [skills]);
+  }, []);
 
   // 📌 ارسال مهارت جدید به API
   const handleSubmit = async (e) => {
@@ -120,6 +123,7 @@ export default function Skills() {
   };
 
   async function removeSkillHandler(id) {
+    console.log(id)
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/skills/${id}`, {
         method: "DELETE",
