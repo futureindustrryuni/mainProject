@@ -1,10 +1,14 @@
 import Aos from "aos";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LiaUserSolid } from "react-icons/lia";
 import { Link, NavLink } from "react-router-dom";
+import { IsLoginContext } from "../context/IsLoginContext";
 
 export default function Header() {
   const [fixHeader, setFixHeader] = useState(false);
+  const profile = useContext(IsLoginContext)[1];
+  console.log("profile : ", profile);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= window.innerHeight * 0.1) {
@@ -13,7 +17,6 @@ export default function Header() {
       } else {
         setFixHeader(false);
       }
-
     };
     scrollTo(0, 0);
 
@@ -113,14 +116,14 @@ export default function Header() {
         </li>
       </ul>
       <Link
-        to="/auth"
+        to={profile ? "/panel/userInfo" : "/auth"}
         // data-aos="fade-right"
         // data-aos-duration="1000"
         // data-aos-delay="2500"
         className="flex items-center gap-1 bg-primary hover:bg-primaryLight hover:text-primary duration-300 px-4 py-1 text-[.9rem] rounded-lg text-white"
       >
         <LiaUserSolid className="size-[1.2rem]" />
-        عضویت
+        {profile ? `${profile.email.split("@")[0]}` : "عضویت"}
       </Link>
     </div>
   );

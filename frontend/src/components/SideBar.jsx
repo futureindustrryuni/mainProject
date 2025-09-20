@@ -1,28 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AiOutlineExperiment, AiOutlineTrophy } from "react-icons/ai";
 import { BsBoxSeam } from "react-icons/bs";
-import { HiOutlineNewspaper, HiOutlineUserGroup } from "react-icons/hi";
-import {
-  HiComputerDesktop,
-  HiOutlineArchiveBoxArrowDown,
-} from "react-icons/hi2";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { HiOutlineArchiveBoxArrowDown } from "react-icons/hi2";
 import { ImCreditCard } from "react-icons/im";
 import {
   IoBookmarksOutline,
   IoCodeSlashOutline,
   IoCodeSlashSharp,
   IoNewspaperOutline,
-  IoSettingsOutline,
 } from "react-icons/io5";
-import { LuClipboardList, LuTicket, LuUserRound } from "react-icons/lu";
+import {
+  LuClipboardList,
+  LuLogOut,
+  LuTicket,
+  LuUserRound,
+} from "react-icons/lu";
 import { MdOutlineArticle } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function SideBar({ isOpen, setIsOpen }) {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
   function sidebarHandler() {
     if (window.innerWidth <= 766) {
       setIsOpen(false);
     }
+  }
+
+  function logoutHandle() {
+    fetch("http://127.0.0.1:8000/api/auth/logout", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(`خطا ${res.status}: ${text}`);
+          });
+        }
+        return res.json();
+      })
+      .then(() => {
+        // پاک کردن توکن از localStorage
+        localStorage.removeItem("token");
+
+        // هدایت به صفحه لاگین
+        navigate("/auth");
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("خطا در خروج از حساب");
+      });
   }
 
   useEffect(() => {
@@ -66,7 +99,10 @@ export default function SideBar({ isOpen, setIsOpen }) {
           </NavLink>
         </li>
         <li onClick={sidebarHandler}>
-          <NavLink to="/panel/myTransactions" className="p-2 text-[.9rem] w-full">
+          <NavLink
+            to="/panel/myTransactions"
+            className="p-2 text-[.9rem] w-full"
+          >
             <ImCreditCard className="text-xl" />
             <p>خرید های من</p>
           </NavLink>
@@ -130,6 +166,15 @@ export default function SideBar({ isOpen, setIsOpen }) {
             <MdOutlineArticle className="text-xl" />
             <p>مقاله ها</p>
           </NavLink>
+        </li>
+        <li onClick={sidebarHandler}>
+          <button
+            onClick={logoutHandle}
+            className="p-2 text-[.9rem] w-full cursor-pointer"
+          >
+            <LuLogOut className="text-xl" />
+            <p>خروج از حساب</p>
+          </button>
         </li>
         {/* <li onClick={sidebarHandler}>
           <NavLink to="/panel/setting" className="p-2 text-[.9rem] w-full">
