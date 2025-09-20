@@ -13,17 +13,13 @@ export default function MoreArticles() {
      const catRes = await fetch("http://127.0.0.1:8000/api/categories");
      const catJson = await catRes.json();
      setCategories(catJson.data || []);
-     console.log("Categories:", categories);
+  
    
      const artRes = await fetch("http://127.0.0.1:8000/api/articles");
      const artJson = await artRes.json();
+ 
+     setArticle(artJson.data || []);
      console.log("Articles:", article);
-     setArticle(
-       (artJson.data || []).map(a => ({
-         ...a,
-         category: catJson.data.find(c => c.id === a.category_id)?.name || "بدون دسته"
-       }))
-     );
    };
  
    fetchData();
@@ -39,7 +35,7 @@ export default function MoreArticles() {
   <div key={cat.id}>
     <h2>{cat.name}</h2>
     <div className="grid">
-      {article.filter((a) => a.category_id === cat.id)
+      {article.filter((a) => a.category_id == cat.id) 
         .map((art) => (
           <ArticleItem
             key={art.id}
