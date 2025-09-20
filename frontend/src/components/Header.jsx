@@ -123,7 +123,7 @@ export default function Header() {
         className="flex items-center gap-1 bg-primary hover:bg-primaryLight hover:text-primary duration-300 px-4 py-1 text-[.9rem] rounded-lg text-white"
       >
         <LiaUserSolid className="size-[1.2rem]" />
-        {profile ? `کاربر ${profile.email.split("@")[0]}` : "عضویت"}
+        {profile ? `${profile.email.split("@")[0]}` : "عضویت"}
       </Link>
     </div>
   );
