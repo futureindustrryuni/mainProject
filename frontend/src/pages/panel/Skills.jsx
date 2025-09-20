@@ -17,33 +17,33 @@ import {
 
 import { BiLogoDjango, BiLogoCPlusPlus, BiLogoGoLang } from "react-icons/bi";
 import { IoLogoCss3, IoLogoLaravel } from "react-icons/io5";
+import { RiAngularjsFill } from "react-icons/ri";
 import {
-  RiAngularjsFill,
-  RiNextjsFill,
-  RiNodejsLine,
-  RiPhpLine,
-} from "react-icons/ri";
-import { SiDart, SiNestjs, SiNextdotjs, SiNuxtdotjs, SiPhp } from "react-icons/si";
+  SiDart,
+  SiNestjs,
+  SiNextdotjs,
+  SiNuxtdotjs,
+  SiPhp,
+} from "react-icons/si";
 import { CgFigma } from "react-icons/cg";
-import { TbBrandCSharp, TbBrandNodejs, TbBrandReact } from "react-icons/tb";
+import { TbBrandCSharp, TbBrandReact } from "react-icons/tb";
 import { FaFlutter } from "react-icons/fa6";
 import { GrNode } from "react-icons/gr";
-
 
 const skillsIcon = [
   { id: 1, name: "html", icon: <FaHtml5 /> },
   { id: 2, name: "css", icon: <IoLogoCss3 /> },
   { id: 3, name: "bootstrap", icon: <FaJs /> },
   { id: 4, name: "tailwind", icon: <FaReact /> },
-  { id: 5, name: "js", icon: <FaJsSquare  /> },
-  { id: 6, name: "react", icon: <TbBrandReact  /> },
+  { id: 5, name: "js", icon: <FaJsSquare /> },
+  { id: 6, name: "react", icon: <TbBrandReact /> },
   { id: 7, name: "nextJs", icon: <SiNextdotjs /> },
   { id: 8, name: "vue", icon: <FaVuejs /> },
   { id: 9, name: "nuxtJs", icon: <SiNuxtdotjs /> },
-  { id: 10, name: "nodeJs", icon: <GrNode   /> },
-  { id: 11, name: "nestJs", icon: <SiNestjs  /> },
+  { id: 10, name: "nodeJs", icon: <GrNode /> },
+  { id: 11, name: "nestJs", icon: <SiNestjs /> },
   { id: 12, name: "angular", icon: <RiAngularjsFill /> },
-  { id: 13, name: "php", icon: <SiPhp  /> },
+  { id: 13, name: "php", icon: <SiPhp /> },
   { id: 14, name: "laravel", icon: <IoLogoLaravel /> },
   { id: 15, name: "python", icon: <FaPython /> },
   { id: 16, name: "django", icon: <BiLogoDjango /> },
@@ -60,91 +60,84 @@ const skillsIcon = [
 export default function Skills() {
   const [isOpen, setIsOpen] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [skill, setSkill] = useState("");
-  const [percentage, setPercentage] = useState("");
-  const [skills, setSkills] = useState(null);
-  const token = localStorage.getItem("token");
+const [skill, setSkill] = useState("");
+const [percentage, setPercentage] = useState("");
+const [skills, setSkills] = useState([]); // ✅ آرایه خالی
+const token = localStorage.getItem("token");
 
-  // 📌 گرفتن لیست مهارت‌ها از API
-  const fetchSkills = async () => {
-    try {
-      const res = await fetch("http://127.0.0.1:8000/api/skills", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+// 📌 گرفتن لیست مهارت‌ها
+const fetchSkills = async () => {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/api/skills", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      const data = await res.json();
-      console.log("API response:", data);
+    const data = await res.json();
+    console.log("API response:", data);
 
-      if (res.ok) {
-        if (Array.isArray(data)) setSkills(data);
-        else if (Array.isArray(data.data)) setSkills(data.data);
-        else if (Array.isArray(data.skills)) setSkills(data.skills);
-        else setSkills([]); // fallback
-      }
-    } catch (err) {
-      console.error("مشکل در اتصال به سرور:", err);
+    if (res.ok) {
+      if (Array.isArray(data)) setSkills(data);
+      else if (Array.isArray(data.data)) setSkills(data.data);
+      else if (Array.isArray(data.skills)) setSkills(data.skills);
+      else setSkills([]); 
     }
-  };
-
-  useEffect(() => {
-    fetchSkills();
-  }, []);
-
-  // 📌 ارسال مهارت جدید به API
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-
-    try {
-      const res = await fetch("http://127.0.0.1:8000/api/skill/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ skill, percentage }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        // اضافه کردن به لیست فعلی
-        setSkills((prev) => [...prev, { skill, percentage }]);
-
-        setSkill("");
-        setPercentage("");
-        setModalIsOpen(false);
-      } else {
-        console.error("خطا در ثبت مهارت:", data);
-      }
-    } catch (err) {
-      console.error("مشکل در اتصال به سرور:", err);
-    }
-  };
-
-  async function removeSkillHandler(id) {
-    console.log(id)
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/api/skills/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        console.log("حذف موفق:", data); 
-        fetchSkills();
-      } else {
-        console.error("خطا در حذف مهارت:", data);
-      }
-    } catch (err) {
-      console.error("مشکل در اتصال به سرور:", err);
-    }
+  } catch (err) {
+    console.error("مشکل در اتصال به سرور:", err);
   }
+};
+
+useEffect(() => {
+  fetchSkills();
+}, []);
+
+// 📌 افزودن
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch("http://127.0.0.1:8000/api/skill/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ skill, percentage }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      await fetchSkills(); // ✅ دوباره لیست بگیر
+      setSkill("");
+      setPercentage("");
+      setModalIsOpen(false);
+    } else {
+      console.error("خطا در ثبت مهارت:", data);
+    }
+  } catch (err) {
+    console.error("مشکل در اتصال به سرور:", err);
+  }
+};
+
+// 📌 حذف
+const removeSkillHandler = async (id) => {
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/api/skills/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      console.log("حذف موفق:", data);
+      fetchSkills(); // ✅ لیست تازه
+    } else {
+      console.error("خطا در حذف مهارت:", data);
+    }
+  } catch (err) {
+    console.error("مشکل در اتصال به سرور:", err);
+  }
+};
 
   if (!skills) return <Loader />;
 
