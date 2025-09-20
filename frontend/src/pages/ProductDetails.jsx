@@ -12,10 +12,11 @@ import ProjectItem from "../components/ProjectItem.jsx";
 import Header from "../components/Header.jsx";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Loader from "../components/Loader.jsx";
 // import { div } from "framer-motion/m";
 
 export default function ProductDetails() {
-  scrollTo(0, 0); 
+  scrollTo(0, 0);
   const { id } = useParams(); // گرفتن id از URL
   const [product, setProduct] = useState(null);
   const [similarProduct, setSimilarProduct] = useState([]);
@@ -72,12 +73,7 @@ export default function ProductDetails() {
   }, [product]);
 
   if (!product) {
-    return (
-      <div className="w-full h-screen bg-white flex items-center justify-center flex-col gap-2">
-        <p className="loader bg-primary !size-[2.5rem]"></p>
-        <p>در حال بارگذاری</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
