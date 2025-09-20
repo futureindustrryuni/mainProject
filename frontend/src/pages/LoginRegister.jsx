@@ -95,7 +95,11 @@ export default function LoginRegister() {
     e.preventDefault();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (registerForm.email && registerForm.password && registerForm.password_confirmation) {
+    if (
+      registerForm.email &&
+      registerForm.password &&
+      registerForm.password_confirmation
+    ) {
       if (emailRegex.test(registerForm.email.trim())) {
         if (registerForm.password.trim().length >= 6) {
           if (
@@ -104,7 +108,9 @@ export default function LoginRegister() {
           ) {
             try {
               setRegisterLoading(true);
-              const result = await emailExistsHandler({ email: registerForm.email });
+              const result = await emailExistsHandler({
+                email: registerForm.email,
+              });
               const emailExists = !!result?.exists;
               setExistsEmail(emailExists);
 
@@ -122,22 +128,37 @@ export default function LoginRegister() {
                 if (data?.token) {
                   localStorage.setItem("token", data.token);
                 }
-                Toast.fire({ icon: "success", title: "ثبت نام با موفقیت انجام شد" });
+                Toast.fire({
+                  icon: "success",
+                  title: "ثبت نام با موفقیت انجام شد",
+                });
+                navigate("/");
                 resetForm();
-
               } else {
-                Toast.fire({ icon: "error", title: "متاسفانه ایمیل قبلا استفاده شده است" });
+                Toast.fire({
+                  icon: "error",
+                  title: "متاسفانه ایمیل قبلا استفاده شده است",
+                });
               }
             } catch (err) {
-              Toast.fire({ icon: "error", title: err.message || "خطای غیرمنتظره" });
+              Toast.fire({
+                icon: "error",
+                title: err.message || "خطای غیرمنتظره",
+              });
             } finally {
               setRegisterLoading(false);
             }
           } else {
-            Toast.fire({ icon: "error", title: "رمز عبور با تایید آن برابر نیست" });
+            Toast.fire({
+              icon: "error",
+              title: "رمز عبور با تایید آن برابر نیست",
+            });
           }
         } else {
-          Toast.fire({ icon: "error", title: "رمز عبور باید حدقل 6 کاراکتر باشد" });
+          Toast.fire({
+            icon: "error",
+            title: "رمز عبور باید حدقل 6 کاراکتر باشد",
+          });
         }
       } else {
         Toast.fire({ icon: "error", title: "ایمیل باید طبق الگو وارد شود" });
@@ -224,8 +245,9 @@ export default function LoginRegister() {
         <div className="grid place-items-center cursor-pointer">
           <IoMdFingerPrint
             onClick={loginHandler}
-            className={`text-[2.5rem] ${loginStatus ? "bg-primary" : "bg-dark/10 dark:bg-white/30"
-              }  p-2 rounded-lg duration-400 hover:bg-primary`}
+            className={`text-[2.5rem] ${
+              loginStatus ? "bg-primary" : "bg-dark/10 dark:bg-white/30"
+            }  p-2 rounded-lg duration-400 hover:bg-primary`}
           />
           <p className="text-[.9rem] mt-[.2rem] text-dark dark:text-white">
             ورود
@@ -234,8 +256,9 @@ export default function LoginRegister() {
         <div className="grid place-items-center cursor-pointer">
           <GoShieldCheck
             onClick={registerHandler}
-            className={`text-[2.5rem] ${registerStatus ? "bg-primary" : "bg-dark/10 dark:bg-white/30"
-              } p-2 rounded-lg duration-400 hover:bg-primary`}
+            className={`text-[2.5rem] ${
+              registerStatus ? "bg-primary" : "bg-dark/10 dark:bg-white/30"
+            } p-2 rounded-lg duration-400 hover:bg-primary`}
           />
           <p className="text-[.8rem] mt-[.2rem] text-dark dark:text-white">
             ثبت نام
@@ -248,7 +271,9 @@ export default function LoginRegister() {
         className={`h-[30rem] lg:block hidden overflow-hidden duration-500 rounded-2xl border border-transparent dark:border-zinc-200/40 shadow-xl dark:shadow-none shadow-dark/20 `}
       >
         <div
-          className={`lg:block hidden bg-white dark:bg-dark ${loginStatus ? "translate-y-[0rem]" : ""} ${registerStatus ? "translate-y-[-30rem]" : ""} duration-700`}
+          className={`lg:block hidden bg-white dark:bg-dark ${
+            loginStatus ? "translate-y-[0rem]" : ""
+          } ${registerStatus ? "translate-y-[-30rem]" : ""} duration-700`}
         >
           <img src="/images/Company-amico.svg" alt="" className="w-[30rem] " />
           <img
@@ -262,13 +287,17 @@ export default function LoginRegister() {
 
       <div className="bg-white dark:bg-dark text-dark dark:text-white h-[28rem] w-[24rem] overflow-hidden  rounded-tr-xl rounded-br-xl p-[.5rem] px-[1rem] ">
         <div
-          className={`${loginStatus ? " translate-y-[2rem]" : " translate-y-[-26rem]"
-            } duration-500`}
+          className={`${
+            loginStatus ? " translate-y-[2rem]" : " translate-y-[-26rem]"
+          } duration-500`}
         >
           {/*login:2rem - register:-26rem*/}
 
           {/*login*/}
-          <form onSubmit={handleLoginSubmit} className="flex items-center justify-center flex-col">
+          <form
+            onSubmit={handleLoginSubmit}
+            className="flex items-center justify-center flex-col"
+          >
             <h1 className="font-bold text-3xl mb-3 mt-3">ورود</h1>
             <div className="mb-5 text-[.9rem] flex gap-1.5">
               اکانتی برای ورود ندارید؟
@@ -290,7 +319,9 @@ export default function LoginRegister() {
                   placeholder="example@gmail.com"
                   value={loginForm.email}
                   autoComplete="email"
-                  onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, email: e.target.value })
+                  }
                 />
                 {/* <TfiEmail className="text-[1.2rem] ml-[.5rem] " /> */}
               </div>
@@ -304,12 +335,20 @@ export default function LoginRegister() {
                   type={showLoginPassword ? "text" : "password"}
                   value={loginForm.password}
                   autoComplete="current-password"
-                  onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, password: e.target.value })
+                  }
                 />
                 {showLoginPassword ? (
-                  <FaRegEyeSlash className="text-[1.2rem] ml-[.5rem] cursor-pointer" onClick={() => setShowLoginPassword(false)} />
+                  <FaRegEyeSlash
+                    className="text-[1.2rem] ml-[.5rem] cursor-pointer"
+                    onClick={() => setShowLoginPassword(false)}
+                  />
                 ) : (
-                  <FaRegEye className="text-[1.2rem] ml-[.5rem] cursor-pointer" onClick={() => setShowLoginPassword(true)} />
+                  <FaRegEye
+                    className="text-[1.2rem] ml-[.5rem] cursor-pointer"
+                    onClick={() => setShowLoginPassword(true)}
+                  />
                 )}
               </div>
               <div>
@@ -320,7 +359,10 @@ export default function LoginRegister() {
                   رمز عبور خود را فراموش کرده اید؟
                 </a>
               </div>
-              <button type="submit" className="relative bg-primary duration-300 flex items-center before:content-[''] before:h-[100%] before:w-[100%] before:bg-blue-50/10 before:rotate-180 before:absolute before:bottom-[-100%] before:left-[0] hover:before:translate-y-[-100%] overflow-hidden before:duration-500 justify-center cursor-pointer w-[100%] rounded-xl p-2 mt-5 text-white ">
+              <button
+                type="submit"
+                className="relative bg-primary duration-300 flex items-center before:content-[''] before:h-[100%] before:w-[100%] before:bg-blue-50/10 before:rotate-180 before:absolute before:bottom-[-100%] before:left-[0] hover:before:translate-y-[-100%] overflow-hidden before:duration-500 justify-center cursor-pointer w-[100%] rounded-xl p-2 mt-5 text-white "
+              >
                 {!loginLoading ? (
                   <p className="mb-2">ورود</p>
                 ) : (
@@ -331,7 +373,10 @@ export default function LoginRegister() {
           </form>
 
           {/*register*/}
-          <form onSubmit={handleRegisterSubmit} className="flex items-center justify-center flex-col mt-[3rem]">
+          <form
+            onSubmit={handleRegisterSubmit}
+            className="flex items-center justify-center flex-col mt-[3rem]"
+          >
             <h1 className="font-bold text-3xl mb-3 mt-3">ثبت نام</h1>
             <p className="mb-5 text-[.9rem] flex gap-1.5">
               از قبل حسابی برای خود ساخته اید؟{" "}
@@ -376,9 +421,15 @@ export default function LoginRegister() {
                   }
                 />
                 {showRegisterPassword ? (
-                  <FaRegEyeSlash className="text-[1.2rem] ml-[.5rem] cursor-pointer" onClick={() => setShowRegisterPassword(false)} />
+                  <FaRegEyeSlash
+                    className="text-[1.2rem] ml-[.5rem] cursor-pointer"
+                    onClick={() => setShowRegisterPassword(false)}
+                  />
                 ) : (
-                  <FaRegEye className="text-[1.2rem] ml-[.5rem] cursor-pointer" onClick={() => setShowRegisterPassword(true)} />
+                  <FaRegEye
+                    className="text-[1.2rem] ml-[.5rem] cursor-pointer"
+                    onClick={() => setShowRegisterPassword(true)}
+                  />
                 )}
               </div>
               <label htmlFor="register-password-confirm">تایید رمز عبور</label>
