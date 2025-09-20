@@ -79,7 +79,10 @@ class User extends Authenticatable
 
     public function savedProducts() {
     return $this->hasMany(SavedProduct::class);
-}
+    }
 
-   
+    public function skills()
+    {
+        return $this->hasMany(Skill::class, 'user_id');
+    }
 }

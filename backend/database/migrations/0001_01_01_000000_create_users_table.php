@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('family')->nullable();
             $table->enum('role', ['user', 'supervisor', 'developer' ,'admin'])->default('user');
             $table->date('birth_date')->nullable();
-            $table->bigint('meli_code')->nullable();
+            $table->biginteger('meli_code')->nullable();
             $table->string('phone')->nullable();
             $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس' ,'دکترا' , 'پرفسورا'])->nullable();;
             $table->string('address')->nullable();
@@ -33,7 +33,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
-            
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

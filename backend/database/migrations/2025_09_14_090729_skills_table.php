@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('skill', ['Next JS','C++','Figma','MySQL','Jquery','CSS','Python','CSS','React','PHP','Html','Javascript','Laravel']);
+            $table->string('skill');
             $table->unsignedTinyInteger('percentage');
             $table->timestamps();
 

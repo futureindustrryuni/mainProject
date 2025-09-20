@@ -19,7 +19,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\ArticleController;
-
+use App\Http\Controllers\SkillController;
 
 
 Route::get('/user', function (Request $request) {
@@ -80,6 +80,12 @@ Route::middleware('auth:sanctum')->prefix('indexes')->group(function () {
     Route::get('saves', [SavedProductController::class, 'index']);
     Route::post('save', [SavedProductController::class, 'store']);
     Route::delete('delete/{projectId}', [SavedProductController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/skills', [SkillController::class, 'index']);
+    Route::post('/skill/create', [SkillController::class, 'store']); 
+    Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
 });
 
 
