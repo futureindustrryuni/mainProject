@@ -26,11 +26,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();}) ->middleware('auth:sanctum');
 
 Route::get('/user/{id}', [UserPanelController::class, 'show']);
-Route::post('/users/store',[UserController::class,'store']);
 Route::post('user/checkmail', [UserController::class, 'checkEmail']);    
 Route::get('/store', [StoreController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+Route::post('/users/store',[UserController::class,'store']);
 Route::get('/me/profile', [UserPanelController::class, 'showProfile']);
 Route::get('/me/projects', [UserPanelController::class, 'myProjects']);             # Its For Phase 2 Right Now And Its Not Working Corrently
 Route::post('/developer/profile', [DevController::class, 'store']);

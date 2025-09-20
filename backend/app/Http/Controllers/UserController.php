@@ -26,16 +26,12 @@ class UserController extends Controller
             'status' => 'nullable|boolean',
         ]);
 
-        if ($request->filled('id')) {
-            $user = User::findOrFail($request->id);
-            unset($validated['email'], $validated['password']);
+        $user = auth()->user();
 
-            $user->update($validated);
-            return response()->json([
-                'message' => 'The Profile Has Beed Updated',
-                'data' => $user
-            ]);
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
         }
+        unset($validated['email'], $validated['password']);
 
         $isProfileCompleted = 
            !empty($validated['name'])
@@ -49,10 +45,10 @@ class UserController extends Controller
         && !empty($validated['bio']);
         $validated['profile_completed'] = $isProfileCompleted;
         $validated['status'] = $validated['status'] ?? true;
-        $user = User::create($validated);
+        $user->update($validated);
 
         return response()->json([
-        'message' => 'The Informations Have Beed Created',
+        'message' => 'The Informations Have Beed Updated',
         'data' => $user
         ]);
     }
