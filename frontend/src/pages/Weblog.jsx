@@ -31,7 +31,7 @@ export default function Weblog() {
         const catRes = await fetch("http://127.0.0.1:8000/api/categories");
         const catJson = await catRes.json();
         setCategories(catJson.data || []);
-        console.log(categories)
+       
         const artRes = await fetch("http://127.0.0.1:8000/api/articles");
         const artJson = await artRes.json();
         setArticles(artJson.data || []);
@@ -155,7 +155,7 @@ export default function Weblog() {
                 .filter((a) => a.category_id === cat.id)
                 .map((a) => (
                   <ArticleItem
-                  key={a.id} id={a.id} image={a.image }description={a.description }  category={cat.name} title={a.title}  readingTime={a.reading_time}
+                  key={a.id} id={a.id} image={a.image} description={a.description}  category={cat.name} title={a.title}  readingTime={a.reading_time}
                    
                   />
                 ))}
