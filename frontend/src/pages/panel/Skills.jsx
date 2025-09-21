@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Loader from "../../components/Loader";
 import { BsTrash } from "react-icons/bs";
 import {
+  FaBootstrap,
   FaGitAlt,
   FaGithub,
   FaHtml5,
@@ -17,9 +18,10 @@ import {
 
 import { BiLogoDjango, BiLogoCPlusPlus, BiLogoGoLang } from "react-icons/bi";
 import { IoLogoCss3, IoLogoLaravel } from "react-icons/io5";
-import { RiAngularjsFill } from "react-icons/ri";
+import { RiAngularjsFill, RiTailwindCssFill } from "react-icons/ri";
 import {
   SiDart,
+  SiExpress,
   SiNestjs,
   SiNextdotjs,
   SiNuxtdotjs,
@@ -31,30 +33,31 @@ import { FaFlutter } from "react-icons/fa6";
 import { GrNode } from "react-icons/gr";
 
 const skillsIcon = [
-  { id: 1, name: "html", icon: <FaHtml5 /> },
-  { id: 2, name: "css", icon: <IoLogoCss3 /> },
-  { id: 3, name: "bootstrap", icon: <FaJs /> },
-  { id: 4, name: "tailwind", icon: <FaReact /> },
-  { id: 5, name: "js", icon: <FaJsSquare /> },
-  { id: 6, name: "react", icon: <TbBrandReact /> },
-  { id: 7, name: "nextJs", icon: <SiNextdotjs /> },
-  { id: 8, name: "vue", icon: <FaVuejs /> },
-  { id: 9, name: "nuxtJs", icon: <SiNuxtdotjs /> },
-  { id: 10, name: "nodeJs", icon: <GrNode /> },
-  { id: 11, name: "nestJs", icon: <SiNestjs /> },
-  { id: 12, name: "angular", icon: <RiAngularjsFill /> },
-  { id: 13, name: "php", icon: <SiPhp /> },
-  { id: 14, name: "laravel", icon: <IoLogoLaravel /> },
-  { id: 15, name: "python", icon: <FaPython /> },
-  { id: 16, name: "django", icon: <BiLogoDjango /> },
-  { id: 17, name: "git", icon: <FaGitAlt /> },
-  { id: 18, name: "github", icon: <FaGithub /> },
-  { id: 19, name: "figma", icon: <CgFigma /> },
-  { id: 20, name: "go", icon: <BiLogoGoLang /> },
-  { id: 21, name: "c++", icon: <BiLogoCPlusPlus /> },
-  { id: 22, name: "c#", icon: <TbBrandCSharp /> },
-  { id: 23, name: "dart", icon: <SiDart /> },
-  { id: 24, name: "flutter", icon: <FaFlutter /> },
+  { id: 1, name: "html", icon: <FaHtml5 className="text-orange-500" /> },
+  { id: 2, name: "css", icon: <IoLogoCss3 className="text-blue-500" /> },
+  { id: 3, name: "bootstrap", icon: <FaBootstrap  className="text-purple-500" /> },
+  { id: 4, name: "tailwind", icon: <RiTailwindCssFill  className="text-blue-300" /> },
+  { id: 5, name: "js", icon: <FaJsSquare className="text-yellow-400" /> },
+  { id: 6, name: "react", icon: <TbBrandReact className="text-blue-400" /> },
+  { id: 7, name: "nextJs", icon: <SiNextdotjs className="text-black" /> },
+  { id: 8, name: "vue", icon: <FaVuejs className="text-green-500" /> },
+  { id: 9, name: "nuxtJs", icon: <SiNuxtdotjs className="text-green-400" /> },
+  { id: 10, name: "nodeJs", icon: <GrNode className="text-green-700" /> },
+  { id: 11, name: "nestJs", icon: <SiNestjs  className="text-red-500" /> },
+  { id: 12, name: "angular", icon: <RiAngularjsFill className="text-red-500" /> },
+  { id: 13, name: "php", icon: <SiPhp className="text-purple-700"  /> },
+  { id: 14, name: "laravel", icon: <IoLogoLaravel className="text-red-500" /> },
+  { id: 15, name: "python", icon: <FaPython className="text-yellow-600" /> },
+  { id: 16, name: "django", icon: <BiLogoDjango className="text-green-700" /> },
+  { id: 17, name: "git", icon: <FaGitAlt className="text-orange-500" /> },
+  { id: 18, name: "github", icon: <FaGithub className="text-black" /> },
+  { id: 19, name: "figma", icon: <CgFigma  className="text-pink-500" /> },
+  { id: 20, name: "go", icon: <BiLogoGoLang className="text-blue-300 text-[1.5rem]"/> },
+  { id: 21, name: "c++", icon: <BiLogoCPlusPlus className="text-purple-500"/> },
+  { id: 22, name: "c#", icon: <TbBrandCSharp className="text-purple-500"/> },
+  { id: 23, name: "dart", icon: <SiDart className="text-blue-300"/> },
+  { id: 24, name: "flutter", icon: <FaFlutter className="text-blue-300"/> },
+  { id: 25, name: "express", icon: <SiExpress className="text-green-500 text-[1.2rem]"/> },
 ];
 
 export default function Skills() {
