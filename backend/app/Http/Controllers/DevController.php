@@ -30,10 +30,13 @@ class DevController extends Controller
      */
     public function store(StoreDevRequests $request)
     {
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
         
-        $data = $request->validated();
-        if (auth()->check()) {
         $user = Auth::user();
+        $path = $request->file('resume_file_path')->store('resumes', 'public');
+        $data = ['resume_file_path' => $path,];
     
         if ($user->developer) {
             $user->developer->update($data);                  // Update Data
@@ -42,8 +45,14 @@ class DevController extends Controller
             $developer = $user->developer()->create($data);   // Create Data
         }
         
-        return response()->json(['message' => 'The Profile Has Been Made !']);
-    }
+        return response()->json([
+            'message' => 'Resume Uploaded !',
+            'developer' => [
+                'id' => $developer->id,
+                'resume_file_url' => asset('storage/' . $developer->resume_file_path),
+                'status' => $developer->status
+        ],
+    ]);
 }
 
     /**
@@ -57,9 +66,16 @@ class DevController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Developer $developers)
+    public function approve($id)
     {
-        //
+        $developer = Developer::findOrFail($id);
+        $developer->status = 'approved';
+        $developer->save();
+
+        return response()->json([
+            'message' => 'Developer resume approved successfully',
+            'data' => $developer
+        ]);
     }
 
     /**
