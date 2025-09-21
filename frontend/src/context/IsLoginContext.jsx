@@ -7,7 +7,7 @@ export function IsLoginProvider({ children }) {
   const [profile, setProfile] = useState(null);
 
   const token = localStorage.getItem("token");
-  console.log(isLogin);
+  // console.log(isLogin);
   useEffect(() => {
     if (token) {
       setIsLogin(true);
