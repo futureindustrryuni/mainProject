@@ -22,6 +22,10 @@
   animation: fadeIn 1s ease-in-out 3s forwards;
 }
 
+.container{
+  width: 80%;
+}
+
 @keyframes fadeIn {
   to {
     opacity: 1;
