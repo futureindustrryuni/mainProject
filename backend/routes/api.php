@@ -31,7 +31,7 @@ Route::get('/store', [StoreController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/users/store',[UserController::class,'store']);
-Route::post('/developer/profile', [DevController::class, 'store']);
+
 Route::get('/me/profile', [UserPanelController::class, 'showProfile']);
 Route::get('/me/projects', [UserPanelController::class, 'myProjects']);             # Its For Phase 2 Right Now And Its Not Working Corrently
 Route::post('/developers/{id}/approve', [AdminDeveloperController::class, 'approve']);
@@ -46,7 +46,7 @@ Route::get('/', [ProductController::class, 'index']);
 });
 
 #Developer API's
-
+Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::class, 'store']);
 Route::middleware('auth:admin')->post('/developer/approve/{id}', [DevController::class, 'approve']);
 
 #Authentication API's

@@ -30,10 +30,6 @@ class DevController extends Controller
      */
     public function store(StoreDevRequests $request)
     {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-        
         $user = Auth::user();
         $path = $request->file('resume_file_path')->store('resumes', 'public');
         $data = ['resume_file_path' => $path,];
