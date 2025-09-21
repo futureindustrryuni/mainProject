@@ -48,6 +48,7 @@ Route::get('/', [ProductController::class, 'index']);
 #Developer API's
 Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::class, 'store']);
 Route::middleware('auth:admin')->post('/developer/approve/{id}', [DevController::class, 'approve']);
+Route::middleware('auth:admin')->post('/developer/reject/{id}', [DevController::class, 'reject']);
 
 #Authentication API's
 Route::prefix('auth')->group(function () {

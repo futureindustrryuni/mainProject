@@ -24,7 +24,6 @@ class StoreDevRequests extends FormRequest
     {
         return [
             'resume_file_path' => 'required|file|mimes:pdf,jpg,jpeg,png|max:8192',
-            'status' => 'pending'
         ];
     }
 }

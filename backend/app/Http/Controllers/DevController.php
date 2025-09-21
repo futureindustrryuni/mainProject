@@ -46,10 +46,10 @@ class DevController extends Controller
             'developer' => [
                 'id' => $developer->id,
                 'resume_file_url' => asset('storage/' . $developer->resume_file_path),
-                'status' => $developer->status
-        ],
-    ]);
-}
+                'status' => 'pending'
+            ],
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -65,6 +65,13 @@ class DevController extends Controller
     public function approve($id)
     {
         $developer = Developer::findOrFail($id);
+
+        if ($developer->status === 'rejected') {
+            return response()->json([
+                'message' => 'Status Is Already at Approved',
+                'data' => $developer
+            ], 400);
+    }
         $developer->status = 'approved';
         $developer->save();
 
@@ -77,9 +84,23 @@ class DevController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Developer $developers)
+    public function reject($id)
     {
-        //
+        $developer = Developer::findOrFail($id);
+
+        if ($developer->status === 'rejected') {
+            return response()->json([
+                'message' => 'Status Is Already at Rejected',
+                'data' => $developer
+            ], 400);
+    }
+        $developer->status = 'rejected'; 
+        $developer->save();
+
+        return response()->json([
+            'message' => 'Developer resume rejected',
+            'data' => $developer
+        ]);
     }
 
     /**
