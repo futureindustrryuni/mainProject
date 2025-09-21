@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->biginteger('meli_code')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس' ,'دکترا' , 'پرفسورا'])->nullable();;
+            $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس', 'فوق لیسانس' ,'دکترا' , 'پرفسورا'])->nullable();;
             $table->string('address')->nullable();
             $table->text('bio')->nullable();
             $table->string('email')->unique()->nullable();

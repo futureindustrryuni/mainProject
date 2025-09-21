@@ -17,7 +17,7 @@ class UserController extends Controller
             'birth_date' => 'nullable|date',
             'meli_code' => 'nullable|max:255',
             'phone' => 'nullable|string|max:20',
-            'education' => 'nullable|in:دیپلم,فوق دیپلم,لیسانس,دکترا,پرفسورا',
+            'education' => 'nullable|in:دیپلم,فوق دیپلم,لیسانس,فوق لیسانس,دکترا,پرفسورا',
             'address' => 'nullable|string|max:255',
             'bio' => 'nullable|string|max:500',
             'email' => 'nullable|email|unique:users,email',
