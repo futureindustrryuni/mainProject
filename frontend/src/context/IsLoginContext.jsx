@@ -25,11 +25,11 @@ export function IsLoginProvider({ children }) {
       },
     })
       .then((res) => {
-        if (!res.ok) {
-          return res.text().then((text) => {
-            throw new Error(`خطا ${res.status}: ${text}`);
-          });
-        }
+        // if (!res.ok) {
+        //   return res.text().then((text) => {
+        //     throw new Error(`خطا ${res.status}: ${text}`);
+        //   });
+        // }
         return res.json();
       })
       .then((data) => {
@@ -37,7 +37,7 @@ export function IsLoginProvider({ children }) {
       })
   }, [token]);
 
-  console.log("profile : ",profile)
+  // console.log("profile : ",profile)
   return (
     <IsLoginContext.Provider value={[isLogin,profile]}>
       {children}

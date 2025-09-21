@@ -7,7 +7,7 @@ import { IsLoginContext } from "../context/IsLoginContext";
 export default function Header() {
   const [fixHeader, setFixHeader] = useState(false);
   const profile = useContext(IsLoginContext)[1];
-  console.log("profile : ", profile);
+  // console.log("profile : ", profile);
 
   useEffect(() => {
     const handleScroll = () => {
