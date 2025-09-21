@@ -43,9 +43,12 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show()
     {
-        $ticket = Ticket::findOrFail($id);
+        $user = auth()->user();
+        $ticket = Ticket::where('user_id', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return response()->json([
             'message' => 'Ticket retrieved successfully',

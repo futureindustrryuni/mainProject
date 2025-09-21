@@ -74,7 +74,7 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
 
 #Ticket API's
 Route::prefix('tickets')->group(function () {
-    Route::middleware('auth:sanctum')->get('/{id}', [TicketController::class, 'show']);
+    Route::middleware('auth:sanctum')->get('/show', [TicketController::class, 'show']);
     Route::middleware('auth:sanctum')->post('/create', [TicketController::class, 'store']);
     Route::middleware('auth:admin')->get('/', [TicketController::class, 'index']);
     Route::middleware('auth:admin')->delete('/{id}', [TicketController::class, 'destroy']);
