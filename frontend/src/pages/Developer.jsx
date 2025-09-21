@@ -13,16 +13,9 @@ import {
   CheckCircle,
   Loader2,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-
-// imgaes
-import Image from "../assets/images/developerIMG.png";
-import Image1 from "../assets/images/man-make-winner.png";
-import Pattern from "../assets/images/template0.png";
-import Pattern1 from "../assets/images/template1.png";
-import Pattern2 from "../assets/images/template.png";
 
 // Icon
 import Tag from "../../public/icons/ai-tag-price.svg";
@@ -32,9 +25,9 @@ import User from "../../public/icons/enhance-user-ai.svg";
 import MedalStar from "../../public/icons/medal-star.svg";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Toast } from "../components/Toast";
+import { IsLoginContext } from "../context/IsLoginContext";
 
-// import { div } from "framer-motion/client"
-// import { div } from "framer-motion/client"
 const items = [
   {
     id: 1,
@@ -110,22 +103,74 @@ export default function Developer() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
+  const token = localStorage.getItem("token");
+
+  const profile = useContext(IsLoginContext)[1]
+  console.log(profile)
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setUploaded(false);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) return;
-    setUploading(true);
-    setUploaded(false);
 
-    // 📌 شبیه‌سازی آپلود
-    setTimeout(() => {
+    // اول بررسی کن توکن هست یا نه
+    if (!token) {
+      Toast.fire({
+        icon: "error",
+        title: "قبل از ارسال رزومه لطفا لاگین کنید",
+      });
+      return; // 👈 دیگه ادامه نده
+    }
+
+    if(!profile.profile_completed){
+         Toast.fire({
+        icon: "error",
+        title: "قبل از ارسال رزومه لطفا پروفایلت رو کامل کنید",
+      });
+      return; // 👈 دیگه ادامه نده
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("resume_file_path", file);
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/developer/profile", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // فقط توکن
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setUploaded(true);
+        Toast.fire({
+          icon: "success",
+          title:
+            "رزومه شما با موفقیت ارسال شد، در پنل خود میتونید وضعیت آن را مشاهده کنید ",
+        });
+      } else {
+        console.error("خطا در ارسال رزومه:", data);
+        Toast.fire({
+          icon: "error",
+          title: "مشکلی پیش اومد! دوباره امتحان کنید.",
+        });
+      }
+    } catch (err) {
+      console.error("خطا در اتصال به سرور:", err);
+      Toast.fire({
+        icon: "error",
+        title: "ارتباط با سرور برقرار نشد!",
+      });
+    } finally {
       setUploading(false);
-      setUploaded(true);
-    }, 2500);
+    }
   };
 
   return (
@@ -165,7 +210,8 @@ export default function Developer() {
               شروع فقط کافیه فرم همکاری را پر کنید و یک مصاحبه کوتاه داشته باشید
             </p>
             <div className="flex gap-2">
-              <button
+              <a
+                href="#sendResume"
                 data-aos="zoom-out"
                 data-aos-duration="1000"
                 data-aos-delay="600"
@@ -173,7 +219,7 @@ export default function Developer() {
               >
                 شروع کن
                 <FiArrowLeft />
-              </button>
+              </a>
               <button
                 data-aos="zoom-out"
                 data-aos-duration="1000"
@@ -202,7 +248,7 @@ export default function Developer() {
                   data-aos="fade-up"
                   data-aos-duration="1000"
                   data-aos-delay="10"
-                  src={Pattern1}
+                  src="/images/template1.png"
                   alt=""
                   className="w-full h-full  rounded-2xl "
                 />
@@ -210,7 +256,7 @@ export default function Developer() {
                   data-aos="fade-up"
                   data-aos-duration="1000"
                   data-aos-delay="300"
-                  src={Image}
+                  src="/images/developerIMG.png"
                   alt=""
                   className="w-full h-full rotate-[10deg] rounded-2xl absolute top-10 left-0"
                 />
@@ -227,7 +273,11 @@ export default function Developer() {
         >
           <div className="bg-[#C39DDD] h-[480px] sm:h-80 rounded-4xl mt-20 -rotate-3 ">
             <div className="bg-[#833AB4] w-full h-full rounded-4xl rotate-3  overflow-hidden relative">
-              <img src={Pattern} alt="" className="h-full w-[50%] opacity-50" />
+              <img
+                src="/images/template0.png"
+                alt=""
+                className="h-full w-[50%] opacity-50"
+              />
               <div className=" text-white flex pt-12 px-20  font-IranYekanBold absolute top-0 ">
                 <div
                   data-aos="zoom-out"
@@ -297,11 +347,12 @@ export default function Developer() {
             <span className="border-t border-primary w-16 h-2 rounded-2xl bg-primary mb-3"></span>
             <p className="font-IranYekanBold text-2xl">سوالات متداول</p>
           </div>
-          {items.map((items, index) => (
+          {items.map((item, index) => (
             <div
+              key={item.id}
               data-aos="zoom-out"
               data-aos-duration="1000"
-              data-aos-delay={`${items.id}00`}
+              data-aos-delay={`${item.id}00`}
               className={`w-full bg-[#CBCBCB] rounded-3xl border border-gray-400 ${
                 isOpen === index ? "h-auto divide-y divide-gray-400" : "h-16"
               }`}
@@ -309,7 +360,7 @@ export default function Developer() {
               <div className={`p-5 flex justify-between `} key={index}>
                 <div className="flex gap-2">
                   <img src={Tag} alt="" />
-                  {items.title}
+                  {item.title}
                 </div>
                 <FiChevronDown
                   key={index}
@@ -328,7 +379,7 @@ export default function Developer() {
                   }`}
                   key={index}
                 >
-                  {items.content}
+                  {item.content}
                 </div>
               )}
             </div>
@@ -355,16 +406,17 @@ export default function Developer() {
             spaceBetween={16}
             slidesPerView={"auto"}
             grabCursor={true}
+            loop={true}
             className="h-[30rem]"
-          >
+            >
             {developers.map((developer) => (
               <SwiperSlide
+              className="!w-[295px] !h-[420px] !shadow rounded-2xl p-4 !flex flex-col gap-4 items-center"
+              >
+                <img
                 data-aos="zoom-out"
                 data-aos-duration="1000"
                 data-aos-delay={`${developer.id}00`}
-                className="!w-[295px] !h-[420px] !shadow rounded-2xl p-4 !flex flex-col gap-4 items-center"
-              >
-                <img
                   src={developer.img}
                   alt=""
                   className="rounded-2xl w-full h-40 object-cover font-extrabold"
@@ -383,26 +435,27 @@ export default function Developer() {
         </div>
         {/*upload resume*/}
         <motion.div
-          className="w-full my-12 p-10 bg-gradient-to-br from-purple-50 to-purple-50 rounded-3xl shadow-xl border border-purple-100"
+          id="sendResume"
+          className="w-full my-12 py-10 px-5 md:px-10 bg-gradient-to-br from-purple-50 to-purple-50 rounded-3xl shadow-xl border border-purple-100"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="text-center mb-8">
             <motion.h2
-              className="text-3xl font-bold text-purple-700"
+              className="text-[1.3rem] md:text-[1.5rem] xl:text-[2rem] font-bold text-purple-700"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-               رزومه‌ات رو بارگذاری کن
+              رزومه‌ات رو بارگذاری کن
             </motion.h2>
             <p className="text-gray-600 mt-2">
               اولین قدم برای توسعه‌دهنده شدن: نشون بده چه توانایی‌هایی داری
             </p>
           </div>
 
-          {/* بخش درگ & دراپ */}
+          {/* بخش انتخاب فایل */}
           <label className="block">
             <motion.div
               className="border-2 border-dashed border-purple-400 bg-white rounded-2xl p-10 text-center cursor-pointer hover:bg-purple-50 transition flex flex-col items-center"
@@ -414,7 +467,7 @@ export default function Developer() {
                 فایل رزومه‌ات رو اینجا آپلود کن برامون
               </p>
               <p className="text-gray-400 text-sm mt-1">
-                 کلیک کن برای انتخاب فایل
+                کلیک کن برای انتخاب فایل
               </p>
               <input
                 type="file"
@@ -543,7 +596,7 @@ export default function Developer() {
             data-aos-delay="200"
             className="bg-white h-48 -mt-20 overflow-hidden rounded-2xl relative"
           >
-            <img src={Pattern2} alt="" className="lg:w-1/2 h-72" />
+            <img src="/images/template.png" alt="" className="lg:w-1/2 h-72" />
             <div className="absolute top-24 left-2 space-y-2 lg:flex lg:items-center lg:gap-8 lg:left-28">
               <p className=" text-[#50116D] font-IranYekanBold">
                 دنبال بهترین پروجه ها هستی؟
@@ -554,13 +607,13 @@ export default function Developer() {
             </div>
           </div>
           <img
-            src={Image1}
+            src="/images/man-make-winner.png"
             alt=""
             className="w-56 h-72 absolute -top-2 right-32 sm:w-72 sm:h-96 lg:w-80 lg:h-[420px] sm:right-10 sm:-top-5 lg:right-28"
           />
         </div>
       </div>
-       <Footer/>
+      <Footer />
     </div>
   );
 }
