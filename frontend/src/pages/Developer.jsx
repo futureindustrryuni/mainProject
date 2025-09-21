@@ -31,6 +31,7 @@ import DeviceMessage from "../../public/icons/device-message.svg";
 import User from "../../public/icons/enhance-user-ai.svg";
 import MedalStar from "../../public/icons/medal-star.svg";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 // import { div } from "framer-motion/client"
 // import { div } from "framer-motion/client"
@@ -559,6 +560,7 @@ export default function Developer() {
           />
         </div>
       </div>
+       <Footer/>
     </div>
   );
 }

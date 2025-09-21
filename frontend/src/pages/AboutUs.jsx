@@ -5,6 +5,7 @@ import { LuChartSpline } from "react-icons/lu";
 import { Link, NavLink, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Aos from "aos";
+import Footer from "../components/Footer";
 
 export default function AboutUs() {
   const [hash, setHash] = useState("#perspective");
@@ -273,7 +274,9 @@ export default function AboutUs() {
             </ul>
           </div>
         </div>
+
       </div>
+         <Footer/>
       {/*footer*/}
     </>
   );
