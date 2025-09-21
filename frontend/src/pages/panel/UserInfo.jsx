@@ -6,6 +6,7 @@ import { LiaUserSolid } from "react-icons/lia";
 import Loader from "../../components/Loader";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Toast } from "../../components/Toast";
 
 export default function UserInfo() {
   const [isOpen, setIsOpen] = useState(1);
@@ -26,19 +27,6 @@ export default function UserInfo() {
   });
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
-
-  //sweetAlert
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
 
   // گرفتن اطلاعات کاربر
   useEffect(() => {

@@ -17,6 +17,7 @@ import { GoArrowLeft } from "react-icons/go";
 import ArticleItem from "../components/ArticleItem";
 import Header from "../components/Header";
 import Aos from "aos";
+import Footer from "../components/Footer";
 
 export default function Weblog() {
   Aos.init({
@@ -167,6 +168,8 @@ export default function Weblog() {
 
       </div>
       {/* finish */}
+
+      <Footer/>
     </div>
   );
 }

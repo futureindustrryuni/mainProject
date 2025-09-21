@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search, Loader2 } from "lucide-react";
 import ProjectItem from "../components/ProjectItem";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 // ساختن 40 پروژه تستی
 
@@ -153,6 +154,7 @@ export default function Projects() {
                     </div>
                 )}
             </section>
+             <Footer/>
         </div>
     );
 }

@@ -4,7 +4,7 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 export default function PrivateRoute({children}) {
   const [isLogin] = useContext(IsLoginContext);
-  console.log(isLogin)
+  // console.log(isLogin)
   return (
     <>
       {isLogin ? children : <Navigate to='/auth' />}

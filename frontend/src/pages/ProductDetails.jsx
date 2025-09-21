@@ -13,6 +13,7 @@ import Header from "../components/Header.jsx";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loader from "../components/Loader.jsx";
+import Footer from "../components/Footer.jsx";
 // import { div } from "framer-motion/m";
 
 export default function ProductDetails() {
@@ -189,6 +190,7 @@ export default function ProductDetails() {
           )}
         </div>
       </div>
+       <Footer/>
     </div>
   );
 }

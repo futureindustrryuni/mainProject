@@ -23,6 +23,7 @@ import ProjectItem from "../components/ProjectItem";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function Home() {
   Aos.init({
@@ -59,7 +60,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-white dark:bg-dark pb-10">
+      <div className="bg-white dark:bg-dark">
         {/*Header*/}
         <Header />
 
@@ -318,6 +319,8 @@ export default function Home() {
             </ul>
           </div>
         </div>
+
+        <Footer/>
       </div>
     </>
   );
