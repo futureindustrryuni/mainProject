@@ -19,13 +19,13 @@ export default function EmptySaves() {
       <p className="text-gray-500 text-sm mb-5 max-w-sm">
         برای ذخیره کردن پروژه‌ها، کافیست روی دکمه ذخیره در صفحه هر پروژه کلیک کنید تا بعداً به راحتی بهشون دسترسی داشته باشید.
       </p>
-      <motion.a
+      <motion.div
         href="/projects"
         className="px-6 py-2 bg-primary text-white rounded-xl shadow-md hover:bg-primary transition"
         whileTap={{ scale: 0.95 }}
       >
         <Link to="/projects">مشاهده پروژه‌ها</Link>
-      </motion.a>
+      </motion.div>
     </motion.div>
   );
 }
