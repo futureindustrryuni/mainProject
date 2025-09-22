@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SideBar from "../../components/SideBar";
 import TopBar from "../../components/TopBar";
-import { HiOutlineTrash } from "react-icons/hi";
 import { Toast } from "../../components/Toast";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -9,11 +8,11 @@ import {
   FileText,
   Hourglass,
   XCircle,
-  XOctagon,
 } from "lucide-react";
 import Loader from "../../components/Loader";
+import JalaliDate from "../../components/JalaliDate";
 
-import jalaali from "jalaali-js";
+
 
 const categories = [
   {
@@ -94,22 +93,6 @@ const ticketSubjects = [
   { value: "قوانین و امنیت", label: "قوانین و امنیت" },
 ];
 
-function JalaliDate({ gregorianDate }) {
-  // استخراج تاریخ بدون زمان
-  const [year, month, day] = gregorianDate.split(" ")[0].split("-");
-
-  const { jy, jm, jd } = jalaali.toJalaali(
-    parseInt(year),
-    parseInt(month),
-    parseInt(day)
-  );
-
-  return (
-    <span>
-      {jy}/{jm.toString().padStart(2, "0")}/{jd.toString().padStart(2, "0")}
-    </span>
-  );
-}
 
 export default function MyTickets() {
   const [isOpen, setIsOpen] = useState(1);
