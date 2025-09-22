@@ -17,7 +17,7 @@ import {
   LuUserRound,
 } from "react-icons/lu";
 import { MdOutlineArticle } from "react-icons/md";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function SideBar({ isOpen, setIsOpen }) {
   const token = localStorage.getItem("token");
@@ -69,12 +69,12 @@ export default function SideBar({ isOpen, setIsOpen }) {
       } fixed md:sticky top-0 z-50 p-3 duration-500 bg-[#fff] dark:bg-[#1B202C] border-l-2 dark:border-zinc-900 border-zinc-200 dark:bg[#1B202C] dark:text-white text-black`}
     >
       <div className="flex items-center justify-between mb-7">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <img src="/images/logo.png" alt="" className="size-[2.2rem] mt-2 " />
           <p className="text-[1.1rem] font-black ">
             پرو<span className="text-primary">ج</span>ه
           </p>
-        </div>
+        </Link>
         <p
           className="text-2xl cursor-pointer"
           onClick={() => {

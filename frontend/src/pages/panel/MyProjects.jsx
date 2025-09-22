@@ -343,7 +343,7 @@ export default function MyProjects() {
                       <ResumeStatusBox
                       status={resumeStatus.status}
                       fileName={resumeStatus.resume_url?.split("/")[5]}
-                      submittedAt={resumeStatus.created_at}
+                      created_at={resumeStatus.creation_date}
                       />
                     )}
                   </div>

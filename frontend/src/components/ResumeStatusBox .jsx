@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle, Clock, FileText } from "lucide-react";
+import JalaliDate from "./JalaliDate";
+// import JalaliDate from "../../components/JalaliDate";
+
 
 const ResumeStatusBox = ({ status, fileName, created_at }) => {
   // کانفیگ استایل وضعیت‌ها
@@ -50,14 +53,15 @@ const ResumeStatusBox = ({ status, fileName, created_at }) => {
         <div className="flex items-center gap-3">
           <FileText className="size-6 text-purple-600" />
           <p className="text-gray-700 font-medium">
-            <span className="font-bold">نام فایل:</span> {fileName}
+            <span className="font-bold">نام فایل : </span> {fileName}
           </p>
         </div>
 
         <div className="flex items-center gap-3 mb-5">
           <span className="text-lg">📅</span>
           <p className="text-gray-700 font-medium">
-            <span className="font-bold">تاریخ ارسال:</span> {created_at}
+            <span className="font-bold">تاریخ ارسال : </span>
+            {<JalaliDate gregorianDate={created_at} />}
           </p>
         </div>
 
