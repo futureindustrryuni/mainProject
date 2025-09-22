@@ -114,7 +114,7 @@ export default function SideBar({ isOpen, setIsOpen }) {
           </NavLink>
         </li>{" "}
         <li onClick={sidebarHandler}>
-          <NavLink to="/panel/*" className="p-2 text-[.9rem] w-full">
+          <NavLink to="/panel/mySaves" className="p-2 text-[.9rem] w-full">
             <IoBookmarksOutline className="text-xl" />
             ذخیره شده ها
           </NavLink>

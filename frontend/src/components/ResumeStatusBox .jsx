@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle, Clock, FileText } from "lucide-react";
 
-const ResumeStatusBox = ({ status, fileName, submittedAt }) => {
+const ResumeStatusBox = ({ status, fileName, created_at }) => {
   // کانفیگ استایل وضعیت‌ها
   const statusConfig = {
     approved: {
@@ -57,7 +57,7 @@ const ResumeStatusBox = ({ status, fileName, submittedAt }) => {
         <div className="flex items-center gap-3 mb-5">
           <span className="text-lg">📅</span>
           <p className="text-gray-700 font-medium">
-            <span className="font-bold">تاریخ ارسال:</span> {submittedAt}
+            <span className="font-bold">تاریخ ارسال:</span> {created_at}
           </p>
         </div>
 
