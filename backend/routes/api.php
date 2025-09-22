@@ -47,6 +47,7 @@ Route::get('/', [ProductController::class, 'index']);
 
 #Developer API's
 Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/developer/status', [DevController::class, 'status']);
 Route::middleware('auth:admin')->post('/developer/approve/{id}', [DevController::class, 'approve']);
 Route::middleware('auth:admin')->post('/developer/reject/{id}', [DevController::class, 'reject']);
 

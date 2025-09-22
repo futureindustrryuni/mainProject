@@ -66,7 +66,7 @@ class DevController extends Controller
     {
         $developer = Developer::findOrFail($id);
 
-        if ($developer->status === 'rejected') {
+        if ($developer->status === 'approved') {
             return response()->json([
                 'message' => 'Status Is Already at Approved',
                 'data' => $developer
@@ -106,8 +106,21 @@ class DevController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Developer $developers)
+    public function status()
     {
-        //
+    $user = auth()->user();
+
+    if (!$user->developer) {
+        return response()->json([
+            'message' => 'No Resumes Has Been Added',
+            'status' => null
+        ], 404);
+    }
+
+    return response()->json([
+        'message' => 'Your Resume Status :',
+        'status' => $user->developer->status,
+        'resume_url' => asset('storage/' . $user->developer->resume_file_path)
+        ]);
     }
 }
