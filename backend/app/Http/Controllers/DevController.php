@@ -55,9 +55,16 @@ class DevController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Developer $developers)
+    public function show(Request $request)
     {
-        //
+        $requests = Developer::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'message' => 'All developer requests retrieved successfully',
+            'data' => $requests
+        ]);
     }
 
     /**

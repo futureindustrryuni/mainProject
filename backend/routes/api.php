@@ -50,6 +50,8 @@ Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::cl
 Route::middleware('auth:sanctum')->get('/developer/status', [DevController::class, 'status']);
 Route::middleware('auth:admin')->post('/developer/approve/{id}', [DevController::class, 'approve']);
 Route::middleware('auth:admin')->post('/developer/reject/{id}', [DevController::class, 'reject']);
+Route::middleware('auth:admin')->get('/developer/requests', [DevController::class, 'show']);
+
 
 #Authentication API's
 Route::prefix('auth')->group(function () {

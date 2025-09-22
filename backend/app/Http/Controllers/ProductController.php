@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        if ($user->role === 'developer' || $user->role === 'admin') {
+        if ($user->role !== 'developer') {
             return response()->json([
                 'message' => 'Only Developers Can Create Project.'
             ], 403);
