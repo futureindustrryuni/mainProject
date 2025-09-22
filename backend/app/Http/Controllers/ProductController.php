@@ -20,31 +20,38 @@ class ProductController extends Controller
         }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'title' => 'required|string',
-        'description' => 'required|string',
-        'technologies' => 'required|string',
-        'price' => 'required|numeric',
-        'category_id' => 'required|exists:categories,id',
-        'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
-
-    $validated['user_id'] = auth()->id();
-    $validated['is_approved'] = '1';
-    $product = Product::create($validated);
-
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $imageFile) {
-            $path = $imageFile->store('product_images', 'public');
-            $product->images()->create([
-                'path' => $path,
-            ]);
+    {
+        $user = auth()->user();
+        if ($user->role === 'developer' || $user->role === 'admin') {
+            return response()->json([
+                'message' => 'Only Developers Can Create Project.'
+            ], 403);
         }
-    }
 
-    return response()->json(['product' => $product->load('images')], 201);
-}
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'technologies' => 'required|string',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $validated['user_id'] = auth()->id();
+        $validated['is_approved'] = '1';
+        $product = Product::create($validated);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $path = $imageFile->store('product_images', 'public');
+                $product->images()->create([
+                    'path' => $path,
+                ]);
+            }
+        }
+
+        return response()->json(['product' => $product->load('images')], 201);
+    }
 
     public function show($id){
         $product = Product::with(['images','comments.user','category.products'])->findOrFail($id);

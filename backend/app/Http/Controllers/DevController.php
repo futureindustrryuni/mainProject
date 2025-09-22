@@ -31,7 +31,8 @@ class DevController extends Controller
     public function store(StoreDevRequests $request)
     {
         $user = Auth::user();
-        $path = $request->file('resume_file_path')->store('resumes', 'public');
+        $originalName = $request->file('resume_file_path')->getClientOriginalName();
+        $path = $request->file('resume_file_path')->storeAs('resumes', $originalName, 'public');
         $data = ['resume_file_path' => $path,];
     
         if ($user->developer) {
@@ -74,6 +75,12 @@ class DevController extends Controller
     }
         $developer->status = 'approved';
         $developer->save();
+
+        $user = $developer->user;
+        if ($user->role !== 'developer') {
+            $user->role = 'developer';
+            $user->save();
+        }
 
         return response()->json([
             'message' => 'Developer resume approved successfully',
@@ -120,7 +127,9 @@ class DevController extends Controller
     return response()->json([
         'message' => 'Your Resume Status :',
         'status' => $user->developer->status,
-        'resume_url' => asset('storage/' . $user->developer->resume_file_path)
+        'resume_url' => asset('storage/' . $user->developer->resume_file_path),
+        'creation_date' => $user->developer->created_at->format('Y-m-d H:i:s'),
+        'update_date' => $user->developer->updated_at->format('Y-m-d H:i:s')
         ]);
     }
 }
