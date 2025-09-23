@@ -21,7 +21,7 @@ export default function Tickets() {
     ReactDOMServer.renderToString(<Icon size={18} />);
 
   //get tickets
-  const fetchUsers = async () => {
+  const fetchTickets = async () => {
     try {
       const res = await fetch("http://127.0.0.1:8000/api/tickets", {
         method: "GET",
@@ -40,7 +40,7 @@ export default function Tickets() {
   };
 
   //get tickets
-  const fetchTickets = async () => {
+  const  fetchUsers= async () => {
     try {
       const res = await fetch("http://127.0.0.1:8000/api/admin/users", {
         method: "GET",
@@ -123,9 +123,8 @@ export default function Tickets() {
                   {
                     name: "ارسال کننده",
                     formatter: (cell) => {
-                      // cell اینجا همون user_id هست
-                      const user = users?.find((u) => u.id === cell); // پیدا کردن کاربر با id
-                      return user ? user.email : "ناشناخته"; // اگر پیدا نشد "ناشناخته" نمایش بده
+                      const user = users?.find((u) => u.id === cell); 
+                      return user ? user.email : "ناشناخته"; 
                     },
                   },
 
