@@ -381,11 +381,11 @@ export default function MyTickets() {
 
               <ul className="mt-5 *:mb-3">
                 {myTicketsList.map((item) => (
-                  <li
+                  <li key={item.id}
                     className={`relative border-r-7 dark:bg-white/5 ${
                       item.status == "in_progress"
                         ? "!border-r-yellow-500"
-                        : item.status == "in_progress"
+                        : item.status == "open"
                         ? "!border-r-green-500"
                         : "!border-r-red-500"
                     } rounded-xl border-2 dark:border-zinc-700 border-zinc-200 p-4 pb-10 `}
@@ -405,7 +405,7 @@ export default function MyTickets() {
                         {item.status == "in_progress"
                           ? "در انتظار پاسخ"
                           : item.status == "open"
-                          ? "خوانده شد"
+                          ? "بررسی شد"
                           : "رد شده"}
                       </p>
                     </div>
