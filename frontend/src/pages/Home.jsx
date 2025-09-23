@@ -1,35 +1,29 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   BsBackpack2,
-  BsBank,
-  BsCashCoin,
   BsClipboardData,
-  BsDiagram3,
-  BsFileEarmarkCode,
   BsHeartPulse,
   BsRocketTakeoff,
   BsShieldCheck,
   BsStars,
 } from "react-icons/bs";
 import { IoArrowDownCircle, IoCodeSlashOutline } from "react-icons/io5";
-import { data, Link, NavLink } from "react-router-dom";
+import { FiArrowUpLeft } from "react-icons/fi";
 
 import "aos/dist/aos.css";
 import Aos from "aos";
-import { LiaUserSolid } from "react-icons/lia";
-import { FiArrowUpLeft } from "react-icons/fi";
-import { TiHeartFullOutline } from "react-icons/ti";
-import { FaEye } from "react-icons/fa";
+
 import ProjectItem from "../components/ProjectItem";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 
 export default function Home() {
   Aos.init({
     once: true,
   });
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState(null);
 
   const fetchproject = () => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -44,19 +38,11 @@ export default function Home() {
   useEffect(() => {
     fetchproject();
   }, []);
-  // const [products, setProducts] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/products")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProducts(data.data);
-  //     });
-  // }, []);
+  if(!projects){
+    return <Loader/>
+  }
 
-  // useEffect(() => {
-  //   console.log(products);
-  // }, [products]);
 
   return (
     <>
@@ -320,7 +306,7 @@ export default function Home() {
           </div>
         </div>
 
-        <Footer/>
+        <Footer />
       </div>
     </>
   );

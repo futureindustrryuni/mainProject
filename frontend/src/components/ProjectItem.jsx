@@ -8,31 +8,28 @@ import { LuHeart } from "react-icons/lu";
 import { Toast } from "./Toast";
 
 export default function ProjectItem({ id, img, title, user_id }) {
-  Aos.init({ once: true });
-
-  const [liked, setLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  Aos.init({
+    once: true,
+  });
+  const [liked, setLiked] = useState(null); // وضعیت لایک
   const [userInfo, setUserInfo] = useState("");
-  const [animate, setAnimate] = useState(false);
-
   const token = localStorage.getItem("token");
 
-  // 🔹 گرفتن ایمیل صاحب پروژه
   useEffect(() => {
     fetch(`http://localhost:8000/api/user/${user_id}`)
       .then((res) => res.json())
-      .then((data) => setUserInfo(data.email));
-  }, [user_id]);
+      .then((data) => {
+        setUserInfo(data.email);
+      });
+  }, []);
 
-  // 🔹 سیو پروژه
   function saveHandler() {
     if (!token) {
       Toast.fire({
         icon: "error",
         title: "برای ذخیره پروژه اول لاگین کنید",
       });
-      return;
+      return; // 👈 دیگه ادامه نده
     }
 
     fetch(`http://127.0.0.1:8000/api/indexes/save`, {
@@ -44,7 +41,7 @@ export default function ProjectItem({ id, img, title, user_id }) {
       },
       body: JSON.stringify({ product_id: id }),
     }).then((res) => {
-      if (res.status === 200) {
+      if (res.status == 200) {
         Toast.fire({
           icon: "success",
           title: "پروژه سیو شد !",
@@ -53,43 +50,14 @@ export default function ProjectItem({ id, img, title, user_id }) {
     });
   }
 
-  // گرفتن وضعیت اولیه از API
-  useEffect(() => {
-    if (!id) return;
-
-    setLoading(true);
-    fetch(`http://127.0.0.1:8000/api/products/${id}`, {
-      headers: {
-        Accept: "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("initial:", data);
-
-        // مطمئن شو بک‌اند اینارو میفرسته
-        setLiked(!!data.liked); // اگر true/false نیومد → false
-        setLikesCount(Number(data.likes_count) || 0); // اگر undefined بود → 0
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, [id, token]);
-
-  // هندل لایک
   async function likeHandler() {
-    if (!token) {
-      Toast.fire({
-        icon: "error",
-        title: "برای لایک کردن اول لاگین کنید",
-      });
-      return;
-    }
-
-    // 🟢 optimistic update
-    setLiked((prev) => !prev);
-    setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
-
+    // if (!token) {
+    //   Toast.fire({
+    //     icon: "error",
+    //     title: "برای لایک کردن اول لاگین کنید",
+    //   });
+    //   return;
+    // }
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/products/${id}/like`, {
         method: "POST",
@@ -101,20 +69,17 @@ export default function ProjectItem({ id, img, title, user_id }) {
       });
 
       const data = await res.json();
-      console.log("like response:", data);
 
-      // 🟢 sync با API اگر چیزی فرستاد
-      if (typeof data.liked !== "undefined") setLiked(!!data.liked);
-      if (typeof data.likes_count !== "undefined")
-        setLikesCount(Number(data.likes_count) || 0);
+      // وقتی بک‌اند بگه لایک شد یا آنلایک شد:
+      setLiked(data);
     } catch (err) {
       console.error("خطا در لایک:", err);
-
-      // 🟥 برگردوندن state به حالت قبل در صورت خطا
-      setLiked((prev) => !prev);
-      setLikesCount((prev) => (liked ? prev + 1 : prev - 1));
     }
   }
+
+  useEffect(() => {
+    likeHandler();
+  }, []);
 
   return (
     <li
@@ -126,17 +91,19 @@ export default function ProjectItem({ id, img, title, user_id }) {
       <div className="relative flex items-center justify-center flex-col overflow-hidden">
         <img
           src={img}
-          alt={title}
+          alt=""
           loading="lazy"
           className="rounded-lg h-[16rem] sm:h-[13rem] w-full object-cover "
         />
         <div className="projectInfo z-50 duration-300 opacity-0 absolute flex flex-row-reverse items-center justify-between p-3 bottom-0 w-full h-[4rem] bg-gradient-to-t from-black/80 to-transparent">
-          <div className="flex items-center gap-2 *:text-[2.2rem] *:rounded-full *:p-2.5">
+          <div className="flex items-center gap-2 *:text-[2.2rem]  *:rounded-full *:p-2.5">
             <LuHeart
               onClick={likeHandler}
-              className={`cursor-pointer text-[2rem] transition-all duration-300 ${
-                liked ? "bg-red-500 text-white" : "bg-white hover:bg-zinc-200"
-              } ${animate ? "scale-125" : "scale-100"}`}
+              className={`cursor-pointer ${
+                liked?.liked
+                  ? "bg-red-400 text-white"
+                  : "bg-white hover:bg-zinc-200"
+              }  duration-200`}
             />
             <BiBookmark
               onClick={saveHandler}
@@ -151,12 +118,10 @@ export default function ProjectItem({ id, img, title, user_id }) {
           </Link>
         </div>
       </div>
-
-      {/* 🔹 پایین کارت */}
       <div className="flex items-center justify-between w-full mt-3 ">
         <div className="flex items-center gap-3 *:flex *:items-center *:gap-2 **:text-[.9rem] **:text-zinc-500 ">
           <button>
-            <p>{loading ? "..." : likesCount}</p>
+            <p>{liked?.likes_count || "..."}</p>
             <TiHeartFullOutline />
           </button>
           <button>
