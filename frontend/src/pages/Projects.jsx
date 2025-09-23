@@ -4,6 +4,7 @@ import { Search, Loader2 } from "lucide-react";
 import ProjectItem from "../components/ProjectItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 
 // ساختن 40 پروژه تستی
 
@@ -12,6 +13,7 @@ export default function Projects() {
     const [visibleCount, setVisibleCount] = useState(16);
     const [loading, setLoading] = useState(false);
     const [projects, setProjects] = useState([]);
+      const token = localStorage.getItem("token");
     const filteredProjects = projects.filter((p) =>
         p.title.toLowerCase().includes(search.toLowerCase())
     );
@@ -40,6 +42,12 @@ export default function Projects() {
       
         fetchProjects();
       }, []);
+      
+
+if(!projects.length || !token){
+    return <Loader/>
+  }
+
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
