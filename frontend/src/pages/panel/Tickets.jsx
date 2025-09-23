@@ -7,10 +7,12 @@ import "gridjs/dist/theme/mermaid.css";
 import ReactDOMServer from "react-dom/server";
 import { Trash2, Eye, CheckCheck } from "lucide-react";
 import TicketModal from "../../components/TicketModal";
+import Loader from "../../components/Loader";
 
 export default function Tickets() {
   const [isOpen, setIsOpen] = useState(1);
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState(null);
+  const [users, setUsers] = useState(null);
   const token = localStorage.getItem("token");
   const [openModal, setOpenModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -19,7 +21,7 @@ export default function Tickets() {
     ReactDOMServer.renderToString(<Icon size={18} />);
 
   //get tickets
-  const fetchTickets = async () => {
+  const fetchUsers = async () => {
     try {
       const res = await fetch("http://127.0.0.1:8000/api/tickets", {
         method: "GET",
@@ -37,8 +39,28 @@ export default function Tickets() {
     }
   };
 
+  //get tickets
+  const fetchTickets = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/admin/users", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { data } = await res.json();
+      setUsers(data.data);
+      console.log("users : ", data.data);
+    } catch (error) {
+      console.error("خطا در گرفتن کاربرها:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTickets();
+    fetchUsers();
   }, []);
 
   function approvedTicket(id) {
@@ -73,6 +95,8 @@ export default function Tickets() {
       });
   }
 
+  if (!tickets) return <Loader />;
+
   return (
     <>
       <div className="flex h-screen bg-white dark:bg-dark  text-black dark:text-white">
@@ -96,7 +120,15 @@ export default function Tickets() {
                 columns={[
                   "ردیف",
                   "موضوع تیکت",
-                  "ارسال کننده",
+                  {
+                    name: "ارسال کننده",
+                    formatter: (cell) => {
+                      // cell اینجا همون user_id هست
+                      const user = users?.find((u) => u.id === cell); // پیدا کردن کاربر با id
+                      return user ? user.email : "ناشناخته"; // اگر پیدا نشد "ناشناخته" نمایش بده
+                    },
+                  },
+
                   {
                     name: "وضعیت",
                     formatter: (cell) => {
