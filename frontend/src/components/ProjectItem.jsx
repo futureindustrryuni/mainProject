@@ -69,7 +69,6 @@ export default function ProjectItem({ id, img, title, user_id }) {
       });
 
       const data = await res.json();
-      console.log(data);
 
       // وقتی بک‌اند بگه لایک شد یا آنلایک شد:
       setLiked(data);

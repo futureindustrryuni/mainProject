@@ -12,7 +12,6 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= window.innerHeight * 0.1) {
-        console.log("✅ کاربر به اندازه 100vh اسکرول کرد!");
         setFixHeader(true);
       } else {
         setFixHeader(false);

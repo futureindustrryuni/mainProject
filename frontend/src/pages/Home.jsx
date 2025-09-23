@@ -24,8 +24,6 @@ export default function Home() {
     once: true,
   });
   const [projects, setProjects] = useState(null);
-  const token = localStorage.getItem("token");
-
 
   const fetchproject = () => {
     fetch("http://127.0.0.1:8000/api/products")
@@ -41,23 +39,10 @@ export default function Home() {
     fetchproject();
   }, []);
 
-  if(!projects || !token){
+  if(!projects){
     return <Loader/>
   }
 
-  // const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/products")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProducts(data.data);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log(products);
-  // }, [products]);
 
   return (
     <>
