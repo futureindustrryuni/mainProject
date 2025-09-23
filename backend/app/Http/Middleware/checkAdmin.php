@@ -14,12 +14,12 @@ class checkAdmin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-       if (!Auth::guard('admin')->check()) {
-            return response()->json(['message' => 'Unauthorized (Admin Only)'], 401);
+        if ($request->user() && $request->user()->role === 'admin') {
+            return $next($request);
         }
 
-        return $next($request);
+        return response()->json(['message' => 'Access denied. Admins only.'], 403);
     }
 }

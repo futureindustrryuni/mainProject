@@ -67,22 +67,22 @@ class User extends Authenticatable
         ];
     }
 
-    public function developerProfile()
-    {
-    return $this->hasOne(Developer::class);
-    }
-
     public function developer()
     {
         return $this->hasOne(Developer::class);
     }
 
     public function savedProducts() {
-    return $this->hasMany(SavedProduct::class);
+        return $this->hasMany(SavedProduct::class);
     }
 
     public function skills()
     {
         return $this->hasMany(Skill::class, 'user_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'user_id');
     }
 }

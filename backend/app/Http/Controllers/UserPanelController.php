@@ -27,7 +27,7 @@ class UserPanelController extends Controller
     $user = auth()->user();
 
     if ($user){
-        $projects = $user->developerProfile ->projects()
+        $projects = $user->developer ->projects()
         ->select('title', 'published_at', 'image')->latest() ->get();
     } else {
         return response()->json(['message' => 'Developer profile not found'], 404);
@@ -39,16 +39,29 @@ class UserPanelController extends Controller
 
     public function show($id)
     {
-        $user = User::with('developer')->findOrFail($id);
+        $user = User::with(['developer', 'products'])->findOrFail($id);
 
         return response()->json([
             'name' => $user->name,
+            'family' => $user->family,
             'email' => $user->email,
+            'birth_date' => $user->birth_date,
+            'education' => $user->education,
+            'address' => $user->address,
+            'bio' => $user->bio,
             'profile_photo_url' => $user->profile_photo_url,
-            'joined_at' => $user->created_at->format('Y/m/d'),
-            'developer_info' => $user->developerProfile ? [
-                'address' => $user->developerProfile->address,
-            ] : null
+            'products' => $user->products->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'category_id' => $product->category_id,
+                    'technologies' => $product->technologies,
+                    'is_approved' => $product->is_approved,
+                    'created_at' => $product->created_at,
+                ];
+            }),
         ]);
     }
 }

@@ -11,67 +11,69 @@ use Illuminate\Support\Facades\Validator;
 
 class adminController extends Controller
 {
-    /* Admin login
-     */
-    public function login(Request $req)
-    {
-        $valid = $req->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+//     /* Admin login
+//      */
+//     public function login(Request $req)
+//     {
+//         $valid = $req->validate([
+//             'email' => 'required|email',
+//             'password' => 'required'
+//         ]);
 
-        $admin = Admin::where('email', $req->email)->first();
-        if (!$admin || !Hash::check($req->password, $admin->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
+//         $admin = Admin::where('email', $req->email)->first();
+//         if (!$admin || !Hash::check($req->password, $admin->password)) {
+//             return response()->json(['message' => 'Invalid credentials'], 401);
+//         }
 
-        $token = $admin->createToken('admin-token')->plainTextToken;
+//         $token = $admin->createToken('admin-token')->plainTextToken;
 
-        return response()->json([
-            'token' => $token,
-            'admin' => $admin
-        ]);
-    }
+//         return response()->json([
+//             'token' => $token,
+//             'admin' => $admin
+//         ]);
+//     }
 
-    /* 
-    Admin registration
-    */
-    public function register(Request $req)
-    {
-        $validator = Validator::make($req->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admin',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+//     /* 
+//     Admin registration
+//     */
+//     public function register(Request $req)
+//     {
+//         $validator = Validator::make($req->all(), [
+//             'name' => 'required|string|max:255',
+//             'email' => 'required|string|email|max:255|unique:admin',
+//             'password' => 'required|string|min:8|confirmed',
+//         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+//         if ($validator->fails()) {
+//             return response()->json([
+//                 'status' => false,
+//                 'message' => 'Validation error',
+//                 'errors' => $validator->errors()
+//             ], 422);
+//         }
 
-        $admin = Admin::create([
-            'name' => $req->name,
-            'email' => $req->email,
-            'password' => Hash::make($req->password),
-        ]);
+//         $admin = Admin::create([
+//             'name' => $req->name,
+//             'email' => $req->email,
+//             'password' => Hash::make($req->password),
+//         ]);
 
-        $token = $admin->createToken('admin-token')->plainTextToken;
+//         $token = $admin->createToken('admin-token')->plainTextToken;
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Admin registered successfully',
-            'token' => $token,
-            'admin' => $admin
-        ], 201);
-    }
+//         return response()->json([
+//             'status' => true,
+//             'message' => 'Admin registered successfully',
+//             'token' => $token,
+//             'admin' => $admin
+//         ], 201);
+//     }
 
-    /* Show all users
-     */
+//     /* Show all users
+//      */
     public function showUsers()
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $show = User::select('id', 'name', 'email', 'created_at')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -82,11 +84,13 @@ class adminController extends Controller
         ]);
     }
 
-    /* 
-    Search for a specific user
-     */
+//     /* 
+//     Search for a specific user
+//      */
     public function searchUser($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $search = User::select('id', 'name', 'email', 'created_at')->find($id);
 
         if (!$search) {
@@ -103,11 +107,13 @@ class adminController extends Controller
         ]);
     }
 
-    /*
-     Delete a user
-     */
+//     /*
+//      Delete a user
+//      */
     public function destroyUser($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $user = User::find($id);
 
         if (!$user) {
@@ -125,8 +131,8 @@ class adminController extends Controller
         ]);
     }
 
-    /* Show all products
-     */
+//     /* Show all products
+//      */
     public function showProduct()
     {
         $products = Product::select(['id', 'title', 'description', 'category_id', 'created_at'])
@@ -181,6 +187,8 @@ class adminController extends Controller
      */
     public function profile(Request $request)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         return response()->json([
             'status' => true,
             'message' => 'Admin profile retrieved successfully',
@@ -190,7 +198,10 @@ class adminController extends Controller
 
     public function allProfiles()
     {
-        $admins = Admin::select('id', 'name', 'email', 'created_at')
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+        $admins = User::select('id', 'name', 'email', 'created_at')
+            ->where('role', 'admin')
             ->orderBy('created_at', 'desc')->get();
 
         return response()->json([
@@ -204,20 +215,14 @@ class adminController extends Controller
      */
     public function updateProfile(Request $request)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();        
         $admin = $request->user();
 
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:admin,email,' . $admin->id,
+            'email' => 'sometimes|string|email|unique:users,email'
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
 
         $admin->update($request->only(['name', 'email']));
 
@@ -229,9 +234,20 @@ class adminController extends Controller
     }
     public function checkEmail(Request $request)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+
         $request->validate(['email' => 'required|email']);
-        $exists = Admin::where('email', $request->email)->exists();
+        $exists = User::where('email', $request->email)->exists();
         return response()->json(['email' => $request->email,
                                 'exists' => $exists]);
+    }
+
+    public function isAuthenticated(){
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+            return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+            return null;
     }
 }

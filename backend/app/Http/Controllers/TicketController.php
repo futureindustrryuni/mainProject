@@ -12,6 +12,8 @@ class TicketController extends Controller
      */
     public function index()
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
 
         return response()->json([
@@ -69,6 +71,8 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
 
@@ -79,6 +83,8 @@ class TicketController extends Controller
 
     public function approve($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $ticket = Ticket::findOrFail($id);
         $ticket->status = 'open';
         $ticket->save();
@@ -88,4 +94,12 @@ class TicketController extends Controller
             'data' => $ticket
         ]);
     }
+
+    public function isAuthenticated(){
+    $user = auth()->user();
+
+    if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+        return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+        return null;
+}
 }

@@ -17,6 +17,14 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
+        // if ($$validated->fails()) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Validation error',
+        //         'errors' => $$validated->errors()
+        //     ], 422);
+        // }
+
         $user = User::create([
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
@@ -27,27 +35,8 @@ class AuthController extends Controller
         $token = $user->createToken('api_token')->plainTextToken;
 
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'family' => $user->family,
-                'email' => $user->email,
-                'password' => $user->password,
-                'phone' => $user->phone,
-                'role' => $user->role,
-                'birth_day' =>$user->birth_day,
-                'meli_code' =>$user->meli_code,
-                'education' =>$user->education,
-                'profile_photo_url' => $user->profile_photo_url,
-                'last_login' => $user->last_login,
-                'last_login_human' => $user->last_login
-                    ? Carbon::parse($user->last_login)->diffForHumans()
-                    : null,
-                'status' => $user->status,
-                'profile_completed' => "false",
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
-            ],
+            'message' => 'User registered successfully',
+            'user' => $this->formatUser($user),
             'token' => $token,
         ], 201);
     }
@@ -90,22 +79,8 @@ class AuthController extends Controller
         $token = $user->createToken('api_token')->plainTextToken;
 
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'family' => $user->family,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'role' => $user->role,
-                'profile_photo_url' => $user->profile_photo_url,
-                'last_login' => $user->last_login,
-                'last_login_human' => $user->last_login
-                    ? Carbon::parse($user->last_login)->diffForHumans()
-                    : null,
-                'status' => $user->status,
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
-            ],
+            'message' => 'Login successful',
+            'user' => $user,
             'token' => $token,
         ]);
     }
@@ -117,4 +92,27 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
+    private function formatUser(User $user)
+    {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'family' => $user->family,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'role' => $user->role,
+            'birth_date' => $user->birth_date,
+            'meli_code' => $user->meli_code,
+            'education' => $user->education,
+            'profile_photo_url' => $user->profile_photo_url,
+            'last_login' => $user->last_login,
+            'last_login_human' => $user->last_login
+                ? Carbon::parse($user->last_login)->diffForHumans()
+                : null,
+            'status' => $user->status,
+            'profile_completed' => $user->profile_completed ? "true" : "false",
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ];
+    }
 }

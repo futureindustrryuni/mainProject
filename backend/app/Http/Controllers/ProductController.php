@@ -11,7 +11,11 @@ class ProductController extends Controller
     public function index()
         {
             $userId = auth()->id();
-            $products = Product::select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id','is_approved')->orderBy('created_at', 'desc')->get();
+            $products = Product::select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id','is_approved')
+            ->whereHas('user', function ($query) {
+                $query->where('role', 'developer');
+                })
+            ->orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'message' => 'List Of All Avaiable Products :',

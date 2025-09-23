@@ -22,6 +22,7 @@ class UserController extends Controller
             'bio' => 'nullable|string|max:500',
             'email' => 'nullable|email|unique:users,email',
             'password' => 'nullable',
+            'profile_photo_url' => 'nullable|image|max:4096',
             'last_login' => 'nullable|date',
             'status' => 'nullable|boolean',
         ]);
@@ -31,7 +32,14 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not authenticated'], 401);
         }
-        unset($validated['email'], $validated['password']);
+        unset($validated['email'], $validated['password'], $validated['role']);
+        if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo_url) {
+                Storage::disk('public')->delete($user->profile_photo_url);
+            }
+            $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            $validated['profile_photo_url'] = $photoPath; // ذخیره مسیر
+        }
 
         $isProfileCompleted = 
            !empty($validated['name'])
@@ -42,7 +50,8 @@ class UserController extends Controller
         && !empty($validated['phone'])
         && !empty($validated['education'])
         && !empty($validated['address'])
-        && !empty($validated['bio']);
+        && !empty($validated['bio'])
+        && !empty($validated['profile_photo_url']);
         $validated['profile_completed'] = $isProfileCompleted;
         $validated['status'] = $validated['status'] ?? true;
         $user->update($validated);

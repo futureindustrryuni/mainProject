@@ -20,12 +20,13 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\OwnerController;
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();}) ->middleware('auth:sanctum');
 
-Route::get('/user/{id}', [UserPanelController::class, 'show']);
+
 Route::post('user/checkmail', [UserController::class, 'checkEmail']);    
 Route::get('/store', [StoreController::class, 'index']);
 
@@ -48,9 +49,10 @@ Route::get('/', [ProductController::class, 'index']);
 #Developer API's
 Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/developer/status', [DevController::class, 'status']);
-Route::middleware('auth:admin')->post('/developer/approve/{id}', [DevController::class, 'approve']);
+Route::middleware('auth:sanctum')->post('/developer/approve/{id}', [DevController::class, 'approve']);
 Route::middleware('auth:admin')->post('/developer/reject/{id}', [DevController::class, 'reject']);
-Route::middleware('auth:admin')->get('/developer/requests', [DevController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/developer/requests', [DevController::class, 'show']);
+Route::get('/developer/{id}', [UserPanelController::class, 'show']);
 
 
 #Authentication API's
@@ -64,7 +66,7 @@ Route::prefix('auth')->group(function () {
 Route::post('/admin/login', [adminController::class, 'login']);
 Route::post('/admin/register', [adminController::class, 'register']);
 
-Route::middleware('auth:admin')->prefix('admin')->group(function () {
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('/profile', [adminController::class, 'profile']);
     Route::get('/profiles', [adminController::class, 'allProfiles']);
     Route::put('/updateprofile', [adminController::class, 'updateProfile']);
@@ -80,9 +82,9 @@ Route::middleware('auth:admin')->prefix('admin')->group(function () {
 Route::prefix('tickets')->group(function () {
     Route::middleware('auth:sanctum')->get('/show', [TicketController::class, 'show']);
     Route::middleware('auth:sanctum')->post('/create', [TicketController::class, 'store']);
-    Route::middleware('auth:admin')->get('/', [TicketController::class, 'index']);
-    Route::middleware('auth:admin')->delete('/{id}', [TicketController::class, 'destroy']);
-    Route::middleware('auth:admin')->put('/approve/{id}', [TicketController::class, 'approve']);
+    Route::middleware('auth:sanctum')->get('/', [TicketController::class, 'index']);
+    Route::middleware('auth:sanctum')->delete('/{id}', [TicketController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->put('/approve/{id}', [TicketController::class, 'approve']);
 });
 
 Route::middleware('auth:sanctum')->prefix('indexes')->group(function () {
@@ -143,6 +145,8 @@ Route::post('/articles', [ArticleController::class, 'store']);
 Route::put('/articles/{id}', [ArticleController::class, 'update']);
 Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
-
-
+//Owner
+Route::get('/showusers', [OwnerController::class, 'showUsers']);
+Route::middleware('auth:sanctum')->post('/users/{id}/updaterole', [OwnerController::class, 'updateRole']);
+Route::middleware('auth:sanctum')->delete('/users/{id}/delete', [OwnerController::class, 'destroyUser']);
 

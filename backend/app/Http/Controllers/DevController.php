@@ -61,6 +61,10 @@ class DevController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        if ($request->user()->role !== 'supervisor') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         return response()->json([
             'message' => 'All developer requests retrieved successfully',
             'data' => $requests
