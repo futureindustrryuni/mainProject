@@ -52,7 +52,7 @@ Route::get('/', [ProductController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/developer/status', [DevController::class, 'status']);
 Route::middleware('auth:sanctum')->post('/developer/approve/{id}', [DevController::class, 'approve']);
-Route::middleware('auth:admin')->post('/developer/reject/{id}', [DevController::class, 'reject']);
+Route::middleware('auth:sanctum')->post('/developer/reject/{id}', [DevController::class, 'reject']);
 Route::middleware('auth:sanctum')->get('/developer/requests', [DevController::class, 'show']);
 Route::get('/developer/{id}', [UserPanelController::class, 'show']);
 
