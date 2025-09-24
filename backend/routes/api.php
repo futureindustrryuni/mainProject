@@ -130,12 +130,11 @@ Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
 
 // Categories
 Route::middleware('auth:sanctum')->prefix('categories')->group(function () {
-Route::get('/show', [CategoryController::class, 'index']);
-Route::get('/show/{id}', [CategoryController::class, 'show']);
 Route::post('/create', [CategoryController::class, 'store']);
 Route::put('/update/{id}', [CategoryController::class, 'update']);
-Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
-});
+Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);});
+Route::get('/show', [CategoryController::class, 'index']);
+Route::get('/show/{id}', [CategoryController::class, 'show']);
 
 // Professors
 Route::get('/professors', [ProfessorController::class, 'index']);
