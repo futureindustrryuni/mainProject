@@ -11,11 +11,11 @@ export default function Profile() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(null)
 
-
+  let userInfo={}
   useEffect(() => {
-    const userId = 5;
+    const userId = 1;
 
-    fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
+    fetch(`http://127.0.0.1:8000/api/developer/${userId}`, {
       method: 'GET',
       headers: {
         "Content-Type": "application/json"
@@ -26,7 +26,8 @@ export default function Profile() {
       }
       return res.json()
     }).then(data => {
-      console.log("Data : ", data)
+      userInfo=data
+      console.log("Data : ", userInfo)
       setUser(data)
       setLoading(false)
     }).catch(err => {
@@ -35,8 +36,6 @@ export default function Profile() {
 
     })
   })
-
-
 
   return (
     <div className="dark:bg-dark h-full">
@@ -71,40 +70,24 @@ export default function Profile() {
           <div>
             {activeTab === "about" && (
               <div className="p-6 lg:py-0 lg:grid lg:grid-cols-[20%_75%] lg:gap-10">
-                <ProfileCard />
+                <ProfileCard name={user.name} email={user.email} locaion={user.locaion} date={user.birth_date}/>
                 <div className="flex flex-col gap-3 pb-5 mt-10">
                   <p className="text-justify text-2xl dark:text-gray-300">
                     لورم ایپسوم متن ساختگی
                   </p>
                   <p className="text-justify text-gray-500 dark:text-zinc-400 leading-[2rem]">
-                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                    استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله
-                    در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
-                    نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                    کتابهای زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان
-                    جامعه و متخصصان را می طلبد
+                    {user.bio}
                   </p>
                   <img src="/images/project1.png" className="rounded-lg" alt="" />
                   <p className="text-justify text-gray-500 dark:text-zinc-400 leading-[2rem]">
-                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                    استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله
-                    در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
-                    نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                    کتابهای زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان
-                    جامعه و متخصصان را می طلبد
-                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                    استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله
-                    در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
-                    نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                    کتابهای زیادی در شصت و سه درصد گذشته حال و آینده شناخت فراوان
-                    جامعه و متخصصان را می طلبد
+                    {user.bio}
                   </p>
                 </div>
               </div>
             )}
             {activeTab === "collection" && (
               <div className="p-6 lg:py-0 lg:grid lg:grid-cols-[20%_75%] lg:gap-10">
-                <ProfileCard />
+                <ProfileCard name={user.name} email={user.email} locaion={user.locaion} date={user.birth_date}/>
                 <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-2 gap-5 mt-10">
                   <ProjectItem
                     id={1}
@@ -131,7 +114,7 @@ export default function Profile() {
             )}
             {activeTab === "portfilio" && (
               <div className="p-6 lg:py-0 lg:grid lg:grid-cols-[20%_75%] lg:gap-10 ">
-                <ProfileCard />
+                <ProfileCard name={user.name} email={user.email} locaion={user.locaion} date={user.birth_date} />
                 <div className=" className=grid grid-cols-2 gap-[5%] sm:gap-[2%] sm:grid-cols-3"></div>
               </div>
             )}
