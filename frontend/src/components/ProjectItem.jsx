@@ -42,7 +42,7 @@ export default function ProjectItem({ id, img, username ,title}) {
             <FaEye />
           </div>
         </div>
-        <Link to="" className="flex items-center gap-2">
+        <Link to="Profile/{id}"className="flex items-center gap-2">
           <p className="dark:text-white">{username}</p>
           <img
             src="/images/User.jpg"
