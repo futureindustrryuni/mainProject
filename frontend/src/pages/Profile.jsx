@@ -10,8 +10,6 @@ export default function Profile() {
   // user
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(null)
-
-  let userInfo={}
   useEffect(() => {
     const userId = 1;
 
@@ -26,8 +24,7 @@ export default function Profile() {
       }
       return res.json()
     }).then(data => {
-      userInfo=data
-      console.log("Data : ", userInfo)
+      console.log("Data : ", data)
       setUser(data)
       setLoading(false)
     }).catch(err => {
