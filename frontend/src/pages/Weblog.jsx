@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // import{ useRef, useState } from "react";
 // import Swiper React components
@@ -12,16 +12,40 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { IoTimeOutline } from "react-icons/io5";
 import { FiEye } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { GoArrowLeft } from "react-icons/go";
 import ArticleItem from "../components/ArticleItem";
 import Header from "../components/Header";
 import Aos from "aos";
+import Footer from "../components/Footer";
 
 export default function Weblog() {
   Aos.init({
     once: true,
   });
+  const [categories, setCategories] = useState([]);
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const catRes = await fetch("http://127.0.0.1:8000/api/categories");
+        const catJson = await catRes.json();
+        setCategories(catJson.data || []);
+       
+        const artRes = await fetch("http://127.0.0.1:8000/api/articles");
+        const artJson = await artRes.json();
+        setArticles(artJson.data || []);
+      } catch (err) {
+        console.error("خطا در دریافت دیتا:", err);
+        setCategories([]);
+        setArticles([]);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="bg-white dark:bg-dark ">
       {/* header */}
@@ -104,58 +128,48 @@ export default function Weblog() {
           </div>
         </div> */}
 
-        <div>
-          <div className="flex items-center justify-between mt-7 mb-4 px-4"
-            data-aos="fade-up"
-            data-aos-duration="1000"
-            data-aos-delay="0">
-            <p className="text-[1rem] md:text-[1.3rem] text-dark dark:text-white border-r-4 border-primary pr-2 ">هوش مصنوعی</p>
-            <Link to="/MoreArticles/ai" className="flex items-center gap-1 hover:*:text-primary *:duration-500">
-              <p className="text-[.8rem] text-dark dark:text-white  "> مشاهده بیشتر</p> <GoArrowLeft className="text-dark dark:text-white " />
-            </Link>
+
+{categories.map((cat) => (
+          <div key={cat.id} className="mb-12">
+            <div
+              className="flex items-center justify-between mt-7 mb-4 px-4"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+              data-aos-delay="0"
+            >
+              <p className="text-[1rem] md:text-[1.3rem] text-dark dark:text-white border-r-4 border-primary pr-2">
+                {cat.name}
+              </p>
+              <Link
+                to={`/MoreArticles/${cat.id}`}
+                className="flex items-center gap-1 hover:text-primary duration-500"
+              >
+                <p className="text-[.8rem] text-dark dark:text-white">
+                  مشاهده بیشتر
+                </p>
+                <GoArrowLeft className="text-dark dark:text-white" />
+              </Link>
+            </div>
+
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7">
+              {articles
+                .filter((a) => a.category_id === cat.id)
+                .map((a) => (
+                  <ArticleItem
+                  key={a.id} id={a.id} image={a.image} description={a.description}  category={cat.name} title={a.title}  readingTime={a.reading_time}
+                   
+                  />
+                ))}
+            </div>
           </div>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7 *:px-2">
-            <ArticleItem id={1} />
-            <ArticleItem id={2} />
-            <ArticleItem id={3} />
-          </div>
-        </div>
-
-
-
-        <div>
-          <div className="flex items-center justify-between mt-7 mb-4 px-4">
-            <p className="text-[1rem] md:text-[1.3rem] text-dark dark:text-white border-r-4 border-primary pr-2 ">هوش مصنوعی</p>
-            <Link to="/MoreArticles/graphic" className="flex items-center gap-1 hover:*:text-primary *:duration-500">
-              <p className="text-[.8rem] text-dark dark:text-white  "> مشاهده بیشتر</p> <GoArrowLeft className="text-dark dark:text-white " />
-            </Link>
-          </div>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7 *:px-2">
-            <ArticleItem id={1} />
-            <ArticleItem id={2} />
-            <ArticleItem id={3} />
-          </div>
-        </div>
-
-
-
-        <div>
-          <div className="flex items-center justify-between mt-7 mb-4 px-4">
-            <p className="text-[1rem] md:text-[1.3rem] text-dark dark:text-white border-r-4 border-primary pr-2 ">بازی سازی</p>
-            <Link to="/MoreArticles/game" className="flex items-center gap-1 hover:*:text-primary *:duration-500">
-              <p className="text-[.8rem] text-dark dark:text-white  "> مشاهده بیشتر</p> <GoArrowLeft className="text-dark dark:text-white " />
-            </Link>
-          </div>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7 *:px-2">
-            <ArticleItem id={1} />
-            <ArticleItem id={2} />
-            <ArticleItem id={3} />
-          </div>
-        </div>
-
+        ))}
+      
+      
 
       </div>
       {/* finish */}
+
+      <Footer/>
     </div>
   );
 }

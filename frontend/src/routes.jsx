@@ -28,6 +28,7 @@ import MyTransactions from "./pages/panel/MyTransactions";
 // import { path } from "framer-motion/client";
 import Developer from "./pages/Developer";
 import ProjectsList from "./pages/Projects";
+import MySaves from "./pages/panel/MySaves";
 
 let routes = [
     { path: "/", element: <Home /> },
@@ -40,13 +41,15 @@ let routes = [
     { path: "/Weblog", element: <Weblog /> },
     { path: "/MoreArticles/*", element: <MoreArticles /> },
     { path: "/ArticleInfo", element: <ArticleInfo /> },
-    { path: "/ProductDetails", element: <ProductDetails/> },
+    { path: "/ProductDetails/:id", element: <ProductDetails/> },
     { path: "/Projects", element: <ProjectsList/> },
+    { path:'/developer',element:<Developer/>},
     // panel
     { path: "/panel/userInfo", element: <PrivateRoute><UserInfo /></PrivateRoute> },
     { path: "/panel/skills", element: <PrivateRoute><Skills /></PrivateRoute> },
     { path: "/panel/myTransactions", element: <PrivateRoute><MyTransactions /></PrivateRoute> },
     { path: "/panel/myProjects", element: <PrivateRoute><MyProjects /></PrivateRoute> },
+    { path: "/panel/mySaves", element: <PrivateRoute><MySaves /></PrivateRoute> },
     { path: "/panel/achievements", element: <PrivateRoute><Achievements /></PrivateRoute> },
     { path: "/panel/setting", element: <PrivateRoute><Setting /></PrivateRoute> },
     { path: "/panel/users", element: <PrivateRoute><Users /></PrivateRoute> },
@@ -56,7 +59,6 @@ let routes = [
     { path: "/panel/articles", element: <PrivateRoute><Articles /></PrivateRoute> },
     { path: "/panel/tickets", element: <PrivateRoute><Tickets /></PrivateRoute> },
     { path: "/panel/transactions", element: <PrivateRoute><Transactions /></PrivateRoute> },
-    {path:'/developer',element:<Developer/>}
 ]
 
 export default routes

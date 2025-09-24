@@ -15,10 +15,15 @@
   --breakpoint-xsm: 400px;
   --breakpoint-msm: 500px;
   --breakpoint-xmd: 940px;
+  --breakpoint-xxmd: 1200px;
 }
 
 .fadeInAnimation {
   animation: fadeIn 1s ease-in-out 3s forwards;
+}
+
+.container{
+  width: 80%;
 }
 
 @keyframes fadeIn {
@@ -401,4 +406,9 @@ body {
 
 .projectItem:hover .projectInfo{
   opacity: 1;
+}
+
+
+.skillItem:hover .skillTrash{
+  width: 1rem;
 }

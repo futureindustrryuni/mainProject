@@ -12,17 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
+
             $table->id();
             $table->string('name') ->nullable();
-            $table->string('email')->unique();
+            $table->string('family')->nullable();
+            $table->enum('role', ['user', 'supervisor', 'developer' ,'admin'])->default('user');
+            $table->date('birth_date')->nullable();
+            $table->biginteger('meli_code')->nullable();
             $table->string('phone')->nullable();
-            $table->string('profile_photo_url') ->nullable();
+            $table->enum('education', ['دیپلم', 'فوق دیپلم', 'لیسانس', 'فوق لیسانس' ,'دکترا' , 'پرفسورا'])->nullable();;
+            $table->string('address')->nullable();
+            $table->text('bio')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->string('password') ->nullable();
+            $table->string('profile_photo_url') ->nullable();
             $table->timestamp('last_login')->nullable();
+            $table->boolean('status')->default(true);
+            $table->boolean('profile_completed')->default(false);
             $table->timestamp('email_verified_at') ->nullable();
             $table->rememberToken();
-            $table->integer('purchase_count')->default(0);
-            $table->boolean('status')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
 

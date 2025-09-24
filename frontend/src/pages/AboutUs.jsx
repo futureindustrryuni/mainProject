@@ -5,6 +5,7 @@ import { LuChartSpline } from "react-icons/lu";
 import { Link, NavLink, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Aos from "aos";
+import Footer from "../components/Footer";
 
 export default function AboutUs() {
   const [hash, setHash] = useState("#perspective");
@@ -12,7 +13,6 @@ export default function AboutUs() {
   function changeMenu(href) {
     setHash(href);
   }
-
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function AboutUs() {
 
           <ul data-aos="fade-up"
             data-aos-duration="1000"
-            data-aos-delay="0" className="aboutList sticky top-[1rem] flex items-center justify-between shadow-xl dark:shadow-white/5 dark:bg-white/10 bg-dark/10 dark:*:text-white  *:text-dark backdrop-blur-sm w-[25rem] lg:w-[30rem] p-3 px-2 rounded-full ">
+            data-aos-delay="0" className="aboutList sticky z-50 top-[5rem] flex items-center justify-between shadow-xl dark:shadow-white/5 dark:bg-white/10 bg-dark/10 dark:*:text-white  *:text-dark backdrop-blur-sm w-[25rem] lg:w-[30rem] p-3 px-2 rounded-full ">
             <li data-aos="fade-right"
               data-aos-duration="1000"
               data-aos-delay="200">
@@ -274,7 +274,9 @@ export default function AboutUs() {
             </ul>
           </div>
         </div>
+
       </div>
+         <Footer/>
       {/*footer*/}
     </>
   );

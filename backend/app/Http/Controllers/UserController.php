@@ -8,33 +8,60 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function store(Request $request)
-{
-$emailRule = 'required|email|unique:users,email';
+    {
 
-if ($request->filled('id')) {
-    $emailRule .= ',' . $request->id;
-}
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => $emailRule,
-        'password' => 'required|string|min:6',
-        'phone' => 'nullable|string|max:20',
-        'purchase_count' => 'nullable|integer',
-        'status' => 'boolean',
-        'last_login' => 'nullable|date',
-    ]);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'family' => 'nullable|string|max:255',
+            'role' => 'nullable|in:user,supervisor,developer,admin',
+            'birth_date' => 'nullable|date',
+            'meli_code' => 'nullable|max:255',
+            'phone' => 'nullable|string|max:20',
+            'education' => 'nullable|in:دیپلم,فوق دیپلم,لیسانس,فوق لیسانس,دکترا,پرفسورا',
+            'address' => 'nullable|string|max:255',
+            'bio' => 'nullable|string|max:500',
+            'email' => 'nullable|email|unique:users,email',
+            'password' => 'nullable',
+            'profile_photo_url' => 'nullable|image|max:4096',
+            'last_login' => 'nullable|date',
+            'status' => 'nullable|boolean',
+        ]);
 
-   
-    if (isset($validated['password'])) {
-        $validated['password'] = bcrypt($validated['password']);
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+        unset($validated['email'], $validated['password'], $validated['role']);
+        if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo_url) {
+                Storage::disk('public')->delete($user->profile_photo_url);
+            }
+            $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            $validated['profile_photo_url'] = $photoPath;
+        }
+
+        $isProfileCompleted = 
+           !empty($validated['name'])
+        && !empty($validated['family'])
+        && !empty($validated['role'])
+        && !empty($validated['birth_date'])
+        && !empty($validated['meli_code'])
+        && !empty($validated['phone'])
+        && !empty($validated['education'])
+        && !empty($validated['address'])
+        && !empty($validated['bio'])
+        && !empty($validated['profile_photo_url']);
+        $validated['profile_completed'] = $isProfileCompleted;
+        $validated['status'] = $validated['status'] ?? true;
+        $user->update($validated);
+
+        return response()->json([
+        'message' => 'The Informations Have Beed Updated',
+        'data' => $user
+        ]);
     }
 
-    $user = User::updateOrCreate(
-        ['email' => $validated['email']],$validated 
-    );
-
-    return response()->json(['user' => $user], 200);
-}
 public function checkEmail(Request $request)
 {
     $request->validate(['email' => 'required|email']);

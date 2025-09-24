@@ -1,35 +1,23 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "../../components/SideBar";
 import TopBar from "../../components/TopBar";
-import { BsSun, BsMoon } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import { BsBookmarkFill } from "react-icons/bs";
+import { FaCode } from "react-icons/fa";
 
-import projeimg from "/images/projeimg.png";
-import { AiOutlinePlus } from "react-icons/ai";
-import { SiCodecrafters } from "react-icons/si";
-import { CiCirclePlus } from "react-icons/ci";
-import { FaCode, FaGithub, FaRegEdit } from "react-icons/fa";
-import { BiEditAlt } from "react-icons/bi";
-import {
-  IoIosCloseCircleOutline,
-  IoMdAdd,
-  IoMdCheckmark,
-  IoMdClose,
-  IoMdFingerPrint,
-} from "react-icons/io";
+import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { HiOutlineCodeBracketSquare } from "react-icons/hi2";
 import { HiOutlineTrash } from "react-icons/hi";
 import { TbEditCircle } from "react-icons/tb";
 import { CgAddR } from "react-icons/cg";
-import { FiEdit } from "react-icons/fi";
-import { LuLockKeyhole } from "react-icons/lu";
-import { IoClose } from "react-icons/io5";
+import ResumeStatusBox from "../../components/ResumeStatusBox ";
+import { Link } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 export default function MyProjects() {
   const [isOpen, setIsOpen] = useState(1);
   const [addProject, setAddProject] = useState(false);
   const [isProgramer, setIsProgramer] = useState(false);
+  const [resumeStatus, setResumeStatus] = useState(null);
+  const token = localStorage.getItem("token");
 
   const [files, setFiles] = useState([]);
 
@@ -49,6 +37,26 @@ export default function MyProjects() {
     setFiles((prev) => [...prev, ...selectedFiles]);
   };
 
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/developer/status`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setResumeStatus(data);
+      });
+  }, []);
+
+  console.log(resumeStatus);
+  if (!resumeStatus) {
+    return <Loader />;
+  }
+
   return (
     <>
       <div className="flex h-screen dark:text-white text-black bg-white dark:bg-dark">
@@ -61,7 +69,7 @@ export default function MyProjects() {
           <TopBar isOpen={isOpen} setIsOpen={setIsOpen} />
           <div>
             <div className="p-4 space-y-6 rounded-xl w-auto">
-              {isProgramer ? (
+              {resumeStatus.status=="approved" ? (
                 <div className="border-2 border-[#EEEBEB]  dark:border-[#1B202C] dark:bg-[#1B202C] border-solid shadow-xl shadow-zinc-200/50 rounded-xl dark:shadow-none mt-6">
                   <div className="sticky top-1 bg-[#EEEBEB] z-10 dark:bg-[#333a4b] p-4 flex justify-between items-center ">
                     <div className="flex gap-2 items-center">
@@ -320,10 +328,25 @@ export default function MyProjects() {
                   <p className="text-[.9rem] md:text-[1rem] text-zinc-500">
                     اگر تمایلی برای توسعه دهنده شدن داری بزن روی دکمه زیر !
                   </p>
-                  <button className="flex items-center justify-center gap-2 bg-primary/80 px-4 py-2 rounded-lg mt-3 cursor-pointer duration-300 hover:bg-primary">
+                  <Link
+                    to="/developer"
+                    className="flex items-center justify-center gap-2 bg-primary/80 px-4 py-2 rounded-lg mt-3 cursor-pointer duration-300 hover:bg-primary"
+                  >
                     توسعه دهنده شو
                     <FaCode />
-                  </button>
+                  </Link>
+
+                  {/*my requests*/}
+                  <div className="mt-5">
+                    {resumeStatus.status && (
+
+                      <ResumeStatusBox
+                      status={resumeStatus.status}
+                      fileName={resumeStatus.resume_url?.split("/")[5]}
+                      created_at={resumeStatus.creation_date}
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </div>

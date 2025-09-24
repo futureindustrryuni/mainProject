@@ -12,6 +12,8 @@ class TicketController extends Controller
      */
     public function index()
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $tickets = Ticket::orderBy('created_at', 'desc')->get();
 
         return response()->json([
@@ -25,16 +27,14 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'subject' => 'required|string|max:255',
             'text' => 'required|string',
-        ]);
-
-        $ticket = Ticket::create([
-            'subject' => $request->subject,
-            'text' => $request->text,
             'status' => 'closed',
         ]);
+        $validated['user_id'] = auth()->id();
+
+        $ticket = Ticket::create($validated);
 
         return response()->json([
             'message' => 'Ticket created successfully',
@@ -45,9 +45,12 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show()
     {
-        $ticket = Ticket::findOrFail($id);
+        $user = auth()->user();
+        $ticket = Ticket::where('user_id', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return response()->json([
             'message' => 'Ticket retrieved successfully',
@@ -68,6 +71,8 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
 
@@ -78,6 +83,8 @@ class TicketController extends Controller
 
     public function approve($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $ticket = Ticket::findOrFail($id);
         $ticket->status = 'open';
         $ticket->save();
@@ -87,4 +94,12 @@ class TicketController extends Controller
             'data' => $ticket
         ]);
     }
+
+    public function isAuthenticated(){
+    $user = auth()->user();
+
+    if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+        return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+        return null;
+}
 }

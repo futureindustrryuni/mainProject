@@ -1,50 +1,52 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   BsBackpack2,
-  BsBank,
-  BsCashCoin,
   BsClipboardData,
-  BsDiagram3,
-  BsFileEarmarkCode,
   BsHeartPulse,
   BsRocketTakeoff,
   BsShieldCheck,
   BsStars,
 } from "react-icons/bs";
 import { IoArrowDownCircle, IoCodeSlashOutline } from "react-icons/io5";
-import { data, Link, NavLink } from "react-router-dom";
+import { FiArrowUpLeft } from "react-icons/fi";
 
 import "aos/dist/aos.css";
 import Aos from "aos";
-import { LiaUserSolid } from "react-icons/lia";
-import { FiArrowUpLeft } from "react-icons/fi";
-import { TiHeartFullOutline } from "react-icons/ti";
-import { FaEye } from "react-icons/fa";
+
 import ProjectItem from "../components/ProjectItem";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Loader from "../components/Loader";
 
 export default function Home() {
   Aos.init({
     once: true,
   });
-  // const [products, setProducts] = useState([]);
+  const [projects, setProjects] = useState(null);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/products")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProducts(data.data);
-  //     });
-  // }, []);
+  const fetchproject = () => {
+    fetch("http://127.0.0.1:8000/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(" دیتا از API:", data);
+        console.log("Projects:", data);
+        setProjects(data.data);
+      });
+  };
 
-  // useEffect(() => {
-  //   console.log(products);
-  // }, [products]);
+  useEffect(() => {
+    fetchproject();
+  }, []);
+
+  if(!projects){
+    return <Loader/>
+  }
+
 
   return (
     <>
-      <div className="bg-white dark:bg-dark pb-10">
+      <div className="bg-white dark:bg-dark">
         {/*Header*/}
         <Header />
 
@@ -66,8 +68,6 @@ export default function Home() {
                 ></div>
               ))}
             </div>
-
-
 
             <div className="absolute h-full w-full *:text[3rem] opacity-0 md:opacity-100 ">
               <BsBackpack2
@@ -170,7 +170,7 @@ export default function Home() {
               data-aos="fade-right"
               data-aos-duration="1000"
               data-aos-delay="200"
-              to=""
+              to="/projects"
               className="flex items-center gap-2 mb-[1.8rem] text-[.8rem] sm:text-[.9rem] text-zinc-400 duration-300 hover:text-primary "
             >
               نمایش همه
@@ -178,14 +178,15 @@ export default function Home() {
             </Link>
           </div>
           <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
-            <ProjectItem id={1} img="/images/project1.png" title="AI Agent" username="Kamraan" />
-            <ProjectItem id={2} img="/images/project2.png" title="AI Agent" username="Amin" />
-            <ProjectItem id={3} img="/images/project3.png" title="AI Agent" username="Sara" />
-            <ProjectItem id={4} img="/images/project4.png" title="AI Agent" username="Sohrab" />
-            <ProjectItem id={5} img="/images/project5.png" title="AI Agent" username="Fariba" />
-            <ProjectItem id={6} img="/images/project6.png" title="AI Agent" username="Morteza" />
-            <ProjectItem id={7} img="/images/project7.png" title="AI Agent" username="Mahdi" />
-            <ProjectItem id={8} img="/images/project8.png" title="AI Agent" username="Fatemeh" />
+            {projects.map((project) => (
+              <ProjectItem
+                key={project.id}
+                id={project.id}
+                user_id={project.user_id}
+                img={project.img}
+                title={project.title}
+              />
+            ))}
           </ul>
         </div>
 
@@ -304,6 +305,8 @@ export default function Home() {
             </ul>
           </div>
         </div>
+
+        <Footer />
       </div>
     </>
   );

@@ -17,11 +17,12 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('technologies');
             $table->integer('price');
-            $table->integer('stock');
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->timestamps();
+            $table->enum('is_approved', ['0', '1', '2'])->default('1');
             $table->integer('views')->default(0);
+            $table->timestamps();
 
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }

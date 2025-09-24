@@ -13,18 +13,20 @@ return new class extends Migration
     {
         Schema::create('developers', function (Blueprint $table) {
             $table->id();
+            $table->string('resume_file_path')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('address')->nullable();
-            $table->text('resume_text')->nullable();
-            $table->string('resume_pdf_url')->nullable();
-            $table->string('github_uri')->nullable();
-            $table->integer('score')->default(0);
-            $table->text('experience')->nullable();
-            $table->boolean('request_resume_completed')->default(false);
-            $table->boolean('request_project_post')->default(false);
-            $table->string('phone_number')->nullable();
+            // $table->string('address')->nullable();
+            // $table->text('resume_text')->nullable();
+            // $table->string('resume_pdf_url')->nullable();
+            // $table->string('github_uri')->nullable();
+            // $table->integer('score')->default(0);
+            // $table->text('experience')->nullable();
+            // $table->boolean('request_resume_completed')->default(false);
+            // $table->boolean('request_project_post')->default(false);
+            // $table->string('phone_number')->nullable();
             // $table->string('website')->nullable(); [Phase 2]
-            $table->enum('availability',['Freelance','Full_Time','Part_Time'])->default('Full_Time');
+            // $table->enum('availability',['Freelance','Full_Time','Part_Time'])->default('Full_Time');
             $table->timestamps();
         });
     }

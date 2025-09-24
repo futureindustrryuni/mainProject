@@ -1,228 +1,115 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegCalendarAlt, FaRegEye } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdChevronLeft } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 export default function ArticleInfo() {
+  const [articles, setArticles] = useState([]);
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const artRes = await fetch("http://127.0.0.1:8000/api/articles");
+        const artJson = await artRes.json();
+        // اگر بک‌اندت خروجی رو داخل data می‌فرسته
+        setArticles(artJson.data || artJson);
+      } catch (error) {
+        console.error("خطا در گرفتن مقالات:", error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+  const mainArticle = articles[0];
   return (
     <div className="bg-white dark:bg-dark pt-10">
       <div className="container mx-auto grid gap-3 grid-cols-1 xl:grid-cols-4 lg:grid-cols-4 bg-white dark:bg-dark ">
-        <div className="xl:col-span-3 lg:col-span-3 col-span-4 p-5 dark:shadow-none shadow-[0_3px_15px_5px_rgba(0,0,0,0.1)] rounded-xl bg-white/2 ">
-          <div className="flex items-center gap-2 mb-5 text-[.8rem] w-[50rem] text-dark dark:text-white ">
-            <Link>خانه</Link> <MdChevronLeft />
-            <Link>توسعه دهنده ها </Link>
-            <MdChevronLeft />
-            <Link>مقالات</Link> <MdChevronLeft />
-            <Link>مدیریت و محافظت از شبکه های کامپیوتری</Link>
-          </div>
-          <hr />
-          <h1 className="mt-5 mb-10 text text-[1.2rem] text-dark dark:text-white ">
-            مديريت و محافظت از شبكه هاي كامپيوتري
-          </h1>
-          <div className="flex items-center justify-between text-[.8rem] text-dark dark:text-white/50 " >
-            <div className="flex items-center gap-2">
-              <FaRegCalendarAlt />
-              <p>3 اردیبهشت 1404</p>
-            </div>
-            <div className="flex items-center gap-3 *:flex *:items-center *:gap-2">
-              <div>
-                <IoTimeOutline />
-                <p>زمان مطالعه : 5 دقیقه</p>
-              </div>
-              <span> | </span>
-              <div>
-                <FaRegEye />
-                <p>135</p>
-              </div>
-            </div>
-          </div>
-          <img
-            src="/images/article8.png"
-            alt=""
-            className="w-full mt-3 rounded-lg"
-          />
-          <p className="mt-2 leading-[2rem] text-dark dark:text-white/60 text-justify ">
-            يك كامپيوتر تحت شبكه كه منابع را فراهم مي سازد يك سرويس دهنده ناميده
-            مي شود. كامپيوتري كه به اين منابع دسترسي دارد را بعنوان يك ايستگاه
-            كاري يا سرويس گيرنده مي شناسيم. سرويس دهنده ها از قدرتمندترين
-            كامپيوترهاي  روي شبكه مي باشند زيرا آنها جهت ارائه خدمات به بسياري
-            از نيازهاي ساير كامپيوترها به قدرت بيشتري نياز دارند. در مقايسه
-            ايستگاههاي كاري يا سرويس گيرنده ها معمولاً از كامپيوترهاي شخصي ارزان
-            قيمت و با قدرت پردازش پايين تر مي باشند و براي شبكه هاي كوچك با
-            تعداد كمتري از كاربران مي توانيد از شبكه نظير به نظير استفاده كنيد.
-            تمامي كامپيوترهاي بر روي شبكه بايد به يكديگر متصل باشند و اين اتصال
-            از طريق كارت رابط شبكه و كابل كشي صورت مي گيرد.برقراري امنيت در شبكه
-            از وظايف همه مديران شبكه مي باشد منظور از امنيت مي تواند حفظ داده
-            هاي محرمانه اي كه روي كامپيوترهاي يك شبكه ذخيره شده اند و يا محافظت
-            از فايل ها سيستم عامل و برنامه‌هاي كاربردي در برابر دستكاري كاربران
-            شبكه باشد. چون در شبكه ها شرايط مختلف نياز به انواع روش هاي محافظتي
-            وجود دارد. مكانيزم هاي امنيتي مختلفي وجود دارد. يك كامپيوتر تحت شبكه
-            كه منابع را فراهم مي سازد يك سرويس دهنده ناميده مي شود. كامپيوتري كه
-            به اين منابع دسترسي دارد را بعنوان يك ايستگاه كاري يا سرويس گيرنده
-            مي شناسيم. سرويس دهنده ها از قدرتمندترين كامپيوترهاي  روي شبكه مي
-            باشند زيرا آنها جهت ارائه خدمات به بسياري از نيازهاي ساير كامپيوترها
-            به قدرت بيشتري نياز دارند. در مقايسه ايستگاههاي كاري يا سرويس گيرنده
-            ها معمولاً از كامپيوترهاي شخصي ارزان قيمت و با قدرت پردازش پايين تر
-            مي باشند و براي شبكه هاي كوچك با تعداد كمتري از كاربران مي توانيد از
-            شبكه نظير به نظير استفاده كنيد. تمامي كامپيوترهاي بر روي شبكه بايد
-            به يكديگر متصل باشند و اين اتصال از طريق كارت رابط شبكه و كابل كشي
-            صورت مي گيرد.برقراري امنيت در شبكه از وظايف همه مديران شبكه مي باشد
-            منظور از امنيت مي تواند حفظ داده هاي محرمانه اي كه روي كامپيوترهاي
-            يك شبكه ذخيره شده اند و يا محافظت از فايل ها سيستم عامل و برنامه‌هاي
-            كاربردي در برابر دستكاري كاربران شبكه باشد. چون در شبكه ها شرايط
-            مختلف نياز به انواع روش هاي محافظتي وجود دارد. مكانيزم هاي امنيتي
-            مختلفي وجود دارد. يك كامپيوتر تحت شبكه كه منابع را فراهم مي سازد يك
-            سرويس دهنده ناميده مي شود. كامپيوتري كه به اين منابع دسترسي دارد را
-            بعنوان يك ايستگاه كاري يا سرويس گيرنده مي شناسيم. سرويس دهنده ها از
-            قدرتمندترين كامپيوترهاي  روي شبكه مي باشند زيرا آنها جهت ارائه خدمات
-            به بسياري از نيازهاي ساير كامپيوترها به قدرت بيشتري نياز دارند. در
-            مقايسه ايستگاههاي كاري يا سرويس گيرنده ها معمولاً از كامپيوترهاي
-            شخصي ارزان قيمت و با قدرت پردازش پايين تر مي باشند و براي شبكه هاي
-            كوچك با تعداد كمتري از كاربران مي توانيد از شبكه نظير به نظير
-            استفاده كنيد. تمامي كامپيوترهاي بر روي شبكه بايد به يكديگر متصل
-            باشند و اين اتصال از طريق كارت رابط شبكه و كابل كشي صورت مي
-            گيرد.برقراري امنيت در شبكه از وظايف همه مديران شبكه مي باشد منظور از
-            امنيت مي تواند حفظ داده هاي محرمانه اي كه روي كامپيوترهاي يك شبكه
-            ذخيره شده اند و يا محافظت از فايل ها سيستم عامل و برنامه‌هاي كاربردي
-            در برابر دستكاري كاربران شبكه باشد. چون در شبكه ها شرايط مختلف نياز
-            به انواع روش هاي محافظتي وجود دارد. مكانيزم هاي امنيتي مختلفي وجود
-            دارد. يك كامپيوتر تحت شبكه كه منابع را فراهم مي سازد يك سرويس دهنده
-            ناميده مي شود. كامپيوتري كه به اين منابع دسترسي دارد را بعنوان يك
-            ايستگاه كاري يا سرويس گيرنده مي شناسيم. سرويس دهنده ها از
-            قدرتمندترين كامپيوترهاي  روي شبكه مي باشند زيرا آنها جهت ارائه خدمات
-            به بسياري از نيازهاي ساير كامپيوترها به قدرت بيشتري نياز دارند. در
-            مقايسه ايستگاههاي كاري يا سرويس گيرنده ها معمولاً از كامپيوترهاي
-            شخصي ارزان قيمت و با قدرت پردازش پايين تر مي باشند و براي شبكه هاي
-            كوچك با تعداد كمتري از كاربران مي توانيد از شبكه نظير به نظير
-            استفاده كنيد. تمامي كامپيوترهاي بر روي شبكه بايد به يكديگر متصل
-            باشند و اين اتصال از طريق كارت رابط شبكه و كابل كشي صورت مي
-            گيرد.برقراري امنيت در شبكه از وظايف همه مديران شبكه مي باشد منظور از
-            امنيت مي تواند حفظ داده هاي محرمانه اي كه روي كامپيوترهاي يك شبكه
-            ذخيره شده اند و يا محافظت از فايل ها سيستم عامل و برنامه‌هاي كاربردي
-            در برابر دستكاري كاربران شبكه باشد. چون در شبكه ها شرايط مختلف نياز
-            به انواع روش هاي محافظتي وجود دارد. مكانيزم هاي امنيتي مختلفي وجود
-            دارد. يك كامپيوتر تحت شبكه كه منابع را فراهم مي سازد يك سرويس دهنده
-            ناميده مي شود. كامپيوتري كه به اين منابع دسترسي دارد را بعنوان يك
-            ايستگاه كاري يا سرويس گيرنده مي شناسيم. سرويس دهنده ها از
-            قدرتمندترين كامپيوترهاي  روي شبكه مي باشند زيرا آنها جهت ارائه خدمات
-            به بسياري از نيازهاي ساير كامپيوترها به قدرت بيشتري نياز دارند. در
-            مقايسه ايستگاههاي كاري يا سرويس گيرنده ها معمولاً از كامپيوترهاي
-            شخصي ارزان قيمت و با قدرت پردازش پايين تر مي باشند و براي شبكه هاي
-            كوچك با تعداد كمتري از كاربران مي توانيد از شبكه نظير به نظير
-            استفاده كنيد. تمامي كامپيوترهاي بر روي شبكه بايد به يكديگر متصل
-            باشند و اين اتصال از طريق كارت رابط شبكه و كابل كشي صورت مي
-            گيرد.برقراري امنيت در شبكه از وظايف همه مديران شبكه مي باشد منظور از
-            امنيت مي تواند حفظ داده هاي محرمانه اي كه روي كامپيوترهاي يك شبكه
-            ذخيره شده اند و يا محافظت از فايل ها سيستم عامل و برنامه‌هاي كاربردي
-            در برابر دستكاري كاربران شبكه باشد. چون در شبكه ها شرايط مختلف نياز
-            به انواع روش هاي محافظتي وجود دارد. مكانيزم هاي امنيتي مختلفي وجود
-            دارد. يك كامپيوتر تحت شبكه كه منابع را فراهم مي سازد يك سرويس دهنده
-            ناميده مي شود. كامپيوتري كه به اين منابع دسترسي دارد را بعنوان يك
-            ايستگاه كاري يا سرويس گيرنده مي شناسيم. سرويس دهنده ها از
-            قدرتمندترين كامپيوترهاي  روي شبكه مي باشند زيرا آنها جهت ارائه خدمات
-            به بسياري از نيازهاي ساير كامپيوترها به قدرت بيشتري نياز دارند. در
-            مقايسه ايستگاههاي كاري يا سرويس گيرنده ها معمولاً از كامپيوترهاي
-            شخصي ارزان قيمت و با قدرت پردازش پايين تر مي باشند و براي شبكه هاي
-            كوچك با تعداد كمتري از كاربران مي توانيد از شبكه نظير به نظير
-            استفاده كنيد. تمامي كامپيوترهاي بر روي شبكه بايد به يكديگر متصل
-            باشند و اين اتصال از طريق كارت رابط شبكه و كابل كشي صورت مي
-            گيرد.برقراري امنيت در شبكه از وظايف همه مديران شبكه مي باشد منظور از
-            امنيت مي تواند حفظ داده هاي محرمانه اي كه روي كامپيوترهاي يك شبكه
-            ذخيره شده اند و يا محافظت از فايل ها سيستم عامل و برنامه‌هاي كاربردي
-            در برابر دستكاري كاربران شبكه باشد. چون در شبكه ها شرايط مختلف نياز
-            به انواع روش هاي محافظتي وجود دارد. مكانيزم هاي امنيتي مختلفي وجود
-            دارد.
-          </p>
-        </div>
+        { mainArticle &&(
+ <div className="xl:col-span-3 lg:col-span-3 col-span-4 p-5 dark:shadow-none shadow-[0_3px_15px_5px_rgba(0,0,0,0.1)] rounded-xl bg-white/2 ">
+ <div className="flex items-center gap-2 mb-5 text-[.8rem] w-[50rem] text-dark dark:text-white ">
+   <Link>خانه</Link> <MdChevronLeft />
+   <Link>توسعه دهنده ها </Link>
+   <MdChevronLeft />
+   <Link>مقالات</Link> <MdChevronLeft />
+   <Link>مدیریت و محافظت از شبکه های کامپیوتری</Link>
+ </div>
+ <hr />
+ <h1 className="mt-5 mb-10 text text-[1.2rem] text-dark dark:text-white ">
+ {mainArticle.title}
+ </h1>
+ <div className="flex items-center justify-between text-[.8rem] text-dark dark:text-white/50 " >
+   <div className="flex items-center gap-2">
+     <FaRegCalendarAlt />
+     <p>3 اردیبهشت 1404</p>
+   </div>
+   <div className="flex items-center gap-3 *:flex *:items-center *:gap-2">
+     <div>
+       <IoTimeOutline />
+       <p>{mainArticle.reading_time}</p>
+     </div>
+     <span> | </span>
+     <div>
+       <FaRegEye />
+       <p>135</p>
+     </div>
+   </div>
+ </div>
+ <img
+   src={mainArticle.image}
+   alt={mainArticle.title}
+   className="w-full mt-3 rounded-lg"
+ />
+ <p className="mt-2 leading-[2rem] text-dark dark:text-white/60 text-justify ">
+ {mainArticle.description}
+ </p>
+</div>
+        )}
+       
 
         <div className="sticky top-0 *:mb-3 xl:col-span-1 lg:col-span-1 col-span-4">
           <div className="shadow-[0_3px_15px_5px_rgba(0,0,0,0.1)] p-3 rounded-xl bg-white/2">
             <p className="text-dark dark:text-white ">پر بازدید ترین</p>
             <div className="mt-4 *:mb-5 text-dark dark:text-white/60 ">
-              <div className="flex items-center rounded-lg gap-2">
+            {articles.map((art)=>(
+               <div key={art.id} className="flex items-center rounded-lg gap-2">
                 <img
-                  src="/images/article4.png"
-                  alt=""
+                  src={art.image}
+                  alt={art.title}
                   className="w-[7rem] rounded-md"
                 />
                 <div className="text-[.8rem]">
                   <p className="line-clamp-2">
-                    اسلایدهای مفهوم fault tolerance یا تحمل پذیری خطا
+                    {art.title}
                   </p>
                   <p className="text-[.6rem] mt-1">31 فروردین 1404</p>
                 </div>
               </div>
-              <div className="flex items-center rounded-lg gap-2">
-                <img
-                  src="/images/article4.png"
-                  alt=""
-                  className="w-[7rem] rounded-md"
-                />
-                <div className="text-[.8rem]">
-                  <p className="line-clamp-2">
-                    اسلایدهای مفهوم fault tolerance یا تحمل پذیری خطا
-                  </p>
-                  <p className="text-[.6rem] mt-1">31 فروردین 1404</p>
-                </div>
-              </div>
-              <div className="flex items-center rounded-lg gap-2">
-                <img
-                  src="/images/article4.png"
-                  alt=""
-                  className="w-[7rem] rounded-md"
-                />
-                <div className="text-[.8rem]">
-                  <p className="line-clamp-2">
-                    اسلایدهای مفهوم fault tolerance یا تحمل پذیری خطا
-                  </p>
-                  <p className="text-[.6rem] mt-1">31 فروردین 1404</p>
-                </div>
-              </div>
+            ))}
+             </div>
             </div>
-          </div>
+              
           <div className="shadow-[0_3px_15px_5px_rgba(0,0,0,0.1)] p-3 rounded-xl bg-white/2">
             <p className="text-dark dark:text-white ">جدید ترین ها</p>
             <div className="mt-4 *:mb-5 text-dark dark:text-white/60 ">
-              <div className="flex items-center rounded-lg gap-2">
+            {articles.map((art)=>(
+                <div key={art.id} className="flex items-center rounded-lg gap-2">
                 <img
-                  src="/images/article4.png"
-                  alt=""
+                  src={art.image}
+                  alt={art.title}
                   className="w-[7rem] rounded-md"
                 />
                 <div className="text-[.8rem]">
                   <p className="line-clamp-2">
-                    اسلایدهای مفهوم fault tolerance یا تحمل پذیری خطا
+                   {art.title}
                   </p>
                   <p className="text-[.6rem] mt-1">31 فروردین 1404</p>
                 </div>
               </div>
-              <div className="flex items-center rounded-lg gap-2">
-                <img
-                  src="/images/article4.png"
-                  alt=""
-                  className="w-[7rem] rounded-md"
-                />
-                <div className="text-[.8rem]">
-                  <p className="line-clamp-2">
-                    اسلایدهای مفهوم fault tolerance یا تحمل پذیری خطا
-                  </p>
-                  <p className="text-[.6rem] mt-1">31 فروردین 1404</p>
-                </div>
-              </div>
-              <div className="flex items-center rounded-lg gap-2">
-                <img
-                  src="/images/article4.png"
-                  alt=""
-                  className="w-[7rem] rounded-md"
-                />
-                <div className="text-[.8rem]">
-                  <p className="line-clamp-2">
-                    اسلایدهای مفهوم fault tolerance یا تحمل پذیری خطا
-                  </p>
-                  <p className="text-[.6rem] mt-1">31 فروردین 1404</p>
-                </div>
-              </div>
+              
+            ))}
+       
+           
+             
             </div>
           </div>
         </div>
