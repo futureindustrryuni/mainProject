@@ -8,6 +8,7 @@ import ReactDOMServer from "react-dom/server";
 import { Trash2, Eye, CheckCheck } from "lucide-react";
 import TicketModal from "../../components/TicketModal";
 import Loader from "../../components/Loader";
+import { Toast } from "../../components/Toast";
 
 export default function Tickets() {
   const [isOpen, setIsOpen] = useState(1);
@@ -40,7 +41,7 @@ export default function Tickets() {
   };
 
   //get tickets
-  const  fetchUsers= async () => {
+  const fetchUsers = async () => {
     try {
       const res = await fetch("http://127.0.0.1:8000/api/admin/users", {
         method: "GET",
@@ -74,7 +75,10 @@ export default function Tickets() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        Toast.fire({
+          icon: "success",
+          title: "تیکت بررسی شد",
+        });
         fetchTickets();
       });
   }
@@ -90,7 +94,10 @@ export default function Tickets() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        Toast.fire({
+          icon: "success",
+          title: "تیکت حذف شد",
+        });
         fetchTickets();
       });
   }
@@ -123,8 +130,8 @@ export default function Tickets() {
                   {
                     name: "ارسال کننده",
                     formatter: (cell) => {
-                      const user = users?.find((u) => u.id === cell); 
-                      return user ? user.email : "ناشناخته"; 
+                      const user = users?.find((u) => u.id === cell);
+                      return user ? user.email : "ناشناخته";
                     },
                   },
 
