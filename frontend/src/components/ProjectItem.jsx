@@ -129,7 +129,7 @@ export default function ProjectItem({ id, img, title, user_id }) {
             <FaEye />
           </button>
         </div>
-        <Link to="" className="flex items-center gap-2">
+        <Link to={`/profile/${user_id}`} className="flex items-center gap-2">
           <p className="dark:text-white">{userInfo.split("@")[0]}</p>
           <img
             src="/images/User.jpg"
