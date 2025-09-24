@@ -57,13 +57,11 @@ class DevController extends Controller
      */
     public function show(Request $request)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $requests = Developer::with('user')
             ->orderBy('created_at', 'desc')
             ->get();
-
-        if ($request->user()->role !== 'supervisor') {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
 
         return response()->json([
             'message' => 'All developer requests retrieved successfully',
@@ -76,6 +74,8 @@ class DevController extends Controller
      */
     public function approve($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $developer = Developer::findOrFail($id);
 
         if ($developer->status === 'approved') {
@@ -104,6 +104,8 @@ class DevController extends Controller
      */
     public function reject($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $developer = Developer::findOrFail($id);
 
         if ($developer->status === 'rejected') {
@@ -142,5 +144,13 @@ class DevController extends Controller
         'creation_date' => $user->developer->created_at->format('Y-m-d H:i:s'),
         'update_date' => $user->developer->updated_at->format('Y-m-d H:i:s')
         ]);
+    }
+
+    public function isAuthenticated(){
+    $user = auth()->user();
+
+    if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+        return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+        return null;
     }
 }
