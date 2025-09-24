@@ -145,11 +145,13 @@ Route::put('/professors/{id}', [ProfessorController::class, 'update']);
 Route::delete('/professors/{id}', [ProfessorController::class, 'destroy']);
 
 // Articles
-Route::get('/articles', [ArticleController::class, 'index']);
-Route::get('/articles/{id}', [ArticleController::class, 'show']);
-Route::post('/articles', [ArticleController::class, 'store']);
-Route::put('/articles/{id}', [ArticleController::class, 'update']);
-Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
+Route::middleware('auth:sanctum')->prefix('articles')->group(function () {
+Route::get('/show', [ArticleController::class, 'index']);
+Route::get('/show/{id}', [ArticleController::class, 'show']);
+Route::post('/create', [ArticleController::class, 'store']);
+Route::put('/update/{id}', [ArticleController::class, 'update']);
+Route::delete('/delete/{id}', [ArticleController::class, 'destroy']);
+});
 
 //Owner
 Route::get('/showusers', [OwnerController::class, 'showUsers']);
