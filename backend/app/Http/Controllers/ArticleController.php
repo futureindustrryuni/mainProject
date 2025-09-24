@@ -16,7 +16,7 @@ class ArticleController extends Controller
    
     public function show($id)
     {
-        try {
+        
         $article = Article::with(['category', 'author'])->findOrFail($id);
         return response()->json($article);
     }
@@ -24,6 +24,7 @@ class ArticleController extends Controller
     
     public function store(Request $request)
     {
+        try{
         $request->validate([
             'title'        => 'required|string|max:255',
             'category_id'  => 'required|exists:categories,id',
