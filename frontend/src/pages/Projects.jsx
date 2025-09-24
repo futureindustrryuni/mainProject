@@ -12,8 +12,8 @@ export default function Projects() {
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(16);
   const [loading, setLoading] = useState(false);
-  const [projects, setProjects] = useState([]);
-  const filteredProjects = projects.filter((p) =>
+  const [projects, setProjects] = useState(null);
+  const filteredProjects = projects?.filter((p) =>
     p.title.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -44,7 +44,7 @@ export default function Projects() {
     fetchProjects();
   }, []);
 
-  if (!projects.length) {
+  if (!projects) {
     return <Loader />;
   }
 
