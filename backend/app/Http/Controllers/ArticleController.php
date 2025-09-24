@@ -16,6 +16,7 @@ class ArticleController extends Controller
    
     public function show($id)
     {
+        try {
         $article = Article::with(['category', 'author'])->findOrFail($id);
         return response()->json($article);
     }
@@ -50,6 +51,13 @@ class ArticleController extends Controller
         ]);
 
         return response()->json($article, 201);
+
+        } catch (\Exception $e) {
+    return response()->json([
+        'message' => 'Something went wrong',
+        'error' => $e->getMessage()
+    ], 500);
+}
     }
 
    
