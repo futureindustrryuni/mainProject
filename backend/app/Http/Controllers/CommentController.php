@@ -9,69 +9,83 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     
-    public function index($productId)
+    public function index($id)
     {
-        $product = Product::find($productId);
+        $product = Product::find($id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
 
-        return response()->json($product->comments); // چون رابطه hasMany داریم
+        return response()->json($product->comments);
     }
 
     
-    public function store(Request $request, $productId)
+    public function store(Request $request, $id)
     {
-        $product = Product::find($productId);
-
-        if (!$product) {
+        $product = Product::findOrFail($id);
+        if (!$product) 
             return response()->json(['message' => 'Product not found'], 404);
+
+        $user = auth()->id();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized: User not authenticated'], 401);
         }
 
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'product_id' => 'required|exists:products,id',
-            'content' => 'required|string|max:1000',
-            'rating' => 'required|enteger',
+            'body' => 'required|string|max:1000',
+            'rating' => 'required|integer|min:1|max:5',
         ]);
+        $comment = $product->comments()->create([
+            'user_id' => $user,
+            'body' => $validated['body'],
+            'rating' => $validated['rating'],
+            ]);
 
-        $comment = new Comment();
-        $comment->user_id = $validated['user_id'];
-        $comment->product_id = $productId;
-        $comment->content = $validated['content'];
-        $comment->save();
-
-        $comment = Comment::create($comment);
-
-        return response()->json($comment, 201);
+        return response()->json([
+            'message' => 'Comment created successfully',
+            'data' => $comment->load('user')
+        ], 201);
     }
 
     
     public function update(Request $request, $id)
     {
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
 
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
         }
 
+        $user = auth()->user();
+        if (!$user || $comment->user_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $validated = $request->validate([
-            'content' => 'required|string|max:1000',
+            'body' => 'required|string|max:1000',
         ]);
 
         $comment->update($validated);
 
-        return response()->json($comment);
+        return response()->json([
+            'message' => 'Comment updated successfully',
+            'data' => $comment
+        ]);
     }
 
     
     public function destroy($id)
     {
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
 
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
+        }
+
+        $user = auth()->user();
+        if (!$user || $comment->user_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $comment->delete();

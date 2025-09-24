@@ -15,5 +15,5 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected $fillable = ['content','rating'];
+    protected $fillable = ['body','rating','user_id'];
 }

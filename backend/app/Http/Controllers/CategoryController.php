@@ -28,6 +28,9 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
@@ -42,6 +45,8 @@ class CategoryController extends Controller
     
     public function update(Request $request, $id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $category = Category::find($id);
 
         if (!$category) {
@@ -60,6 +65,8 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $category = Category::find($id);
 
         if (!$category) {
@@ -69,5 +76,13 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json(['message' => 'Category deleted']);
+    }
+
+    public function isAuthenticated(){
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+            return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+            return null;
     }
 }

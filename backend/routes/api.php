@@ -43,6 +43,8 @@ Route::middleware('auth:sanctum')->post('/create', [ProductController::class, 's
 Route::get('/{id}',[ProductController::class, 'show']);
 Route::post('/{id}/approve',[ApproveController::class,'approve']);
 Route::middleware('auth:sanctum')->post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
+Route::middleware('auth:sanctum')->put('/{id}/update', [ProductController::class, 'updateProduct']);
+Route::middleware('auth:sanctum')->delete('/{id}/delete', [ProductController::class, 'deleteProduct']);
 Route::get('/', [ProductController::class, 'index']);
 });
 
@@ -117,19 +119,23 @@ Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']
 
 
 //Comments
-Route::get('/products/{id}/comments', [CommentController::class, 'index']);
-Route::post('/products/{id}/comments', [CommentController::class, 'store']);
-Route::put('/comments/{id}', [CommentController::class, 'update']);
-Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
+    Route::post('/create/{id}', [CommentController::class, 'store']);
+    Route::get('/show/{id}', [CommentController::class, 'index']);
+    Route::put('/update/{id}', [CommentController::class, 'update']);
+    Route::delete('/delete/{id}', [CommentController::class, 'destroy']);
+});
+
 
 
 // Categories
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{id}', [CategoryController::class, 'show']);
-Route::post('/categories', [CategoryController::class, 'store']);
-Route::put('/categories/{id}', [CategoryController::class, 'update']);
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
-
+Route::middleware('auth:sanctum')->prefix('categories')->group(function () {
+Route::get('/show', [CategoryController::class, 'index']);
+Route::get('/show/{id}', [CategoryController::class, 'show']);
+Route::post('/create', [CategoryController::class, 'store']);
+Route::put('/update/{id}', [CategoryController::class, 'update']);
+Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+});
 
 // Professors
 Route::get('/professors', [ProfessorController::class, 'index']);

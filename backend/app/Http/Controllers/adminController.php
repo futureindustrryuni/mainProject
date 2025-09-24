@@ -74,7 +74,7 @@ class adminController extends Controller
     {
         if ($this->isAuthenticated() !== null)
         return $this->isAuthenticated();
-        $show = User::select('id', 'name', 'email', 'created_at')
+        $show = User::select('id', 'name', 'email', 'role' , 'created_at')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -200,7 +200,7 @@ class adminController extends Controller
     {
         if ($this->isAuthenticated() !== null)
         return $this->isAuthenticated();
-        $admins = User::select('id', 'name', 'email', 'created_at')
+        $admins = User::select('id', 'name', 'role' , 'email', 'created_at')
             ->where('role', 'admin')
             ->orderBy('created_at', 'desc')->get();
 

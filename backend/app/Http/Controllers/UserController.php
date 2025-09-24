@@ -38,7 +38,7 @@ class UserController extends Controller
                 Storage::disk('public')->delete($user->profile_photo_url);
             }
             $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
-            $validated['profile_photo_url'] = $photoPath; // ذخیره مسیر
+            $validated['profile_photo_url'] = $photoPath;
         }
 
         $isProfileCompleted = 
