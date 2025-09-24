@@ -24,6 +24,8 @@ class ArticleController extends Controller
     
     public function store(Request $request)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         try{
         $request->validate([
             'title'        => 'required|string|max:255',
@@ -31,7 +33,7 @@ class ArticleController extends Controller
             'author_id'    => 'required|exists:users,id',
             'reading_time' => 'nullable|integer',
             'tags'         => 'nullable|string',
-            'image'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image'        => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'description'  => 'required|string',
         ]);
 
@@ -64,6 +66,8 @@ class ArticleController extends Controller
    
     public function update(Request $request, $id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $article = Article::findOrFail($id);
 
         $request->validate([
@@ -87,9 +91,19 @@ class ArticleController extends Controller
 
     public function destroy($id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $article = Article::findOrFail($id);
         $article->delete();
 
         return response()->json(['message' => 'Article deleted successfully']);
+    }
+
+    public function isAuthenticated(){
+    $user = auth()->user();
+
+    if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+        return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+        return null;
     }
 }

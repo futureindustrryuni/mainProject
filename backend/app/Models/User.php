@@ -35,6 +35,7 @@ class User extends Authenticatable
         'education',
         'address',
         'bio',
+        'profile_photo_url',
         'email',
         'password',
         'last_login',
@@ -64,6 +65,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => 'boolean',
+            'profile_completed' => 'boolean',
         ];
     }
 

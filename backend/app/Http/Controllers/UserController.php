@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -13,7 +15,6 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'family' => 'nullable|string|max:255',
-            'role' => 'nullable|in:user,supervisor,developer,admin',
             'birth_date' => 'nullable|date',
             'meli_code' => 'nullable|max:255',
             'phone' => 'nullable|string|max:20',
@@ -22,39 +23,53 @@ class UserController extends Controller
             'bio' => 'nullable|string|max:500',
             'email' => 'nullable|email|unique:users,email',
             'password' => 'nullable',
-            'profile_photo_url' => 'nullable|image|max:4096',
+            'profile_photo_url' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
             'last_login' => 'nullable|date',
             'status' => 'nullable|boolean',
         ]);
 
         $user = auth()->user();
 
-        if (!$user) {
+        if (!$user) 
             return response()->json(['message' => 'User not authenticated'], 401);
-        }
-        unset($validated['email'], $validated['password'], $validated['role']);
-        if ($request->hasFile('profile_photo')) {
-            if ($user->profile_photo_url) {
+        
+        $validated = Arr::except($validated, ['email', 'password', 'role']);
+
+        if ($request->hasFile('profile_photo_url')) {   
+            if (!empty($user->profile_photo_url)) {
                 Storage::disk('public')->delete($user->profile_photo_url);
             }
-            $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            $photoPath = $request->file('profile_photo_url')->store('profile_photo_url', 'public');
             $validated['profile_photo_url'] = $photoPath;
         }
 
-        $isProfileCompleted = 
-           !empty($validated['name'])
-        && !empty($validated['family'])
-        && !empty($validated['role'])
-        && !empty($validated['birth_date'])
-        && !empty($validated['meli_code'])
-        && !empty($validated['phone'])
-        && !empty($validated['education'])
-        && !empty($validated['address'])
-        && !empty($validated['bio'])
-        && !empty($validated['profile_photo_url']);
+        $required = [
+        'name',
+        'family',
+        'birth_date',
+        'meli_code',
+        'phone',
+        'education',
+        'address',
+        'bio',
+        ];
+
+        $isProfileCompleted = true;
+        foreach ($required as $field) {
+            $val = $validated[$field] ?? $user->$field ?? null;
+            if (empty($val)) {
+                $isProfileCompleted = false;
+                break;
+            }
+        }
+
+        if (empty($validated['profile_photo_url']) && empty($user->profile_photo_url))
+            $isProfileCompleted = false;
+
         $validated['profile_completed'] = $isProfileCompleted;
         $validated['status'] = $validated['status'] ?? true;
         $user->update($validated);
+        $user->refresh();
 
         return response()->json([
         'message' => 'The Informations Have Beed Updated',
