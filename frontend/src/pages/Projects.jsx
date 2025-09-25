@@ -33,9 +33,24 @@ export default function Projects() {
       try {
         const res = await fetch("http://127.0.0.1:8000/api/products");
         const json = await res.json();
-        console.log("دیتا از API:", json);
+        const products = json.data || [];
 
-        setProjects(json.data || []);
+        // گرفتن عکس های هر پروژه
+        const projectsWithImages = await Promise.all(
+          products.map(async (project) => {
+            try {
+              const imgRes = await fetch(
+                `http://127.0.0.1:8000/api/products/${project.id}/images`
+              );
+              const imgs = await imgRes.json();
+              return { ...project, images: imgs }; // اضافه کردن فیلد images
+            } catch {
+              return { ...project, images: [] };
+            }
+          })
+        );
+
+        setProjects(projectsWithImages);
       } catch (error) {
         console.error("خطا تو گرفتن دیتا:", error);
       }
@@ -139,8 +154,11 @@ export default function Projects() {
               <ProjectItem
                 id={project.id}
                 title={project.title}
+                img={
+                  project.images?.[0] &&
+                  `http://127.0.0.1:8000/storage/${project.images[0].path}`
+                }
                 user_id={project.user_id}
-                img={project.img}
               />
             </motion.div>
           ))}

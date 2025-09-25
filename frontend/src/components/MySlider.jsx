@@ -9,26 +9,32 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-export default function MySlider() {
+export default function MySlider({ images }) {
   return (
     <div>
       <Swiper
-        modules={[Pagination, Autoplay]}
-        spaceBetween={20}
-        slidesPreView={1}
+        spaceBetween={10}
+        slidesPerView={1}
+        navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 4000 }}
-        loop={true}
       >
-        <SwiperSlide>
-          <img src={banner} alt="" className="h-70 xl:h-100 lg:h-80 md:h-70 sm:h-90 object-cover w-full rounded-3xl " />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={banner1} alt="" className="h-70 xl:h-100 lg:h-80 md:h-70 sm:h-90 object-cover w-full rounded-3xl" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={banner2} alt="" className="h-70 xl:h-100 lg:h-80 md:h-70 sm:h-90 object-cover w-full rounded-3xl" />
-        </SwiperSlide>
+        {images?.length > 0 ? (
+          images.map((img) => (
+            <SwiperSlide key={img.id}>
+              <img
+                src={`http://127.0.0.1:8000/storage/${img.path}`}
+                alt="product"
+                className="w-full object-cover rounded-lg"
+              />
+            </SwiperSlide>
+          ))
+        ) : (
+          <SwiperSlide>
+            <p className="text-center text-gray-500">
+              هیچ تصویری برای این محصول وجود ندارد.
+            </p>
+          </SwiperSlide>
+        )}
       </Swiper>
     </div>
   );

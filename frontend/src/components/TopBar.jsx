@@ -30,7 +30,7 @@ export default function TopBar({ isOpen, setIsOpen }) {
                   ? "مالک"
                   : profile.role === "admin"
                   ? "ادمین"
-                  : profile.role === "develpoer"
+                  : profile.role === "developer"
                   ? "توسعه دهنده"
                   : profile.role === "user"
                   ? "کاربر"
