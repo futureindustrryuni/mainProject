@@ -79,7 +79,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('/products/{id}', [adminController::class, 'searchProduct']);
     Route::post('/checkmail', [adminController::class, 'checkEmail']);
     Route::post('/updaterole/{id}', [adminController::class, 'updateRole']);
-    Route::post('/demote/{id}', [adminController::class, 'demoteUser']);
+    Route::post('/demoterole/{id}', [adminController::class, 'demoteUser']);
     Route::post('/ban/{id}', [adminController::class, 'banUser']);
 });
 
@@ -134,8 +134,8 @@ Route::middleware('auth:sanctum')->prefix('categories')->group(function () {
 Route::post('/create', [CategoryController::class, 'store']);
 Route::put('/update/{id}', [CategoryController::class, 'update']);
 Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);});
-Route::get('/show', [CategoryController::class, 'index']);
-Route::get('/show/{id}', [CategoryController::class, 'show']);
+Route::get('/categories/show', [CategoryController::class, 'index']);
+Route::get('/categories/show/{id}', [CategoryController::class, 'show']);
 
 // Professors
 Route::get('/professors', [ProfessorController::class, 'index']);
