@@ -28,6 +28,9 @@ export default function Projects() {
       setLoading(false);
     }, 1000); // ⏳ شبیه‌سازی تاخیر سرور (1 ثانیه)
   };
+
+
+  
   useEffect(() => {
     const fetchProjects = async () => {
       try {

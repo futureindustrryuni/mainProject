@@ -25,24 +25,40 @@ export default function Home() {
   });
   const [projects, setProjects] = useState(null);
 
-  const fetchproject = () => {
-    fetch("http://127.0.0.1:8000/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(" دیتا از API:", data);
-        console.log("Projects:", data);
-        setProjects(data.data);
-      });
-  };
-
   useEffect(() => {
-    fetchproject();
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/products");
+        const json = await res.json();
+        const products = json.data || [];
+
+        // گرفتن عکس های هر پروژه
+        const projectsWithImages = await Promise.all(
+          products.map(async (project) => {
+            try {
+              const imgRes = await fetch(
+                `http://127.0.0.1:8000/api/products/${project.id}/images`
+              );
+              const imgs = await imgRes.json();
+              return { ...project, images: imgs }; // اضافه کردن فیلد images
+            } catch {
+              return { ...project, images: [] };
+            }
+          })
+        );
+
+        setProjects(projectsWithImages);
+      } catch (error) {
+        console.error("خطا تو گرفتن دیتا:", error);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
-  if(!projects){
-    return <Loader/>
+  if (!projects) {
+    return <Loader />;
   }
-
 
   return (
     <>
@@ -183,7 +199,10 @@ export default function Home() {
                 key={project.id}
                 id={project.id}
                 user_id={project.user_id}
-                img={project.img}
+                img={
+                  project.images?.[0] &&
+                  `http://127.0.0.1:8000/storage/${project.images[0].path}`
+                }
                 title={project.title}
               />
             ))}

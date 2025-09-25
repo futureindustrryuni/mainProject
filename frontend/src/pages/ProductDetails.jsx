@@ -98,29 +98,29 @@ export default function ProductDetails() {
               <div className="mt-12 flex items-center justify-between md:mt-0">
                 <div className="flex items-center gap-4">
                   <img
-                    src={`http://127.0.0.1:8000/storage/${userInfo.profile_photo_url}`}
+                    src={`http://127.0.0.1:8000/storage/${userInfo?.profile_photo_url}`}
                     alt=""
                     className="w-[4rem] h-[4rem] rounded-full  p-1 border-zinc-300"
                   />
                   <h1 className="font-IranYekanBold dark:text-white text-black">
-                    {userInfo.name} {userInfo.family}
+                    {userInfo?.name} {userInfo?.family}
                   </h1>
                 </div>
-                <div className="flex gap-3 items-center *:cursor-pointer *:text-white *:bg-primary *:hover:bg-primary/70 *:duration-300 *:rounded-full *:p-1.5 *:size-[2rem] *:flex *:items-center *:justify-center ">
+                {/* <div className="flex gap-3 items-center *:cursor-pointer *:text-white *:bg-primary *:hover:bg-primary/70 *:duration-300 *:rounded-full *:p-1.5 *:size-[2rem] *:flex *:items-center *:justify-center ">
                   <div>
                     <FaRegHeart />
                   </div>
                   <div>
                     <FaRegBookmark />
                   </div>
-                </div>
+                </div> */}
               </div>
               <h1 className="dark:text-white text-[1.5rem] text-black">{product?.title}</h1>
               <p className="text-justify text-second-light -mt-3 line-clamp-4 font-IranYekanBold">
-                {product.description}
+                {product?.description}
               </p>
               <ul className="flex gap-2 text-sm text-white">
-                {product.technologies.split("-").map((tech) => (
+                {product?.technologies.split("-").map((tech) => (
                   <li key={tech} className="bg-zinc-400 px-3 py-1 rounded-md">
                     {tech}
                   </li>
@@ -128,7 +128,7 @@ export default function ProductDetails() {
               </ul>
               <div className="flex justify-between mt-10 items-center md:mt-5">
                 <p className="text-primary font-IranYekanBold text-[1rem] md:text-[1.5rem]">
-                  {product.price.toLocaleString()} تومان
+                  {product?.price.toLocaleString()} تومان
                 </p>
                 <div className="flex gap-2 items-center bg-primary hover:bg-primary/80 duration-300 p-1.5 px-4 cursor-pointer rounded-md text-white text-sm">
                   <div>
@@ -144,7 +144,7 @@ export default function ProductDetails() {
             توضیحات تکمیلی درباره پروژه
           </h1>
           <p className="text-justify text-second-light mb-24 -mt-5">
-            {product.description}
+            {product?.description}
           </p>
           <h1 className="font-IranYekanBold dark:text-white text-black">
             نظرات
@@ -163,7 +163,7 @@ export default function ProductDetails() {
             className="w-16 h-16 rounded-full absolute  left-1/2 transform -translate-x-1/2  -mt-12 border-8 border-white md:w-20 md:h-20 md:-mt-16"
           />
           <h1 className="text-center mt-15 dark:text-white text-black">
-          {userInfo.name} {userInfo.family}
+          {userInfo?.name} {userInfo?.family}
           </h1>
           {/* <div className="flex justify-center">
             <p className="text-[12px] bg-primary hover:bg-primary/80 duration-300 p-1 px-3 rounded-md cursor-pointer">
@@ -177,7 +177,7 @@ export default function ProductDetails() {
 
           {similarProduct.length >= 1 ? (
             <div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 ">
-              {similarProduct.map((item) => (
+              {similarProduct?.map((item) => (
                 <ProjectItem
                   key={item.id}
                   id={item.id}
