@@ -243,6 +243,79 @@ class adminController extends Controller
                                 'exists' => $exists]);
     }
 
+    public function updateRole(Request $request, $id)
+    {
+    if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+
+    $request->validate([
+        'role' => 'required|in:admin,developer,supervisor,user'
+    ]);
+
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    if ($user->role === 'supervisor') {
+        return response()->json(['message' => 'supervisor role cannot be changed'], 403);
+    }
+
+    $user->role = $request->role;
+    $user->save();
+
+    return response()->json([
+        'message' => 'User role updated successfully',
+        'data' => $user
+    ]);
+    }
+
+    public function demoteUser($id)
+    {
+    if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    if ($user->role === 'supervisor') {
+        return response()->json(['message' => 'supervisor cannot be demoted'], 403);
+    }
+
+    if ($user->role === 'admin' || $user->role === 'developer') {
+        $user->role = 'user';
+        $user->save();
+        return response()->json(['message' => 'User demoted to normal user', 'data' => $user]);
+    }
+
+    return response()->json(['message' => 'This user cannot be demoted'], 400);
+    }
+
+    public function banUser($id)
+    {
+    if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    if ($user->role === 'supervisor') {
+        return response()->json(['message' => 'supervisor cannot be banned'], 403);
+    }
+
+    $user->status = false;
+    $user->save();
+
+    return response()->json([
+        'message' => 'User has been banned successfully',
+        'data' => $user
+    ]);
+    }
+
     public function isAuthenticated(){
         $user = auth()->user();
 

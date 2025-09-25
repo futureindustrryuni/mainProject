@@ -78,6 +78,9 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('/products', [adminController::class, 'showProduct']);
     Route::get('/products/{id}', [adminController::class, 'searchProduct']);
     Route::post('/checkmail', [adminController::class, 'checkEmail']);
+    Route::post('/updaterole/{id}', [adminController::class, 'updateRole']);
+    Route::post('/demote/{id}', [adminController::class, 'demoteUser']);
+    Route::post('/ban/{id}', [adminController::class, 'banUser']);
 });
 
 #Ticket API's
@@ -125,8 +128,6 @@ Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
     Route::put('/update/{id}', [CommentController::class, 'update']);
     Route::delete('/delete/{id}', [CommentController::class, 'destroy']);
 });
-
-
 
 // Categories
 Route::middleware('auth:sanctum')->prefix('categories')->group(function () {
