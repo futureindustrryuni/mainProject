@@ -4,7 +4,7 @@ import JalaliDate from "./JalaliDate";
 // import JalaliDate from "../../components/JalaliDate";
 
 
-const ResumeStatusBox = ({ status, fileName, created_at }) => {
+export default function ResumeStatusBox({ status, fileName, created_at }){
   // کانفیگ استایل وضعیت‌ها
   const statusConfig = {
     approved: {
@@ -76,5 +76,3 @@ const ResumeStatusBox = ({ status, fileName, created_at }) => {
     </motion.div>
   );
 };
-
-export default ResumeStatusBox;

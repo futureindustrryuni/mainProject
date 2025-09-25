@@ -24,14 +24,7 @@ export function IsLoginProvider({ children }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        // if (!res.ok) {
-        //   return res.text().then((text) => {
-        //     throw new Error(`خطا ${res.status}: ${text}`);
-        //   });
-        // }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         setProfile(data.data);
       })
