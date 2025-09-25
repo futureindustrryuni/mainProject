@@ -12,7 +12,6 @@ class ProductImageController extends Controller
     
     public function index($productId)
     {
-        $user = auth()->user();
         if (!$user) return response()->json(['message' => 'Unauthorized'], 401);
 
         $product = Product::find($productId);

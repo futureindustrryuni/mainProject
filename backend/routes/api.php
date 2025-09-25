@@ -121,9 +121,11 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Product Images
+Route::middleware(['auth:cors'])->group(function () {
 Route::get('/products/{id}/images', [ProductImageController::class, 'index']);
 Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
 Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']);
+});
 
 //Comments
 Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
