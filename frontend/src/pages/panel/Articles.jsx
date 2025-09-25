@@ -13,7 +13,7 @@ import { Toast } from "../../components/Toast";
 export default function Articles() {
   const [isOpen, setIsOpen] = useState(1);
   const [addArticle, setAddArticle] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(null);
   const [article, setArticle] = useState({
     title: "",
     category_id: "",
@@ -47,6 +47,7 @@ export default function Articles() {
     }
   };
 
+  //ریست فرم
   function resetForm() {
     setArticle({
       title: "",
@@ -102,15 +103,23 @@ export default function Articles() {
     ReactDOMServer.renderToString(<Icon size={18} />);
 
   // دریافت دسته‌بندی‌ها
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/categories/show", {
-      method: "GET",
-      headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.log(err.message));
-  }, [token]);
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/categories/show", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      setCategories(data);
+      console.log("cat : ", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // دریافت مقالات
   const fetchArticles = async () => {
@@ -133,6 +142,7 @@ export default function Articles() {
 
   useEffect(() => {
     fetchArticles();
+    fetchCategories();
   }, []);
 
   // اضافه کردن مقاله جدید
@@ -176,7 +186,7 @@ export default function Articles() {
           });
           resetForm();
           setAddArticle(false);
-          fetchArticles()
+          fetchArticles();
         })
         .catch((err) => console.error(err));
     } else {
@@ -187,8 +197,10 @@ export default function Articles() {
     }
   }
 
+  //حذف مقاله
   async function handleDeleteArticle(id) {
-    console.log(id);
+    // fetchArticle(id);
+    console.log(article);
     try {
       const res = await fetch(
         `http://127.0.0.1:8000/api/articles/delete/${id}`,
@@ -215,6 +227,100 @@ export default function Articles() {
     }
   }
 
+  //ویرایش مقاله
+const handleUpdateArticle = async (id) => {
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/api/articles/show/${id}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await res.json();
+    console.log("API Response:", result); // ببین چه ساختاری داره
+
+    const data = result.data ?? result; // اگر data وجود نداشت، خود نتیجه را بگیر
+
+    setArticle({
+      title: data.title ?? "",
+      category_id: data.category_id?.toString() ?? "",
+      author_id: data.author_id?.toString() ?? "",
+      reading_time: data.reading_time ?? "",
+      tags: data.tags ?? "",
+      description: data.description ?? "",
+      image: null,
+    });
+
+    setAddArticle(id);
+  } catch (err) {
+    console.error("خطا در دریافت مقاله:", err);
+  }
+};
+
+
+  // هندل ذخیره (اضافه یا ویرایش)
+  function handleSubmitArticle(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", article.title);
+    formData.append("category_id", article.category_id);
+    formData.append("author_id", article.author_id);
+    formData.append("reading_time", article.reading_time);
+    formData.append("tags", article.tags);
+    formData.append("description", article.description);
+
+    if (article.image instanceof File) {
+      formData.append("image", article.image);
+    }
+
+    if (
+      article.title &&
+      article.author_id &&
+      article.category_id &&
+      article.description &&
+      article.reading_time &&
+      article.tags
+    ) {
+      const url =
+        addArticle === true
+          ? "http://127.0.0.1:8000/api/articles/create"
+          : `http://127.0.0.1:8000/api/articles/update/${addArticle}`;
+
+      const method = addArticle === true ? "POST" : "POST"; // اگر بک‌اندت PUT/POST رو ساپورت کنه تغییر بده
+      // لاراول معمولا با POST + _method: PUT آپدیت رو می‌گیره
+      if (addArticle !== true) {
+        formData.append("_method", "PUT");
+      }
+
+      fetch(url, {
+        method: method,
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          Toast.fire({
+            icon: "success",
+            title: addArticle === true ? "مقاله ایجاد شد" : "مقاله ویرایش شد",
+          });
+          resetForm();
+          setAddArticle(false);
+          fetchArticles();
+        })
+        .catch((err) => console.error(err));
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "لطفا فیلد هارا پر کنید",
+      });
+    }
+  }
+
   if (!articles) return <Loader />;
 
   return (
@@ -227,7 +333,9 @@ export default function Articles() {
         <div className="px-5">
           {addArticle ? (
             <form
-              onSubmit={handleAddArticle}
+              onSubmit={
+                addArticle === true ? handleAddArticle : handleSubmitArticle
+              }
               className="border-[#EEEBEB] dark:border-[#1B202C] dark:bg-[#1B202C] p-5 rounded-xl"
             >
               <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5">
@@ -256,7 +364,7 @@ export default function Articles() {
                     className="placeholder:text-[.9rem] p-2 outline-0 rounded-lg !border-2 !border-zinc-200/70 dark:!border-zinc-200/20"
                   >
                     <option value="">انتخاب کنید</option>
-                    {categories.map((cat) => (
+                    {categories?.map((cat) => (
                       <option key={cat.id} value={cat.id}>
                         {cat.name}
                       </option>
@@ -268,14 +376,6 @@ export default function Articles() {
                   <label className="text-zinc-700 dark:text-zinc-400">
                     نویسنده
                   </label>
-                  {/* <input
-                    type="text"
-                    name="author_id"
-                    value={article.author_id}
-                    onChange={handleInputChange}
-                    placeholder=""
-                    className="placeholder:text-[.9rem] p-2 rounded-lg !border-2 !border-zinc-200/70 dark:!border-zinc-200/20"
-                  /> */}
                   <select
                     name="author_id"
                     value={article.author_id}
@@ -390,7 +490,7 @@ export default function Articles() {
                   type="submit"
                   className="flex items-center justify-center gap-2 bg-green-500 cursor-pointer duration-300 hover:bg-green-600 p-2 px-5 rounded-lg text-white text-[.9rem]"
                 >
-                  ایجاد
+                  {addArticle === true ? "ایجاد" : "ویرایش"}
                 </button>
                 <button
                   onClick={() => setAddArticle(false)}
@@ -441,7 +541,7 @@ export default function Articles() {
                           {
                             className:
                               "p-2 rounded cursor-pointer text-[.8rem] bg-yellow-500 text-white hover:bg-yellow-600",
-                            onClick: () => alert("ویرایش مقاله با ID: " + id),
+                            onClick: () => handleUpdateArticle(id),
                             title: "ویرایش",
                           },
                           h("span", {
