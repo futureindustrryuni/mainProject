@@ -26,8 +26,6 @@ class ProductImageController extends Controller
     
     public function store(Request $request, $productId)
     {
-        if ($this->isAuthenticated() !== null)
-            return $this->isAuthenticated();
         $product = Product::find($productId);
 
         if (!$product) {
@@ -51,8 +49,6 @@ class ProductImageController extends Controller
    
     public function destroy($id)
     {
-        if ($this->isAuthenticated() !== null)
-            return $this->isAuthenticated();
         $image = ProductImage::find($id);
 
         if (!$image) {
