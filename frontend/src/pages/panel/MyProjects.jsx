@@ -85,7 +85,8 @@ export default function MyProjects() {
         <TopBar isOpen={isOpen} setIsOpen={setIsOpen} />
 
         <div className="p-4 space-y-6 rounded-xl w-auto">
-          {resumeStatus.status === "approved" ? (
+          {resumeStatus.status === "approved" &&
+          profile?.role === "developer" ? (
             <div className="border-2 border-[#EEEBEB] dark:border-[#1B202C] dark:bg-[#1B202C] border-solid shadow-xl shadow-zinc-200/50 rounded-xl dark:shadow-none mt-6">
               {/* هدر */}
               <div className="sticky top-1 bg-[#EEEBEB] z-10 dark:bg-[#333a4b] p-4 flex justify-between items-center">
@@ -290,7 +291,7 @@ export default function MyProjects() {
                 )}
               </div>
             </div>
-          ) : (
+          ) : profile?.role !== "developer" ? (
             // وقتی توسعه‌دهنده نیست
             <div className="h-[70vh] flex items-center justify-center flex-col text-center">
               <img src="/images/icons8-software-developer-100.png" alt="" />
@@ -306,17 +307,17 @@ export default function MyProjects() {
               >
                 توسعه‌دهنده شو <FaCode />
               </Link>
-
-              {resumeStatus.status && (
-                <div className="mt-5">
-                  <ResumeStatusBox
-                    status={resumeStatus.status}
-                    fileName={resumeStatus.resume_url?.split("/")[5]}
-                    created_at={resumeStatus.creation_date}
-                  />
-                </div>
-              )}
             </div>
+          ) : (
+            resumeStatus.status && (
+              <div className="mt-5">
+                <ResumeStatusBox
+                  status={resumeStatus.status}
+                  fileName={resumeStatus.resume_url?.split("/")[5]}
+                  created_at={resumeStatus.creation_date}
+                />
+              </div>
+            )
           )}
         </div>
       </div>

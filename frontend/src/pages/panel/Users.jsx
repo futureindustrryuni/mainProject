@@ -33,10 +33,52 @@ export default function Users() {
           Accept: "application/json",
         },
       });
-      const {data} = await res.json();
+      const { data } = await res.json();
 
       console.log(data.data);
-      setUsers(data.data)
+      setUsers(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updateRole(user_role, user_id) {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:8000/api/users/${user_id}/updaterole`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ role: user_role }),
+        }
+      );
+      const { data } = await res.json();
+      getUsers();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function banUser(user_id) {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:8000/api/users/${user_id}/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const { data } = await res.json();
+      console.log(data);
+      getUsers();
     } catch (error) {
       console.log(error);
     }
@@ -46,9 +88,7 @@ export default function Users() {
     getUsers();
   }, []);
 
-
-    if (!users) return <Loader />;
-  
+  if (!users) return <Loader />;
 
   return (
     <>
@@ -67,13 +107,7 @@ export default function Users() {
           <div className="px-5">
             <div className="text-right">
               <Grid
-                data={users?.map((u) => [
-                  u.id,
-                  u.name,
-                  u.email,
-                  u.role,
-                  u.id,
-                ])}
+                data={users?.map((u) => [u.id, u.name, u.email, u.role, u.id])}
                 columns={[
                   "ردیف",
                   "نام کاربری",
@@ -110,7 +144,7 @@ export default function Users() {
                           },
                           "توسعه دهنده"
                         );
-                      } else if (role === "user"){
+                      } else if (role === "user") {
                         return h(
                           "p",
                           {
@@ -125,33 +159,21 @@ export default function Users() {
                   {
                     name: "عملیات",
                     formatter: (_, row) => {
-                      const id = row.cells[4].data; // ستون id
+                      const id = row.cells[0].data; // ستون id
                       const role = row.cells[3].data; // ستون role
 
                       // شرط براساس role
                       if (role === "supervisor") {
-                        return h(
-                          "button",
-                          {
-                            className:
-                              "p-2 rounded cursor-pointer text-[.8rem] bg-gray-500 text-white hover:bg-gray-600",
-                            onClick: () => alert("حذف مالک با ID: " + id),
-                            title: "حذف مالکیت",
-                          },
-                          h("span", {
-                            dangerouslySetInnerHTML: {
-                              __html: renderIcon(ShieldMinus),
-                            },
-                          })
-                        );
-                      } else if (role === "admin") {
+                        return "";
+                      }
+                      if (role === "admin") {
                         return h("div", { className: "flex gap-2" }, [
                           h(
                             "button",
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-gray-500 text-white hover:bg-gray-600",
-                              onClick: () => alert("حذف ادمین با ID: " + id),
+                              onClick: () => updateRole("user", id),
                               title: "حذف ادمین",
                             },
                             h("span", {
@@ -165,8 +187,7 @@ export default function Users() {
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-blue-500 text-white hover:bg-blue-600",
-                              onClick: () =>
-                                alert("تبدیل به مالک با ID: " + id),
+                              onClick: () => updateRole("supervisor", id),
                               title: "مالک",
                             },
                             h("span", {
@@ -180,7 +201,7 @@ export default function Users() {
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-red-500 text-white hover:bg-red-600",
-                              onClick: () => alert("بن کاربر با ID: " + id),
+                              onClick: () => banUser(id),
                               title: "بن",
                             },
                             h("span", {
@@ -197,7 +218,7 @@ export default function Users() {
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-gray-500 text-white hover:bg-gray-600",
-                              onClick: () => alert("حذف مالک با ID: " + id),
+                              onClick: () => updateRole("user", id),
                               title: "حذف توسعه دهنده",
                             },
                             h("span", {
@@ -211,8 +232,7 @@ export default function Users() {
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-red-500 text-white hover:bg-red-600",
-                              onClick: () =>
-                                alert("بن کردن توسعه دهنده با ID: " + id),
+                              onClick: () => banUser(id),
                               title: "بن",
                             },
                             h("span", {
@@ -229,8 +249,7 @@ export default function Users() {
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-blue-500 text-white hover:bg-blue-600",
-                              onClick: () =>
-                                alert("ارتقا به مالک با ID: " + id),
+                              onClick: () => updateRole("supervisor", id),
                               title: "مالک",
                             },
                             h("span", {
@@ -244,8 +263,7 @@ export default function Users() {
                             {
                               className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-green-500 text-white hover:bg-green-600",
-                              onClick: () =>
-                                alert("ارتقا به ادمین با ID: " + id),
+                              onClick: () => updateRole("admin", id),
                               title: "ادمین",
                             },
                             h("span", {
@@ -258,23 +276,8 @@ export default function Users() {
                             "button",
                             {
                               className:
-                                "p-2 rounded cursor-pointer text-[.8rem] bg-yellow-500 text-white hover:bg-yellow-600",
-                              onClick: () =>
-                                alert("توسعه دهنده کردن کاربر با ID: " + id),
-                              title: "توسعه دهنده",
-                            },
-                            h("span", {
-                              dangerouslySetInnerHTML: {
-                                __html: renderIcon(CodeXml),
-                              },
-                            })
-                          ),
-                          h(
-                            "button",
-                            {
-                              className:
                                 "p-2 rounded cursor-pointer text-[.8rem] bg-red-500 text-white hover:bg-red-600",
-                              onClick: () => alert("بن کاربر با ID: " + id),
+                              onClick: () => banUser(id),
                               title: "بن",
                             },
                             h("span", {
