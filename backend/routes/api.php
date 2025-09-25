@@ -54,6 +54,13 @@ Route::prefix('products')->group(function () {
     });
 });
 
+// Product Images
+Route::get('/products/{id}/images', [ProductImageController::class, 'index']);
+Route::middleware(['auth:sanctum'])->group(function () {
+Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
+Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']);
+});
+
 // Developer
 Route::prefix('developer')->group(function () {
     Route::get('/{id}', [UserPanelController::class, 'show']);
@@ -120,12 +127,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
 });
 
-// Product Images
-Route::middleware(['auth:cors'])->group(function () {
-Route::get('/products/{id}/images', [ProductImageController::class, 'index']);
-Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
-Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']);
-});
+
 
 //Comments
 Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
