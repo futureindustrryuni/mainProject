@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "../../components/SideBar";
 import TopBar from "../../components/TopBar";
 import { Grid } from "gridjs-react";
@@ -14,64 +14,41 @@ import {
   ShieldUser,
   CodeXml,
 } from "lucide-react";
-
-//roles:  3 owner - 2 admin - 1 dev - 0 user
-const users = [
-  {
-    field: 0,
-    id: 34556,
-    name: "علی",
-    email: "john@example.com",
-    role: 3,
-  },
-  {
-    field: 1,
-    id: 97834,
-    name: "mmd",
-    email: "john@example.com",
-    role: 2,
-  },
-  {
-    field: 2,
-    id: 32314,
-    name: "sara",
-    email: "john@example.com",
-    role: 2,
-  },
-  {
-    field: 3,
-    id: 47809,
-    name: "mahdi",
-    email: "john@example.com",
-    role: 1,
-  },
-  {
-    field: 4,
-    id: 35345,
-    name: "zahra",
-    email: "john@example.com",
-    role: 0,
-  },
-  {
-    field: 5,
-    id: 60881,
-    name: "omid",
-    email: "john@example.com",
-    role: 0,
-  },
-  {
-    field: 6,
-    id: 78762,
-    name: "mahtab",
-    email: "mark@gmail.com",
-    role: 0,
-  },
-];
+import Loader from "../../components/Loader";
 
 export default function Users() {
   const [isOpen, setIsOpen] = useState(1);
+  const [users, setUsers] = useState(null);
+  const token = localStorage.getItem("token");
+
   const renderIcon = (Icon) =>
     ReactDOMServer.renderToString(<Icon size={18} />);
+
+  async function getUsers() {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/admin/users`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+      const {data} = await res.json();
+
+      console.log(data.data);
+      setUsers(data.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+
+    if (!users) return <Loader />;
+  
 
   return (
     <>
@@ -90,8 +67,8 @@ export default function Users() {
           <div className="px-5">
             <div className="text-right">
               <Grid
-                data={users.map((u) => [
-                  u.field + 1,
+                data={users?.map((u) => [
+                  u.id,
                   u.name,
                   u.email,
                   u.role,
@@ -106,7 +83,7 @@ export default function Users() {
                     formatter: (_, row) => {
                       const role = row.cells[3].data;
 
-                      if (role === 3) {
+                      if (role === "supervisor") {
                         return h(
                           "p",
                           {
@@ -115,7 +92,7 @@ export default function Users() {
                           },
                           "مالک"
                         );
-                      } else if (role === 2) {
+                      } else if (role === "admin") {
                         return h(
                           "p",
                           {
@@ -124,7 +101,7 @@ export default function Users() {
                           },
                           "ادمین"
                         );
-                      } else if (role === 1) {
+                      } else if (role === "developer") {
                         return h(
                           "p",
                           {
@@ -133,7 +110,7 @@ export default function Users() {
                           },
                           "توسعه دهنده"
                         );
-                      } else {
+                      } else if (role === "user"){
                         return h(
                           "p",
                           {
@@ -145,7 +122,6 @@ export default function Users() {
                       }
                     },
                   },
-
                   {
                     name: "عملیات",
                     formatter: (_, row) => {
@@ -153,7 +129,7 @@ export default function Users() {
                       const role = row.cells[3].data; // ستون role
 
                       // شرط براساس role
-                      if (role === 3) {
+                      if (role === "supervisor") {
                         return h(
                           "button",
                           {
@@ -168,7 +144,7 @@ export default function Users() {
                             },
                           })
                         );
-                      } else if (role === 2) {
+                      } else if (role === "admin") {
                         return h("div", { className: "flex gap-2" }, [
                           h(
                             "button",
@@ -214,7 +190,7 @@ export default function Users() {
                             })
                           ),
                         ]);
-                      } else if (role === 1) {
+                      } else if (role === "developer") {
                         return h("div", { className: "flex gap-2" }, [
                           h(
                             "button",
