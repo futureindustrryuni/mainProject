@@ -79,7 +79,6 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('/products/{id}', [adminController::class, 'searchProduct']);
     Route::post('/checkmail', [adminController::class, 'checkEmail']);
     Route::post('/updaterole/{id}', [adminController::class, 'updateRole']);
-    Route::post('/demoterole/{id}', [adminController::class, 'demoteUser']);
     Route::post('/ban/{id}', [adminController::class, 'banUser']);
 });
 
