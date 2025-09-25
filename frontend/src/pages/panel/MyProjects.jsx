@@ -176,7 +176,7 @@ export default function MyProjects() {
     }
   };
 
-  if (!myProjects) {
+  if (!resumeStatus) {
     return <Loader />;
   }
 
@@ -422,7 +422,7 @@ export default function MyProjects() {
             </div>
           ) : (
             resumeStatus.status && (
-              <div className="mt-5">
+              <div className="mt-5 w-[100%] md:w-[70%] mx-auto">
                 <ResumeStatusBox
                   status={resumeStatus.status}
                   fileName={resumeStatus.resume_url?.split("/")[5]}

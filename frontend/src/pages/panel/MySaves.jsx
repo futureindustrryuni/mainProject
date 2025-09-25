@@ -17,9 +17,9 @@ import EmptySaves from "../../components/EmptySaves";
 
 export default function MySaves() {
   const [isOpen, setIsOpen] = useState(1);
-  const [saves, setSaves] = useState(null);      // ذخیره‌ها (id پروژه‌ها)
+  const [saves, setSaves] = useState(null); // ذخیره‌ها (id پروژه‌ها)
   const [projects, setProjects] = useState(null); // همه پروژه‌ها
-  const [mySaves, setMySaves] = useState([]);     // پروژه‌های ذخیره‌شده
+  const [mySaves, setMySaves] = useState(null); // پروژه‌های ذخیره‌شده
   const token = localStorage.getItem("token");
 
   // گرفتن لیست همه پروژه‌ها
@@ -39,7 +39,7 @@ export default function MySaves() {
 
   // گرفتن ذخیره‌های کاربر وقتی پروژه‌ها آماده شد
   useEffect(() => {
-    if (!projects) return; // صبر کن تا projects لود بشه
+    if (!projects) return;
 
     const fetchSaves = async () => {
       try {
@@ -54,13 +54,28 @@ export default function MySaves() {
         const data = await res.json();
         setSaves(data.data);
 
-        // پیدا کردن پروژه‌های ذخیره‌شده
-        const mapped = data.data.map((item) =>
-          projects.find((project) => project.id === item.product_id)
+        // پیدا کردن پروژه‌های ذخیره‌شده و اضافه کردن اولین عکس
+        const mapped = await Promise.all(
+          data.data.map(async (item) => {
+            const project = projects.find((p) => p.id === item.product_id);
+            if (!project) return null;
+
+            try {
+              const resImg = await fetch(
+                `http://127.0.0.1:8000/api/products/${project.id}/images`
+              );
+              const imgs = await resImg.json();
+              return {
+                ...project,
+                firstImage: imgs[0]?.path || null,
+              };
+            } catch {
+              return { ...project, firstImage: null };
+            }
+          })
         );
 
-        setMySaves(mapped.filter(Boolean)); // حذف nullها
-        console.log("پروژه‌های ذخیره‌شده:", mapped);
+        setMySaves(mapped.filter(Boolean));
       } catch (err) {
         console.error("خطا در گرفتن ذخیره‌ها:", err);
       }
@@ -69,8 +84,7 @@ export default function MySaves() {
     fetchSaves();
   }, [projects, token]);
 
-    if (!saves) return <Loader />;
-  
+  if (!mySaves) return <Loader />;
 
   return (
     <>
@@ -84,18 +98,19 @@ export default function MySaves() {
           <TopBar isOpen={isOpen} setIsOpen={setIsOpen} />
           <div className="p-5">
             <div>
-                <p className="text-[1rem] md:text-[1.3rem]">سیو شده ها</p>
-                <p className="text-[.8rem] md:text-[1rem] text-zinc-500">پروژه هایی که نظر شما را جلب کرده !</p>
+              <p className="text-[1rem] md:text-[1.3rem]">سیو شده ها</p>
+              <p className="text-[.8rem] md:text-[1rem] text-zinc-500">
+                پروژه هایی که نظر شما را جلب کرده !
+              </p>
             </div>
             {mySaves.length ? (
-
-                <ul className=" mt-5 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-                {mySaves.map((item)=>(
-                    <SaveCard {...item} />
+              <ul className=" mt-5 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-6">
+                {mySaves.map((item) => (
+                  <SaveCard key={item.id} {...item} />
                 ))}
-            </ul>
-            ):(
-                <EmptySaves/>
+              </ul>
+            ) : (
+              <EmptySaves />
             )}
           </div>
         </div>

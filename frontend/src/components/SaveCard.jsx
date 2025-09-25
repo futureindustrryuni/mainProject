@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-export default function SaveCard({ ...project }) {
+export default function SaveCard({ ...project },firstImage) {
+  const API_PATH = "http://127.0.0.1:8000"
+  console.log(project)
+
   return (
     <motion.div
       className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition"
@@ -9,11 +12,11 @@ export default function SaveCard({ ...project }) {
     >
       {/* تصویر پروژه */}
       <div className="h-40 w-full overflow-hidden">
-       <Link  to={`/ProductDetails/${project.id}`}>
+       <Link  to={`/ProductDetails/${project.id}`} className="h-[20rem]">
         <img
-          src={project?.image || "/placeholder.jpg"}
+          src={`${API_PATH}/storage/${project?.firstImage}`}
           alt={project.title}
-          className="h-full w-full object-cover cursor-pointer"
+          className=" w-full cursor-pointer"
         />
        </Link>
       </div>

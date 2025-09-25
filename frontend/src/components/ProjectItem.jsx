@@ -118,7 +118,7 @@ export default function ProjectItem({ id, img, title, user_id }) {
       <div className="flex items-center justify-between w-full mt-3 ">
         <div className="flex items-center gap-3 *:flex *:items-center *:gap-2 **:text-[.9rem] **:text-zinc-500 ">
           <button>
-            <p>{liked?.likes_count || "..."}</p>
+            <p>{liked?.likes_count || "0"}</p>
             <TiHeartFullOutline />
           </button>
           <button>

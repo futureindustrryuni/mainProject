@@ -8,6 +8,8 @@ export default function TopBar({ isOpen, setIsOpen }) {
   if (!profile?.id) return;
   console.log(profile.name);
 
+  const API_PATH = "http://127.0.0.1:8000"
+
   return (
     <div className="h-[6rem] flex items-center gap-5 p-5 bg-white dark:bg-dark">
       <HiMenu
@@ -16,7 +18,7 @@ export default function TopBar({ isOpen, setIsOpen }) {
       />
       <div className="flex items-center gap-3 ">
         <img
-          src="/images/team3.jpg"
+          src={`${API_PATH}/storage/${profile.profile_photo_url}`}
           alt=""
           className="size-[3.5rem] rounded-full object-cover "
         />
