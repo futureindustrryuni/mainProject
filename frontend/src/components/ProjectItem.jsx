@@ -2,12 +2,14 @@ import Aos from "aos";
 import React, { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { TiHeartFullOutline } from "react-icons/ti";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import { BiBookmark } from "react-icons/bi";
 import { LuHeart } from "react-icons/lu";
 import { Toast } from "./Toast";
 
 export default function ProjectItem({ id, img, title, user_id }) {
+  const API_PATH = "http://127.0.0.1:8000"
+
   Aos.init({
     once: true,
   });
@@ -16,11 +18,13 @@ export default function ProjectItem({ id, img, title, user_id }) {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/user/${user_id}`)
+    fetch(`http://localhost:8000/api/developer/${user_id}`)
       .then((res) => res.json())
       .then((data) => {
         setUserInfo(data.email);
       });
+
+      console.log(data)
   }, []);
 
   function saveHandler() {
@@ -51,13 +55,6 @@ export default function ProjectItem({ id, img, title, user_id }) {
   }
 
   async function likeHandler() {
-    // if (!token) {
-    //   Toast.fire({
-    //     icon: "error",
-    //     title: "برای لایک کردن اول لاگین کنید",
-    //   });
-    //   return;
-    // }
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/products/${id}/like`, {
         method: "POST",
@@ -130,7 +127,7 @@ export default function ProjectItem({ id, img, title, user_id }) {
           </button>
         </div>
         <Link to={`/profile/${user_id}`} className="flex items-center gap-2">
-          <p className="dark:text-white">{userInfo.split("@")[0]}</p>
+          <p className="dark:text-white">{userInfo?.split("@")[0]}</p>
           <img
             src="/images/User.jpg"
             alt={title}

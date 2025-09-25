@@ -4,10 +4,11 @@ import { TbEditCircle } from "react-icons/tb";
 import JalaliDate from "./JalaliDate";
 
 export default function MyProjectItem({ ...item }) {
+  const API_PATH = "http://127.0.0.1:8000"
   return (
     <li className="relative flex items-start flex-col sm:items-start xmd:flex-row gap-4 py-4 border-b-1 border-zinc-200 sm:border-zinc-200/10 ">
       <img
-        src="/images/project5.png"
+        src={`${API_PATH}/storage/${item.images[0]?.path}`}
         alt="طراحی وبسایت رستوران"
         className="h-[100px] w-[150px] xsm:w-[230px] xsm:h-[165px] rounded-xl object-cover"
       />

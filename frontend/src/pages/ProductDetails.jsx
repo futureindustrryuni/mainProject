@@ -22,6 +22,7 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [similarProduct, setSimilarProduct] = useState([]);
   const [userInfo, setUserInfo] = useState({});
+  const [images, setImages] = useState([]);
 
   // گرفتن اطلاعات محصول
   useEffect(() => {
@@ -30,6 +31,13 @@ export default function ProductDetails() {
         const res = await fetch(`http://localhost:8000/api/products/${id}`);
         const data = await res.json();
         setProduct(data.product);
+
+        // گرفتن عکس‌های محصول
+        const imgRes = await fetch(
+          `http://127.0.0.1:8000/api/products/${id}/images`
+        );
+        const imgData = await imgRes.json();
+        setImages(imgData); // [{id, path, ...}, ...]
       } catch (err) {
         console.log("err", err);
       }
@@ -61,7 +69,7 @@ export default function ProductDetails() {
     async function getUserInfo() {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/user/${product.user_id}`
+          `http://localhost:8000/api/developer/${product.user_id}`
         );
         const data = await res.json();
         setUserInfo(data);
@@ -82,24 +90,20 @@ export default function ProductDetails() {
       <Header />
       <div className="bg-white pt-10 mx-auto container dark:bg-dark mt-20">
         <div className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 ">
             <div className="w-full h-full">
-              <MySlider />
+              <MySlider images={images} />
             </div>
             <div className="space-y-5">
               <div className="mt-12 flex items-center justify-between md:mt-0">
                 <div className="flex items-center gap-4">
                   <img
-                    src={
-                      userInfo.profile_photo_url
-                        ? `images/${profile_photo_url}`
-                        : User
-                    }
+                    src={`http://127.0.0.1:8000/storage/${userInfo.profile_photo_url}`}
                     alt=""
-                    className="w-14 h-14 rounded-full"
+                    className="w-[4rem] h-[4rem] rounded-full  p-1 border-zinc-300"
                   />
                   <h1 className="font-IranYekanBold dark:text-white text-black">
-                    {userInfo.email}
+                    {userInfo.name} {userInfo.family}
                   </h1>
                 </div>
                 <div className="flex gap-3 items-center *:cursor-pointer *:text-white *:bg-primary *:hover:bg-primary/70 *:duration-300 *:rounded-full *:p-1.5 *:size-[2rem] *:flex *:items-center *:justify-center ">
@@ -111,8 +115,8 @@ export default function ProductDetails() {
                   </div>
                 </div>
               </div>
-              <h1 className="dark:text-white text-black">{product?.title}</h1>
-              <p className="text-justify text-second-light line-clamp-4 font-IranYekanBold">
+              <h1 className="dark:text-white text-[1.5rem] text-black">{product?.title}</h1>
+              <p className="text-justify text-second-light -mt-3 line-clamp-4 font-IranYekanBold">
                 {product.description}
               </p>
               <ul className="flex gap-2 text-sm text-white">
@@ -139,7 +143,7 @@ export default function ProductDetails() {
           <h1 className="dark:text-white text-black text-2xl">
             توضیحات تکمیلی درباره پروژه
           </h1>
-          <p className="text-justify text-second-light mb-24">
+          <p className="text-justify text-second-light mb-24 -mt-5">
             {product.description}
           </p>
           <h1 className="font-IranYekanBold dark:text-white text-black">
@@ -159,7 +163,7 @@ export default function ProductDetails() {
             className="w-16 h-16 rounded-full absolute  left-1/2 transform -translate-x-1/2  -mt-12 border-8 border-white md:w-20 md:h-20 md:-mt-16"
           />
           <h1 className="text-center mt-15 dark:text-white text-black">
-            سهیل شکریان
+          {userInfo.name} {userInfo.family}
           </h1>
           {/* <div className="flex justify-center">
             <p className="text-[12px] bg-primary hover:bg-primary/80 duration-300 p-1 px-3 rounded-md cursor-pointer">
@@ -190,7 +194,7 @@ export default function ProductDetails() {
           )}
         </div>
       </div>
-       <Footer/>
+      <Footer />
     </div>
   );
 }
