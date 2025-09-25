@@ -36,10 +36,12 @@ class SavedProductController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, $productId)
+    public function destroy(Request $request, $id)
     {
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
         $saved = SavedProduct::where('user_id', $request->user()->id)
-            ->where('product_id', $productId)
+            ->where('product_id', $id)
             ->firstOrFail();
 
         $saved->delete();
@@ -47,5 +49,13 @@ class SavedProductController extends Controller
         return response()->json([
             'message' => 'Product removed from saved successfully'
         ]);
+    }
+
+    public function isAuthenticated(){
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+            return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+            return null;
     }
 }

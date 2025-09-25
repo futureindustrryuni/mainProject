@@ -7,7 +7,6 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-
     public function index()
         {
             $userId = auth()->id();
@@ -102,30 +101,27 @@ class ProductController extends Controller
 
     public function deleteProduct($id)
     {
-    $product = Product::findOrFail($id);
-    $user = auth()->user();
+        $product = Product::findOrFail($id);
+        $user = auth()->user();
 
-    if ($user->id !== $product->user_id && $user->role !== 'admin' && $user->role !== 'supervisor') {
-        return response()->json(['message' => 'You are not authorized to delete this product.'], 403);
+        if ($user->id !== $product->user_id && $user->role !== 'admin' && $user->role !== 'supervisor') {
+            return response()->json(['message' => 'You are not authorized to delete this product.'], 403);
+        }
+
+        foreach ($product->images as $image) {
+            \Storage::disk('public')->delete($image->path);
+            $image->delete();
+        }
+
+        $product->delete();
+        return response()->json(['message' => 'Product deleted successfully']);
+        }
+
+    public function isAuthenticated(){
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+            return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+            return null;
     }
-
-    foreach ($product->images as $image) {
-        \Storage::disk('public')->delete($image->path);
-        $image->delete();
-    }
-
-    $product->delete();
-    return response()->json(['message' => 'Product deleted successfully']);
-    }
-
-    // public function search(Request $request){
-    //     $query = $request->input('srch');
-
-    //     $products = Product::with(['images', 'category'])
-    //         ->where('name', 'LIKE', "%{$query}%")
-    //         ->orWhere('description', 'LIKE', "%{$query}%")
-    //         ->paginate(10);
-
-    //     return response()->json(['products' => $products]);
-    // }
 }

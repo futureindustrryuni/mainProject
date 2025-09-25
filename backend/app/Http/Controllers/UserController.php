@@ -44,14 +44,8 @@ class UserController extends Controller
         }
 
         $required = [
-        'name',
-        'family',
-        'birth_date',
-        'meli_code',
-        'phone',
-        'education',
-        'address',
-        'bio',
+        'name','family','birth_date','meli_code',
+        'phone','education','address','bio',
         ];
 
         $isProfileCompleted = true;

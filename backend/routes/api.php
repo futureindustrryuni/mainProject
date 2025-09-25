@@ -2,123 +2,130 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserPanelController;
-use App\Http\Controllers\DeveloperPublicController;
-use App\Http\Controllers\DevController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\StoreController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\adminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ApproveController;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\SavedProductController;
-use App\Http\Controllers\ProductLikesController;
-use App\Http\Controllers\ProductImageController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProfessorController;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\SkillController;
-use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\{
+    UserPanelController,
+    DeveloperPublicController,
+    DevController,
+    ProductController,
+    StoreController,
+    UserController,
+    adminController,
+    AuthController,
+    ApproveController,
+    TicketController,
+    SavedProductController,
+    ProductLikesController,
+    ProductImageController,
+    CommentController,
+    CategoryController,
+    ProfessorController,
+    ArticleController,
+    SkillController,
+    OwnerController,
+};
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();}) ->middleware('auth:sanctum');
-
-
+// User
 Route::post('user/checkmail', [UserController::class, 'checkEmail']);    
-Route::get('/store', [StoreController::class, 'index']);
-
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/users/store',[UserController::class,'store']);
+});
 
+// User Panel
 Route::get('/me/profile', [UserPanelController::class, 'showProfile']);
 Route::get('/me/projects', [UserPanelController::class, 'myProjects']);             # Its For Phase 2 Right Now And Its Not Working Corrently
-Route::post('/developers/{id}/approve', [AdminDeveloperController::class, 'approve']);
-});
 
+// Owner
+Route::middleware('auth:sanctum')->post('/users/{id}/updaterole', [OwnerController::class, 'updateRole']);
+Route::middleware('auth:sanctum')->delete('/users/{id}/delete', [OwnerController::class, 'destroyUser']);
+Route::get('/showusers', [OwnerController::class, 'showUsers']);
+
+// Products
 Route::prefix('products')->group(function () {
-Route::middleware('auth:sanctum')->post('/create', [ProductController::class, 'store']);
-Route::get('/{id}',[ProductController::class, 'show']);
-Route::post('/{id}/approve',[ApproveController::class,'approve']);
-Route::middleware('auth:sanctum')->post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
-Route::middleware('auth:sanctum')->put('/{id}/update', [ProductController::class, 'updateProduct']);
-Route::middleware('auth:sanctum')->delete('/{id}/delete', [ProductController::class, 'deleteProduct']);
-Route::get('/', [ProductController::class, 'index']);
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{id}',[ProductController::class, 'show']);
+    Route::post('/{id}/approve',[ApproveController::class,'approve']);
+
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::post('/create', [ProductController::class, 'store']);
+        Route::put('/{id}/update', [ProductController::class, 'updateProduct']);
+        Route::post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
+        Route::delete('/{id}/delete', [ProductController::class, 'deleteProduct']);
+    });
 });
 
-#Developer API's
-Route::middleware('auth:sanctum')->post('/developer/profile', [DevController::class, 'store']);
-Route::middleware('auth:sanctum')->get('/developer/status', [DevController::class, 'status']);
-Route::middleware('auth:sanctum')->post('/developer/approve/{id}', [DevController::class, 'approve']);
-Route::middleware('auth:sanctum')->post('/developer/reject/{id}', [DevController::class, 'reject']);
-Route::middleware('auth:sanctum')->get('/developer/requests', [DevController::class, 'show']);
-Route::get('/developer/{id}', [UserPanelController::class, 'show']);
+// Developer
+Route::prefix('developer')->group(function () {
+    Route::get('/{id}', [UserPanelController::class, 'show']);
 
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::get('/status', [DevController::class, 'status']);
+        Route::get('/requests', [DevController::class, 'show']);
+        Route::post('/profile', [DevController::class, 'store']);
+        Route::post('/reject/{id}', [DevController::class, 'reject']);
+        Route::post('/approve/{id}', [DevController::class, 'approve']);
+    });
+});
 
-#Authentication API's
+// Authentication
 Route::prefix('auth')->group(function () {
     Route::post('login',[AuthController::class,'login']);
     Route::post('register',[AuthController::class,'register']);
-    Route::middleware('auth:sanctum')->post('logout',[AuthController::class,'logout']);
+
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::post('logout',[AuthController::class,'logout']);
+    });
 });
 
-# Admin API's
-Route::post('/admin/login', [adminController::class, 'login']);
-Route::post('/admin/register', [adminController::class, 'register']);
+// Admin
+Route::prefix('admin')->group(function () {
+    Route::post('/login', [adminController::class, 'login']);
+    Route::post('/register', [adminController::class, 'register']);
 
-Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-    Route::get('/profile', [adminController::class, 'profile']);
-    Route::get('/profiles', [adminController::class, 'allProfiles']);
-    Route::put('/updateprofile', [adminController::class, 'updateProfile']);
-    Route::get('/users', [adminController::class, 'showUsers']);
-    Route::get('/users/{id}', [adminController::class, 'searchUser']);
-    Route::delete('/users/{id}', [adminController::class, 'destroyUser']);
-    Route::get('/products', [adminController::class, 'showProduct']);
-    Route::get('/products/{id}', [adminController::class, 'searchProduct']);
-    Route::post('/checkmail', [adminController::class, 'checkEmail']);
-    Route::post('/updaterole/{id}', [adminController::class, 'updateRole']);
-    Route::post('/ban/{id}', [adminController::class, 'banUser']);
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::get('/users', [adminController::class, 'showUsers']);
+        Route::get('/profile', [adminController::class, 'profile']);
+        Route::post('/ban/{id}', [adminController::class, 'banUser']);
+        Route::get('/products', [adminController::class, 'showProduct']);
+        Route::get('/profiles', [adminController::class, 'allProfiles']);
+        Route::get('/users/{id}', [adminController::class, 'searchUser']);
+        Route::post('/checkmail', [adminController::class, 'checkEmail']);
+        Route::delete('/users/{id}', [adminController::class, 'destroyUser']);
+        Route::put('/updateprofile', [adminController::class, 'updateProfile']);
+        Route::get('/products/{id}', [adminController::class, 'searchProduct']);
+        Route::post('/updaterole/{id}', [adminController::class, 'updateRole']);
+    });
 });
 
-#Ticket API's
-Route::prefix('tickets')->group(function () {
-    Route::middleware('auth:sanctum')->get('/show', [TicketController::class, 'show']);
-    Route::middleware('auth:sanctum')->post('/create', [TicketController::class, 'store']);
-    Route::middleware('auth:sanctum')->get('/', [TicketController::class, 'index']);
-    Route::middleware('auth:sanctum')->delete('/{id}', [TicketController::class, 'destroy']);
-    Route::middleware('auth:sanctum')->put('/approve/{id}', [TicketController::class, 'approve']);
-});
+// Ticket
+Route::middleware('auth:sanctum')->prefix('tickets')->group(function () {
+        Route::get('/', [TicketController::class, 'index']);
+        Route::get('/show', [TicketController::class, 'show']);
+        Route::post('/create', [TicketController::class, 'store']);
+        Route::delete('/{id}', [TicketController::class, 'destroy']);
+        Route::put('/approve/{id}', [TicketController::class, 'approve']);
+}); 
 
+// Product Save
 Route::middleware('auth:sanctum')->prefix('indexes')->group(function () {
     Route::get('saves', [SavedProductController::class, 'index']);
     Route::post('save', [SavedProductController::class, 'store']);
-    Route::delete('delete/{projectId}', [SavedProductController::class, 'destroy']);
+    Route::delete('delete/{id}', [SavedProductController::class, 'destroy']);
 });
 
+// Skill
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/skills', [SkillController::class, 'index']);
     Route::post('/skill/create', [SkillController::class, 'store']); 
     Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
 });
 
-
-//Products
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show']);
-Route::post('/products', [ProductController::class, 'store']);
-Route::put('/products/{id}', [ProductController::class, 'update']);
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-Route::post('/products/{id}/approve', [ProductController::class, 'approve']);
-Route::get('/store', [StoreController::class, 'index']);
-
-
 // Product Images
-Route::get('/products/{id}/images', [ProductImageController::class, 'index']);
-Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
-Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']);
-
+Route::middleware(['auth:sanctum', 'cors'])->group(function () {
+    Route::get('/products/{id}/images', [ProductImageController::class, 'index']);
+    Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
+    Route::delete('/product_images/{id}', [ProductImageController::class, 'destroy']);
+});
 
 //Comments
 Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
@@ -129,31 +136,37 @@ Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
 });
 
 // Categories
-Route::middleware('auth:sanctum')->prefix('categories')->group(function () {
-Route::post('/create', [CategoryController::class, 'store']);
-Route::put('/update/{id}', [CategoryController::class, 'update']);
-Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);});
-Route::get('/categories/show', [CategoryController::class, 'index']);
-Route::get('/categories/show/{id}', [CategoryController::class, 'show']);
+Route::prefix('categories')->group(function () {
+    Route::get('/show', [CategoryController::class, 'index']);
+    Route::get('/show/{id}', [CategoryController::class, 'show']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/create', [CategoryController::class, 'store']);
+        Route::put('/update/{id}', [CategoryController::class, 'update']);
+        Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+    });
+});
 
 // Professors
-Route::get('/professors', [ProfessorController::class, 'index']);
-Route::get('/professors/{id}', [ProfessorController::class, 'show']);
-Route::post('/professors', [ProfessorController::class, 'store']);
-Route::put('/professors/{id}', [ProfessorController::class, 'update']);
-Route::delete('/professors/{id}', [ProfessorController::class, 'destroy']);
+Route::prefix('professors')->group(function () {
+    Route::get('/', [ProfessorController::class, 'index']);
+    Route::get('/{id}', [ProfessorController::class, 'show']);
+    Route::post('/', [ProfessorController::class, 'store']);
+    Route::put('/{id}', [ProfessorController::class, 'update']);
+    Route::delete('/{id}', [ProfessorController::class, 'destroy']);
+});    
 
 // Articles
-Route::middleware('auth:sanctum')->prefix('articles')->group(function () {
-Route::post('/create', [ArticleController::class, 'store']);
-Route::put('/update/{id}', [ArticleController::class, 'update']);
-Route::delete('/delete/{id}', [ArticleController::class, 'destroy']);
+Route::prefix('articles')->group(function () {
+    Route::get('/show', [ArticleController::class, 'index']);
+    Route::get('/show/{id}', [ArticleController::class, 'show']);
+
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::post('/create', [ArticleController::class, 'store']);
+        Route::put('/update/{id}', [ArticleController::class, 'update']);
+        Route::delete('/delete/{id}', [ArticleController::class, 'destroy']);
+    });
 });
-Route::get('/articles/show', [ArticleController::class, 'index']);
-Route::get('/articles/show/{id}', [ArticleController::class, 'show']);
 
-//Owner
-Route::get('/showusers', [OwnerController::class, 'showUsers']);
-Route::middleware('auth:sanctum')->post('/users/{id}/updaterole', [OwnerController::class, 'updateRole']);
-Route::middleware('auth:sanctum')->delete('/users/{id}/delete', [OwnerController::class, 'destroyUser']);
-
+// Overall
+Route::get('/store', [StoreController::class, 'index']);
