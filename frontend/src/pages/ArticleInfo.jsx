@@ -55,7 +55,7 @@ export default function ArticleInfo() {
                 <span> | </span>
                 <div>
                   <FaRegEye />
-                  <p>135</p>
+                  <p>{mainArticle.views}</p>
                 </div>
               </div>
             </div>

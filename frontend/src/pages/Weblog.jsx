@@ -20,7 +20,6 @@ import Aos from "aos";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 
-
 export default function Weblog() {
   Aos.init({
     once: true,
@@ -49,9 +48,8 @@ export default function Weblog() {
     fetchData();
   }, []);
 
-
-  if(!articles){
-    return <Loader/>
+  if (!articles) {
+    return <Loader />;
   }
 
   return (
@@ -151,15 +149,14 @@ export default function Weblog() {
                 to={`/MoreArticles/${cat.id}`}
                 className="flex items-center gap-1 hover:text-primary duration-500 text-[.8rem] text-dark dark:text-white"
               >
-               
-                  مشاهده بیشتر
-          
+                مشاهده بیشتر
                 <GoArrowLeft className="text-dark dark:text-white" />
               </Link>
             </div>
 
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7">
-              {articles.filter((a) => Number(a.category_id)=== Number(cat.id))
+              {articles
+                .filter((a) => Number(a.category_id) === Number(cat.id))
                 .map((a) => (
                   <ArticleItem
                     key={a.id}
@@ -167,7 +164,8 @@ export default function Weblog() {
                     image={a.image}
                     description={a.description}
                     category={cat.name}
-                   title={a.title}
+                    views={art.views}
+                    title={a.title}
                     readingTime={a.reading_time}
                     to={`/MoreArticles/${cat.id}`}
                   />

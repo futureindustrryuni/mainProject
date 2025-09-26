@@ -10,6 +10,7 @@ export default function ArticleItem({
   description,
   category,
   title,
+  views,
   readingTime,
   to,
 }) {
@@ -49,7 +50,7 @@ export default function ArticleItem({
           <span> | </span>
           <div className="flex items-center gap-1.5 ">
             <FiEye />
-            <p>666</p>
+            <p>{views}</p>
           </div>
         </div>
       </div>

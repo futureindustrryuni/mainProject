@@ -46,6 +46,7 @@ export default function MoreArticles() {
                     description={art.description}
                     category={cat.name}
                     image={art.image}
+                    views={art.views}
                     readingTime={art.reading_time}
                     to={`/MoreArticles/${cat.id}`}
                   />
