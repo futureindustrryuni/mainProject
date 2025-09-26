@@ -41,6 +41,7 @@ let routes = [
     { path: "/Weblog", element: <Weblog /> },
     { path: "/MoreArticles/*", element: <MoreArticles /> },
     { path: "/ArticleInfo", element: <ArticleInfo /> },
+{ path:"/ArticleInfo/:id", element:<ArticleInfo />} ,
     { path: "/ProductDetails/:id", element: <ProductDetails/> },
     { path: "/Projects", element: <ProjectsList/> },
     { path:'/developer',element:<Developer/>},

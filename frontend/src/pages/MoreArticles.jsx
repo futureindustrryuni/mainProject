@@ -48,7 +48,7 @@ export default function MoreArticles() {
                     image={art.image}
                     views={art.views}
                     readingTime={art.reading_time}
-                    to={`/MoreArticles/${cat.id}`}
+                    to={`/ArticleInfo/${art.id}`}
                   />
                 ))}
             </div>
