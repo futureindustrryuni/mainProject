@@ -10,7 +10,7 @@ class ProductController extends Controller
     public function index()
         {
             $userId = auth()->id();
-            $products = Product::select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id','is_approved')
+            $products = Product::with('images')->select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id','is_approved')
             ->whereHas('user', function ($query) {
                 $query->where('role', 'developer');
                 })

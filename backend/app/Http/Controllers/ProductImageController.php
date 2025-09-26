@@ -33,15 +33,17 @@ class ProductImageController extends Controller
         $validated = $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:4096',
         ]);
+        $originalName = $request->file('image')->getClientOriginalName();
+        $path = $request->file('image')->storeAs('product_images', $originalName, 'public');
 
-        $path = $request->file('image')->store('product_images', 'public');
+        $image = $product->images()->create([
+        'path' => $path,
+        ]);
 
-        $image = new ProductImage();
-        $image->product_id = $productId;
-        $image->path = $path;
-        $image->save();
-
-        return response()->json($image, 201);
+        return response()->json([
+            'id' => $image->id,
+            'url' => asset('storage/' . $image->path),
+        ], 201);
     }
 
    

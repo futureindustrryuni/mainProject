@@ -32,8 +32,10 @@ Route::post('/users/store',[UserController::class,'store']);
 });
 
 // User Panel
+Route::middleware('auth:sanctum')->group(function (){
 Route::get('/me/profile', [UserPanelController::class, 'showProfile']);
 Route::get('/me/projects', [UserPanelController::class, 'myProjects']);             # Its For Phase 2 Right Now And Its Not Working Corrently
+});
 
 // Owner
 Route::middleware('auth:sanctum')->post('/users/{id}/updaterole', [OwnerController::class, 'updateRole']);

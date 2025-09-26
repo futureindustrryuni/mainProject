@@ -10,15 +10,15 @@ class UserPanelController extends Controller
 {
     public function showProfile()
     {
-    if (auth()->check()) {
-    $user = auth()->user();
-    return response()->json([
+        $user = auth()->user();
+
+        if (!$user) 
+            return response()->json(['message' => 'User not authenticated'], 401);
+        return response()->json([
             'message' => 'Your Profile Information',
             'data' => $user
         ]);
     }
-    return response()->json(['message' => 'Unauthorized'], 401);
-}
 
     # This Sesction May Be Only For Phase 2 ! (Its For Developer's Projects)
     public function myProjects()
