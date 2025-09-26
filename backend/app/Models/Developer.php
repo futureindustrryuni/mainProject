@@ -15,7 +15,7 @@ class Developer extends Model
     ];
 
     public function user() {
-        return $this->belongsTo(User::class);}
+        return $this->belongsTo(User::class , 'user_id');}
 
     public function projects() {
         return $this->hasMany(Project::class);}

@@ -45,21 +45,19 @@ Route::get('/showusers', [OwnerController::class, 'showUsers']);
 // Products
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
-    Route::get('/{id}',[ProductController::class, 'show']);
-    Route::post('/{id}/approve',[ApproveController::class,'approve']);
 
     Route::middleware('auth:sanctum')->group(function (){
         Route::post('/create', [ProductController::class, 'store']);
         Route::put('/{id}/update', [ProductController::class, 'updateProduct']);
         Route::post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
         Route::delete('/{id}/delete', [ProductController::class, 'deleteProduct']);
+        Route::post('/{id}/approve',[ApproveController::class,'approve']);
     });
+    Route::get('/{id}',[ProductController::class, 'show']);
 });
 
 // Developer
 Route::prefix('developer')->group(function () {
-    Route::get('/{id}', [UserPanelController::class, 'show']);
-
     Route::middleware('auth:sanctum')->group(function (){
         Route::get('/status', [DevController::class, 'status']);
         Route::get('/requests', [DevController::class, 'show']);
@@ -67,7 +65,8 @@ Route::prefix('developer')->group(function () {
         Route::post('/reject/{id}', [DevController::class, 'reject']);
         Route::post('/approve/{id}', [DevController::class, 'approve']);
     });
-});
+    Route::get('/{id}', [UserPanelController::class, 'show']);
+}); 
 
 // Authentication
 Route::prefix('auth')->group(function () {
@@ -87,13 +86,14 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:sanctum')->group(function (){
         Route::get('/users', [adminController::class, 'showUsers']);
         Route::get('/profile', [adminController::class, 'profile']);
-        Route::post('/ban/{id}', [adminController::class, 'banUser']);
         Route::get('/products', [adminController::class, 'showProduct']);
         Route::get('/profiles', [adminController::class, 'allProfiles']);
-        Route::get('/users/{id}', [adminController::class, 'searchUser']);
         Route::post('/checkmail', [adminController::class, 'checkEmail']);
-        Route::delete('/users/{id}', [adminController::class, 'destroyUser']);
         Route::put('/updateprofile', [adminController::class, 'updateProfile']);
+        
+        Route::post('/ban/{id}', [adminController::class, 'banUser']);
+        Route::get('/users/{id}', [adminController::class, 'searchUser']);
+        Route::delete('/users/{id}', [adminController::class, 'destroyUser']);
         Route::get('/products/{id}', [adminController::class, 'searchProduct']);
         Route::post('/updaterole/{id}', [adminController::class, 'updateRole']);
     });
@@ -138,34 +138,34 @@ Route::middleware('auth:sanctum')->prefix('comments')->group(function () {
 // Categories
 Route::prefix('categories')->group(function () {
     Route::get('/show', [CategoryController::class, 'index']);
-    Route::get('/show/{id}', [CategoryController::class, 'show']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [CategoryController::class, 'store']);
         Route::put('/update/{id}', [CategoryController::class, 'update']);
         Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
     });
+    Route::get('/show/{id}', [CategoryController::class, 'show']);
 });
 
 // Professors
 Route::prefix('professors')->group(function () {
     Route::get('/', [ProfessorController::class, 'index']);
-    Route::get('/{id}', [ProfessorController::class, 'show']);
     Route::post('/', [ProfessorController::class, 'store']);
     Route::put('/{id}', [ProfessorController::class, 'update']);
     Route::delete('/{id}', [ProfessorController::class, 'destroy']);
-});    
+    Route::get('/{id}', [ProfessorController::class, 'show']);
+});       
 
 // Articles
 Route::prefix('articles')->group(function () {
     Route::get('/show', [ArticleController::class, 'index']);
-    Route::get('/show/{id}', [ArticleController::class, 'show']);
 
     Route::middleware('auth:sanctum')->group(function (){
         Route::post('/create', [ArticleController::class, 'store']);
         Route::put('/update/{id}', [ArticleController::class, 'update']);
         Route::delete('/delete/{id}', [ArticleController::class, 'destroy']);
     });
+    Route::get('/show/{id}', [ArticleController::class, 'show']);
 });
 
 // Overall

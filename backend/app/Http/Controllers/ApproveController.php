@@ -9,12 +9,9 @@ class ApproveController extends Controller
 {
     public function approve($id) {    
          
-        $admin = auth('admin')->user();
-        if (!$admin) {
-            return response()->json([
-                'message' => 'Unauthorized. Only admins can approve products.'
-            ], 403);
-        }         
+        if ($this->isAuthenticated() !== null)
+        return $this->isAuthenticated();
+        
         $product = Product::findOrFail($id);            # Approves Products By Their ID (Must Only Be Approved By Admins !)
         if ($product->is_approved === '2'){                     # Checks If Product Has Already Been Added Or No
 
@@ -29,5 +26,13 @@ class ApproveController extends Controller
         return response()->json([
             'message' => 'Product approved successfully',
             'product' => $product], 200);
+        }
+
+    public function isAuthenticated(){
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+            return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+            return null;
         }
     }

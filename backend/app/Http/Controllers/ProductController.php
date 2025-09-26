@@ -8,7 +8,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     public function index()
-        {
+    {
             $userId = auth()->id();
             $products = Product::with('images')->select('id', 'title', 'description', 'category_id' ,'technologies','price','user_id','is_approved')
             ->whereHas('user', function ($query) {
@@ -20,7 +20,7 @@ class ProductController extends Controller
                 'message' => 'List Of All Avaiable Products :',
                 'data' => $products
             ]);
-        }
+    }
 
     public function store(Request $request)
     {
@@ -63,7 +63,6 @@ class ProductController extends Controller
         return response()->json(['product'=>$product]);
     }
 
-    
     public function updateProduct(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -101,6 +100,7 @@ class ProductController extends Controller
 
     public function deleteProduct($id)
     {
+    
         $product = Product::findOrFail($id);
         $user = auth()->user();
 
@@ -115,9 +115,10 @@ class ProductController extends Controller
 
         $product->delete();
         return response()->json(['message' => 'Product deleted successfully']);
-        }
+    }
 
-    public function isAuthenticated(){
+    public function isAuthenticated()
+    {
         $user = auth()->user();
 
         if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
