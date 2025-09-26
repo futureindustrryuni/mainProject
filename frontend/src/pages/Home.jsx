@@ -204,6 +204,7 @@ export default function Home() {
                   `http://127.0.0.1:8000/storage/${project.images[0].path}`
                 }
                 title={project.title}
+                views={project.views}
               />
             ))}
           </ul>
