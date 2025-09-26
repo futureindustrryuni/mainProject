@@ -146,7 +146,7 @@ export default function ProductDetails() {
           <p className="text-justify text-second-light mb-24 -mt-5">
             {product?.description}
           </p>
-          <h1 className="font-IranYekanBold dark:text-white text-black">
+          {/* <h1 className="font-IranYekanBold dark:text-white text-black">
             نظرات
           </h1>
           <div className="w-full shadow-xl shadow-zinc-200/30 dark:shadow-none bg-zinc-100 border-1 border-zinc-200 rounded-md h-9 md:w-96">
@@ -155,7 +155,7 @@ export default function ProductDetails() {
               className="p-2 px-3 placeholder:text-[.8rem] w-full h-full"
               placeholder="نظر خود را وارد کنید..."
             />
-          </div>
+          </div> */}
           <hr className="text-second-light mt-14" />
           <img
             src={User}
@@ -178,13 +178,17 @@ export default function ProductDetails() {
           {similarProduct.length >= 1 ? (
             <div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 ">
               {similarProduct?.map((item) => (
-                <ProjectItem
-                  key={item.id}
-                  id={item.id}
-                  title={item.title}
-                  img="/images/project1.png"
-                  user_id={item.user_id}
-                />
+                 <ProjectItem
+                key={item.id}
+                id={item.id}
+                user_id={item.user_id}
+                img={
+                  item.images?.[0] &&
+                  `http://127.0.0.1:8000/storage/${item.images[0].path}`
+                }
+                title={item.title}
+                views={item.views}
+              />
               ))}
             </div>
           ) : (

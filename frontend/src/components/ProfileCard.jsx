@@ -5,7 +5,7 @@ import { MdEventNote } from 'react-icons/md'
 import { RiGlobalLine } from 'react-icons/ri'
 import { FaInstagram ,FaWhatsapp,FaFacebook, FaGithub, FaLinkedinIn, FaLinkedin  } from 'react-icons/fa'
 import { AiOutlineLinkedin } from 'react-icons/ai'
-export default function ProfileCard({ name='هانیه', email='hanirezaee@gmail.com', site="www.wonkapost.ir", locaion="خراسان رضوی ، مشهد", date="1401/01/12" }) {
+export default function ProfileCard({ name, email, address, date}) {
     return (
         <>
             <div className='w-[100%] h-auto'>
@@ -25,16 +25,12 @@ export default function ProfileCard({ name='هانیه', email='hanirezaee@gmail
                             <p>{email}</p>
                         </div>
                         <div className='flex gap-2 items-center'>
-                            <RiGlobalLine size={20} className='dark:text-primary'/>
-                            <p>{site}</p>
-                        </div>
-                        <div className='flex gap-2 items-center'>
                             <GoLocation size={20} className='dark:text-primary'/>
-                            <p>{locaion}</p>
+                            <p>{address}</p>
                         </div>
                         <div className='flex gap-2 items-center'>
                             <MdEventNote size={20} className='dark:text-primary'/>
-                            <p>{date + " عضویت"}</p>
+                            <p>{date + " تاریخ تولد"}</p>
                         </div>
                     </div>
                     <div className='mt-10 mx-auto flex mb-4 lg:mt-20'>

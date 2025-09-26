@@ -34,14 +34,14 @@ export default function MyProjectItem({ ...item }) {
         </div>
       </div>
       <div className="absolute top-[1rem] left-[.5rem] mt-1 flex items-end gap-5 flex-col">
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           <button className="text-[#ff9911] cursor-pointer" title="ویرایش">
             <TbEditCircle className="sm:text-[18px] lg:text-[1.4rem] md:text-[25px]" />
           </button>
           <button className="text-red-500 cursor-pointer" title="حذف">
             <HiOutlineTrash className="sm:text-[18px] lg:text-[1.4rem] md:text-[25px] text" />
           </button>
-        </div>
+        </div> */}
         <p
           className={`${
             item.is_approved === "2"
