@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ArticleItem from "../components/ArticleItem";
 import Header from "../components/Header";
+import Loader from "../components/Loader";
 
 export default function MoreArticles() {
-  const [article, setArticle] = useState([]);
+  const [article, setArticle] = useState(null);
 
   const [categories, setCategories] = useState([]);
 
@@ -22,7 +23,9 @@ export default function MoreArticles() {
 
     fetchData();
   }, []);
- 
+   if(!article){
+     return <Loader/>
+   }
   
   return (
 
@@ -35,7 +38,7 @@ export default function MoreArticles() {
           if(filtart.length === 0) return null;
         return(<div key={cat.id}>
             <h2 className="text-[1.5rem]">{cat.name}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-5">
               {filtart.map((art) => (
                   <ArticleItem
                     key={art.id}

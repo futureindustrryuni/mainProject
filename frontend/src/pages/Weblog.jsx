@@ -18,13 +18,15 @@ import ArticleItem from "../components/ArticleItem";
 import Header from "../components/Header";
 import Aos from "aos";
 import Footer from "../components/Footer";
+import Loader from "../components/Loader";
+
 
 export default function Weblog() {
   Aos.init({
     once: true,
   });
   const [categories, setCategories] = useState([]);
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +48,11 @@ export default function Weblog() {
 
     fetchData();
   }, []);
+
+
+  if(!articles){
+    return <Loader/>
+  }
 
   return (
     <div className="bg-white dark:bg-dark ">
