@@ -4,7 +4,7 @@ import { FiEye } from "react-icons/fi";
 import { IoTimeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-export default function ArticleItem({id,image,description,category,title,readingTime,}) {
+export default function ArticleItem({id,image,description,category,title,readingTime,to}) {
   useEffect(() => {
     Aos.init({ once: true });
   }, []);
@@ -24,7 +24,8 @@ export default function ArticleItem({id,image,description,category,title,reading
           </p>
           <p className="text-zinc-500 text-[.8rem] ">8 اردیبهشت 1404</p>
         </div>
-        <Link className="text-[18px] mt-2 inline-block text-dark dark:text-white ">
+        <Link   to={to}
+         className="text-[18px] mt-2 inline-block text-dark dark:text-white ">
       {title}
         </Link>
         <p className="text-[13px] text-zinc-500 mt-2 line-clamp-3">
@@ -42,9 +43,11 @@ export default function ArticleItem({id,image,description,category,title,reading
           </div>
         </div>
       </div>
-      <div className="flex-1/12">
+      <Link  to={to}>  <div className="flex-1/12">
         <img src={`${API_PATH}/storage/${image}`} alt="" className="rounded-xl" />
       </div>
+      </Link>
+    
     </div>
   );
 }
