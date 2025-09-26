@@ -12,13 +12,13 @@ export default function MoreArticles() {
    const fetchData = async () => {
      const catRes = await fetch("http://127.0.0.1:8000/api/categories/show");
      const catJson = await catRes.json();
-     setCategories(catJson.data || []);
+     setCategories(catJson || []);
   
    
      const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
      const artJson = await artRes.json();
  
-     setArticle(artJson.data || []);
+     setArticle(artJson || []);
      console.log("Articles:", article);
    };
  

@@ -31,11 +31,11 @@ export default function Weblog() {
       try {
         const catRes = await fetch("http://127.0.0.1:8000/api/categories/show");
         const catJson = await catRes.json();
-        setCategories(catJson.data || []);
-
-        const artRes = await fetch("http://127.0.0.1:8000/api/articles");
+        setCategories(catJson || []);
+        console.log("catgory:", catJson);
+        const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
         const artJson = await artRes.json();
-        setArticles(artJson.data || []);
+        setArticles(artJson || []);
         console.log("Articles:", artJson);
       } catch (err) {
         console.error("خطا در دریافت دیتا:", err);
@@ -152,7 +152,7 @@ export default function Weblog() {
             </div>
 
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7">
-              {articles.filter((a) => Number(a.category_id) === Number(cat.id))
+              {articles.filter((a) =>(a.category_id)==(cat.id))
                 .map((a) => (
                   <ArticleItem
                     key={a.id}
