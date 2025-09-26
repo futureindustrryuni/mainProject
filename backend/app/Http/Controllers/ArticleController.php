@@ -10,7 +10,11 @@ class ArticleController extends Controller
     
     public function index()
     {
-        return response()->json(Article::with(['category', 'author'])->select('views')->get());
+        $articles = Article::with(['category', 'author'])->get();
+        return response()->json([
+            'message' => 'List of all available articles',
+            'data' => $articles
+        ]);
     }
 
    
