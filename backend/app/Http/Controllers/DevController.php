@@ -9,21 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DevController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -83,7 +68,7 @@ class DevController extends Controller
                 'message' => 'Status Is Already at Approved',
                 'data' => $developer
             ], 400);
-    }
+        }
         $developer->status = 'approved';
         $developer->save();
 
@@ -113,7 +98,7 @@ class DevController extends Controller
                 'message' => 'Status Is Already at Rejected',
                 'data' => $developer
             ], 400);
-    }
+        }
         $developer->status = 'rejected'; 
         $developer->save();
 
@@ -128,29 +113,29 @@ class DevController extends Controller
      */
     public function status()
     {
-    $user = auth()->user();
+        $user = auth()->user();
 
-    if (!$user->developer) {
+        if (!$user->developer) {
+            return response()->json([
+                'message' => 'No Resumes Has Been Added',
+                'status' => null
+            ], 404);
+        }
+
         return response()->json([
-            'message' => 'No Resumes Has Been Added',
-            'status' => null
-        ], 404);
-    }
-
-    return response()->json([
-        'message' => 'Your Resume Status :',
-        'status' => $user->developer->status,
-        'resume_url' => asset('storage/' . $user->developer->resume_file_path),
-        'creation_date' => $user->developer->created_at->format('Y-m-d H:i:s'),
-        'update_date' => $user->developer->updated_at->format('Y-m-d H:i:s')
-        ]);
+            'message' => 'Your Resume Status :',
+            'status' => $user->developer->status,
+            'resume_url' => asset('storage/' . $user->developer->resume_file_path),
+            'creation_date' => $user->developer->created_at->format('Y-m-d H:i:s'),
+            'update_date' => $user->developer->updated_at->format('Y-m-d H:i:s')
+            ]);
     }
 
     public function isAuthenticated(){
-    $user = auth()->user();
+        $user = auth()->user();
 
-    if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
-        return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
-        return null;
-    }
+        if (!$user || !in_array($user->role, ['admin', 'supervisor'])) 
+            return response()->json(['message' => 'Unauthorized: Only admin or supervisor allowed'], 403);
+            return null;
+        }
 }
