@@ -164,10 +164,9 @@ export default function Weblog() {
                     image={a.image}
                     description={a.description}
                     category={cat.name}
-                    views={art.views}
+                    views={a.views}
                     title={a.title}
                     readingTime={a.reading_time}
-                    to={`/MoreArticles/${cat.id}`}
                   />
                 ))}
             </div>

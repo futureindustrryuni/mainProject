@@ -12,7 +12,6 @@ export default function ArticleItem({
   title,
   views,
   readingTime,
-  to,
 }) {
   useEffect(() => {
     Aos.init({ once: true });
@@ -34,7 +33,7 @@ export default function ArticleItem({
           <p className="text-zinc-500 text-[.8rem] ">8 اردیبهشت 1404</p>
         </div>
         <Link
-          to={to}
+          to={`/articleInfo/${id}`}
           className="text-[18px] mt-2 inline-block text-dark dark:text-white "
         >
           {title}
@@ -54,12 +53,12 @@ export default function ArticleItem({
           </div>
         </div>
       </div>
-      <Link to={to} className="w-full h-[13rem]">
-          <img
-            src={`${API_PATH}/storage/${image}`}
-            alt=""
-            className="rounded-xl w-full h-full"
-          />
+      <Link to={`/articleInfo/${id}`} className="w-full h-[13rem]">
+        <img
+          src={`${API_PATH}/storage/${image}`}
+          alt=""
+          className="rounded-xl w-full h-full"
+        />
       </Link>
     </div>
   );

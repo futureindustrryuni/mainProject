@@ -7,7 +7,7 @@ export default function TopBar({ isOpen, setIsOpen }) {
   const [isLogin, profile] = useContext(IsLoginContext);
   if (!profile?.id) return;
 
-  const API_PATH = "http://127.0.0.1:8000"
+  const API_PATH = "http://127.0.0.1:8000";
 
   return (
     <div className="h-[6rem] flex items-center gap-5 p-5 bg-white dark:bg-dark">
@@ -16,14 +16,25 @@ export default function TopBar({ isOpen, setIsOpen }) {
         className="bg-zinc-200 dark:bg-zinc-800 dark:text-white p-1 rounded-lg text-[2rem] cursor-pointer hover:scale-110 duration-150 "
       />
       <div className="flex items-center gap-3 ">
-        <img
-          src={`${API_PATH}/storage/${profile.profile_photo_url}`}
-          alt=""
-          className="size-[3.5rem] rounded-full object-cover "
-        />
+        {profile.profile_photo_url ? (
+          <img
+            src={`${API_PATH}/storage/${profile.profile_photo_url}`}
+            className="size-[3.5rem] rounded-full object-cover "
+          />
+        ) : (
+          <img
+            src={`/images/images.png`}
+            className="size-[3.5rem] rounded-full object-cover "
+          />
+        )}
         <div>
           <div className="flex items-center gap-2 ">
-            <p className="dark:text-white text-black">{profile.name+" "+profile.family || "بدون نام"}</p>
+            <p className="dark:text-white text-black">
+              {(profile.name &&
+                profile.family &&
+                profile.name + " " + profile.family) ||
+                "بدون نام"}
+            </p>
             <div className="flex items-center gap-1 bg-primary/20 rounded-lg px-3 p-1">
               <LuBadgeCheck className="text-[.9rem] text-primary" />
               <p className="text-[.7rem] text-primary">

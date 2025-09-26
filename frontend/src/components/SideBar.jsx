@@ -21,10 +21,10 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IsLoginContext } from "../context/IsLoginContext";
 
 export default function SideBar({ isOpen, setIsOpen }) {
-  const token = localStorage.getItem("token");
-  const [isLogin, profile] = useContext(IsLoginContext);
-  if (!profile?.id) return;
   const navigate = useNavigate();
+  const [isLogin, profile] = useContext(IsLoginContext);
+  const token = localStorage.getItem("token");
+  // if (!profile?.id) return;
 
   function sidebarHandler() {
     if (window.innerWidth <= 766) {
@@ -134,7 +134,7 @@ export default function SideBar({ isOpen, setIsOpen }) {
             <p>تیکت های من</p>
           </NavLink>
         </li>
-        {(profile.role === "admin" || profile.role === "supervisor") && (
+        {(profile?.role === "admin" || profile?.role === "supervisor") && (
           <>
             <li onClick={sidebarHandler}>
               <NavLink to="/panel/tickets" className="p-2 text-[.9rem] w-full">
@@ -162,7 +162,7 @@ export default function SideBar({ isOpen, setIsOpen }) {
             </li>
           </>
         )}
-        {profile.role === "supervisor" && (
+        {profile?.role === "supervisor" && (
           <>
             <li onClick={sidebarHandler}>
               <NavLink

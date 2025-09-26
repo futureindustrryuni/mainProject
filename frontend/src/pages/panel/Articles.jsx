@@ -228,36 +228,37 @@ export default function Articles() {
   }
 
   //ویرایش مقاله
-  const handleUpdateArticle = async (id) => {
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/api/articles/show/${id}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+const handleUpdateArticle = async (id) => {
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/api/articles/show/${id}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      const result = await res.json();
-      console.log("API Response:", result); // ببین چه ساختاری داره
+    const result = await res.json();
+    console.log("API Response:", result); // ببین چه ساختاری داره
 
-      const data = result.data ?? result; // اگر data وجود نداشت، خود نتیجه را بگیر
+    const data = result.data ?? result; // اگر data وجود نداشت، خود نتیجه را بگیر
 
-      setArticle({
-        title: data.title ?? "",
-        category_id: data.category_id?.toString() ?? "",
-        author_id: data.author_id?.toString() ?? "",
-        reading_time: data.reading_time ?? "",
-        tags: data.tags ?? "",
-        description: data.description ?? "",
-        image: null,
-      });
+    setArticle({
+      title: data.title ?? "",
+      category_id: data.category_id?.toString() ?? "",
+      author_id: data.author_id?.toString() ?? "",
+      reading_time: data.reading_time ?? "",
+      tags: data.tags ?? "",
+      description: data.description ?? "",
+      image: null,
+    });
 
-      setAddArticle(id);
-    } catch (err) {
-      console.error("خطا در دریافت مقاله:", err);
-    }
-  };
+    setAddArticle(id);
+  } catch (err) {
+    console.error("خطا در دریافت مقاله:", err);
+  }
+};
+
 
   // هندل ذخیره (اضافه یا ویرایش)
   function handleSubmitArticle(e) {
@@ -508,7 +509,7 @@ export default function Articles() {
                 مقاله جدید
               </button>
               <Grid
-                data={articles?.map((a) => [
+                data={articles.map((a) => [
                   a.title,
                   a.category_id, // نام دسته‌بندی
                   a.author_id, // نام نویسنده یا id

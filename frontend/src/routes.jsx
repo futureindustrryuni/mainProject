@@ -31,35 +31,133 @@ import ProjectsList from "./pages/Projects";
 import MySaves from "./pages/panel/MySaves";
 
 let routes = [
-    { path: "/", element: <Home /> },
-    { path: "*", element: <Page404 /> },
-    { path: "/auth", element: <LoginRegister /> },
-    { path: "/aboutus/*", element: <AboutUs /> },
-    { path: "/Saves", element: <Saves /> },
-    { path: "/profile", element: <Profile /> },
-    { path: "/Payment", element: <Payment /> },
-    { path: "/Weblog", element: <Weblog /> },
-    { path: "/MoreArticles/*", element: <MoreArticles /> },
-    { path: "/ArticleInfo", element: <ArticleInfo /> },
-{ path:"/ArticleInfo/:id", element:<ArticleInfo />} ,
-    { path: "/ProductDetails/:id", element: <ProductDetails/> },
-    { path: "/Projects", element: <ProjectsList/> },
-    { path:'/developer',element:<Developer/>},
-    // panel
-    { path: "/panel/userInfo", element: <PrivateRoute><UserInfo /></PrivateRoute> },
-    { path: "/panel/skills", element: <PrivateRoute><Skills /></PrivateRoute> },
-    { path: "/panel/myTransactions", element: <PrivateRoute><MyTransactions /></PrivateRoute> },
-    { path: "/panel/myProjects", element: <PrivateRoute><MyProjects /></PrivateRoute> },
-    { path: "/panel/mySaves", element: <PrivateRoute><MySaves /></PrivateRoute> },
-    { path: "/panel/achievements", element: <PrivateRoute><Achievements /></PrivateRoute> },
-    { path: "/panel/setting", element: <PrivateRoute><Setting /></PrivateRoute> },
-    { path: "/panel/users", element: <PrivateRoute><Users /></PrivateRoute> },
-    { path: "/panel/projects", element: <PrivateRoute><Projects /></PrivateRoute> },
-    { path: "/panel/myTickets", element: <PrivateRoute><MyTickets /></PrivateRoute> },
-    { path: "/panel/requests", element: <PrivateRoute><Requests /></PrivateRoute> },
-    { path: "/panel/articles", element: <PrivateRoute><Articles /></PrivateRoute> },
-    { path: "/panel/tickets", element: <PrivateRoute><Tickets /></PrivateRoute> },
-    { path: "/panel/transactions", element: <PrivateRoute><Transactions /></PrivateRoute> },
-]
+  { path: "/", element: <Home /> },
+  { path: "*", element: <Page404 /> },
+  { path: "/auth", element: <LoginRegister /> },
+  { path: "/aboutus/*", element: <AboutUs /> },
+  { path: "/Saves", element: <Saves /> },
+  { path: "/profile/:id", element: <Profile /> },
+  { path: "/Payment", element: <Payment /> },
+  { path: "/Weblog", element: <Weblog /> },
+  { path: "/MoreArticles/*", element: <MoreArticles /> },
+  { path: "/ArticleInfo", element: <ArticleInfo /> },
+  { path: "/ArticleInfo/:id", element: <ArticleInfo /> },
+  { path: "/ProductDetails/:id", element: <ProductDetails /> },
+  { path: "/Projects", element: <ProjectsList /> },
+  { path: "/developer", element: <Developer /> },
+  // panel
+  {
+    path: "/panel/userInfo",
+    element: (
+      <PrivateRoute>
+        <UserInfo />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/skills",
+    element: (
+      <PrivateRoute>
+        <Skills />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/myTransactions",
+    element: (
+      <PrivateRoute>
+        <MyTransactions />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/myProjects",
+    element: (
+      <PrivateRoute>
+        <MyProjects />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/mySaves",
+    element: (
+      <PrivateRoute>
+        <MySaves />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/achievements",
+    element: (
+      <PrivateRoute>
+        <Achievements />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/setting",
+    element: (
+      <PrivateRoute>
+        <Setting />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/users",
+    element: (
+      <PrivateRoute>
+        <Users />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/projects",
+    element: (
+      <PrivateRoute>
+        <Projects />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/myTickets",
+    element: (
+      <PrivateRoute>
+        <MyTickets />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/requests",
+    element: (
+      <PrivateRoute>
+        <Requests />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/articles",
+    element: (
+      <PrivateRoute>
+        <Articles />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/tickets",
+    element: (
+      <PrivateRoute>
+        <Tickets />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/panel/transactions",
+    element: (
+      <PrivateRoute>
+        <Transactions />
+      </PrivateRoute>
+    ),
+  },
+];
 
-export default routes
+export default routes;
