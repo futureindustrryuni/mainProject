@@ -11,10 +11,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::with(['category', 'author'])->get();
-        return response()->json([
-            'message' => 'List of all available articles',
-            'data' => $articles
-        ]);
+        return response()->json($articles);
     }
 
    
