@@ -194,7 +194,7 @@ export default function Home() {
             </Link>
           </div>
           <ul className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-5 mt-10  ">
-            {projects.map((project) => (
+            {projects.filter((item)=>item.is_approved==="2").map((project) => (
               <ProjectItem
                 key={project.id}
                 id={project.id}

@@ -148,7 +148,7 @@ export default function Projects() {
       {/* 🔥 لیست پروژه‌ها */}
       <section className="p-6 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-          {filteredProjects.slice(0, visibleCount).map((project) => (
+          {filteredProjects.slice(0, visibleCount).filter((item)=>item.is_approved==="2").map((project) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, scale: 0.9 }}

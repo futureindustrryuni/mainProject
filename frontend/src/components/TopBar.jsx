@@ -6,7 +6,6 @@ import { IsLoginContext } from "../context/IsLoginContext";
 export default function TopBar({ isOpen, setIsOpen }) {
   const [isLogin, profile] = useContext(IsLoginContext);
   if (!profile?.id) return;
-  console.log(profile.name);
 
   const API_PATH = "http://127.0.0.1:8000"
 

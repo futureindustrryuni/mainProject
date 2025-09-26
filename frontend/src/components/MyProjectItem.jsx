@@ -4,7 +4,7 @@ import { TbEditCircle } from "react-icons/tb";
 import JalaliDate from "./JalaliDate";
 
 export default function MyProjectItem({ ...item }) {
-  const API_PATH = "http://127.0.0.1:8000"
+  const API_PATH = "http://127.0.0.1:8000";
   return (
     <li className="relative flex items-start flex-col sm:items-start xmd:flex-row gap-4 py-4 border-b-1 border-zinc-200 sm:border-zinc-200/10 ">
       <img
@@ -24,19 +24,39 @@ export default function MyProjectItem({ ...item }) {
         </p>
         <div className="flex gap-1 md:gap-1 mt-2">
           {item.technologies.split("-").map((tech) => (
-            <span key={tech} className="bg-zinc-200/70 dark:bg-[#323232] text-black dark:text-[#FFFFFF] font-medium  text-[.7rem] md:text-[.8rem] px-3 py-1 rounded-[8px]">
+            <span
+              key={tech}
+              className="bg-zinc-200/70 dark:bg-[#323232] text-black dark:text-[#FFFFFF] font-medium  text-[.7rem] md:text-[.8rem] px-3 py-1 rounded-[8px]"
+            >
               {tech}
             </span>
           ))}
         </div>
       </div>
-      <div className="absolute top-[1rem] left-[.5rem] mt-1 flex gap-2">
-        <button className="text-[#ff9911] cursor-pointer" title="ویرایش">
-          <TbEditCircle className="sm:text-[18px] lg:text-[1.4rem] md:text-[25px]" />
-        </button>
-        <button className="text-red-500 cursor-pointer" title="حذف">
-          <HiOutlineTrash className="sm:text-[18px] lg:text-[1.4rem] md:text-[25px] text" />
-        </button>
+      <div className="absolute top-[1rem] left-[.5rem] mt-1 flex items-end gap-5 flex-col">
+        <div className="flex gap-2">
+          <button className="text-[#ff9911] cursor-pointer" title="ویرایش">
+            <TbEditCircle className="sm:text-[18px] lg:text-[1.4rem] md:text-[25px]" />
+          </button>
+          <button className="text-red-500 cursor-pointer" title="حذف">
+            <HiOutlineTrash className="sm:text-[18px] lg:text-[1.4rem] md:text-[25px] text" />
+          </button>
+        </div>
+        <p
+          className={`${
+            item.is_approved === "2"
+              ? "bg-green-500"
+              : item.is_approved === "1"
+              ? "bg-yellow-500"
+              : "bg-red-500"
+          } px-3 py-1 text-white rounded-full text-[.8rem]`}
+        >
+          {item.is_approved === "2"
+            ? "تایید شده"
+            : item.is_approved === "1"
+            ? "در انتظار تایید"
+            : "رد شده"}
+        </p>
       </div>
     </li>
   );

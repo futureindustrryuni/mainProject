@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AiOutlineExperiment, AiOutlineTrophy } from "react-icons/ai";
 import { BsBoxSeam } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -18,9 +18,12 @@ import {
 } from "react-icons/lu";
 import { MdOutlineArticle } from "react-icons/md";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { IsLoginContext } from "../context/IsLoginContext";
 
 export default function SideBar({ isOpen, setIsOpen }) {
   const token = localStorage.getItem("token");
+  const [isLogin, profile] = useContext(IsLoginContext);
+  if (!profile?.id) return;
   const navigate = useNavigate();
 
   function sidebarHandler() {
@@ -131,42 +134,53 @@ export default function SideBar({ isOpen, setIsOpen }) {
             <p>تیکت های من</p>
           </NavLink>
         </li>
-        <li onClick={sidebarHandler}>
-          <NavLink to="/panel/transactions" className="p-2 text-[.9rem] w-full">
-            <IoNewspaperOutline className="text-xl" />
-            <p>تراکنش ها</p>
-          </NavLink>
-        </li>
-        <li onClick={sidebarHandler}>
-          <NavLink to="/panel/tickets" className="p-2 text-[.9rem] w-full">
-            <HiOutlineArchiveBoxArrowDown className="text-xl" />
-            <p>تیکت ها</p>
-          </NavLink>
-        </li>
-        <li onClick={sidebarHandler}>
-          <NavLink to="/panel/requests" className="p-2 text-[.9rem] w-full">
-            <LuClipboardList className="text-xl" />
-            <p>درخواست توسعه دهنده ها</p>
-          </NavLink>
-        </li>
-        <li onClick={sidebarHandler}>
-          <NavLink to="/panel/users" className="p-2 text-[.9rem] w-full">
-            <HiOutlineUserGroup className="text-xl" />
-            <p>کاربران</p>
-          </NavLink>
-        </li>
-        <li onClick={sidebarHandler}>
-          <NavLink to="/panel/projects" className="p-2 text-[.9rem] w-full">
-            <BsBoxSeam className="text-xl" />
-            <p>پروژه ها</p>
-          </NavLink>
-        </li>
-        <li onClick={sidebarHandler}>
-          <NavLink to="/panel/articles" className="p-2 text-[.9rem] w-full">
-            <MdOutlineArticle className="text-xl" />
-            <p>مقاله ها</p>
-          </NavLink>
-        </li>
+        {(profile.role === "admin" || profile.role === "supervisor") && (
+          <>
+            <li onClick={sidebarHandler}>
+              <NavLink to="/panel/tickets" className="p-2 text-[.9rem] w-full">
+                <HiOutlineArchiveBoxArrowDown className="text-xl" />
+                <p>تیکت ها</p>
+              </NavLink>
+            </li>
+            <li onClick={sidebarHandler}>
+              <NavLink to="/panel/requests" className="p-2 text-[.9rem] w-full">
+                <LuClipboardList className="text-xl" />
+                <p>درخواست توسعه دهنده ها</p>
+              </NavLink>
+            </li>
+            <li onClick={sidebarHandler}>
+              <NavLink to="/panel/projects" className="p-2 text-[.9rem] w-full">
+                <BsBoxSeam className="text-xl" />
+                <p>پروژه ها</p>
+              </NavLink>
+            </li>
+            <li onClick={sidebarHandler}>
+              <NavLink to="/panel/articles" className="p-2 text-[.9rem] w-full">
+                <MdOutlineArticle className="text-xl" />
+                <p>مقاله ها</p>
+              </NavLink>
+            </li>
+          </>
+        )}
+        {profile.role === "supervisor" && (
+          <>
+            <li onClick={sidebarHandler}>
+              <NavLink
+                to="/panel/transactions"
+                className="p-2 text-[.9rem] w-full"
+              >
+                <IoNewspaperOutline className="text-xl" />
+                <p>تراکنش ها</p>
+              </NavLink>
+            </li>
+            <li onClick={sidebarHandler}>
+              <NavLink to="/panel/users" className="p-2 text-[.9rem] w-full">
+                <HiOutlineUserGroup className="text-xl" />
+                <p>کاربران</p>
+              </NavLink>
+            </li>
+          </>
+        )}
         <li onClick={sidebarHandler}>
           <button
             onClick={logoutHandle}
@@ -176,12 +190,6 @@ export default function SideBar({ isOpen, setIsOpen }) {
             <p>خروج از حساب</p>
           </button>
         </li>
-        {/* <li onClick={sidebarHandler}>
-          <NavLink to="/panel/setting" className="p-2 text-[.9rem] w-full">
-            <IoSettingsOutline className="text-xl" />
-            <p>تنظیمات</p>
-          </NavLink>
-        </li> */}
       </ul>
     </div>
   );

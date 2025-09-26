@@ -222,7 +222,7 @@ export default function MyProjects() {
                   myProjects?.length > 0 ? (
                     <ul className="px-3">
                       {myProjects
-                        .filter((item) => item.is_approved)
+                        // .filter((item) => item.is_approved)
                         .map((item) => (
                           <MyProjectItem key={item.id} {...item} />
                         ))}
