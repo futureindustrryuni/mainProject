@@ -23,11 +23,10 @@ export default function ProjectItem({ id, img, title, user_id, views }) {
     fetch(`http://localhost:8000/api/developer/${user_id}`)
       .then((res) => res.json())
       .then((data) => {
-        setUserInfo(data.email);
+        setUserInfo(data);
       });
 
-      console.log(data)
-  }, []);
+    }, []);
 
   function saveHandler() {
     if (!token) {
@@ -129,9 +128,9 @@ export default function ProjectItem({ id, img, title, user_id, views }) {
           </button>
         </div>
         <Link to={`/profile/${user_id}`} className="flex items-center gap-2">
-          <p className="dark:text-white">{userInfo?.split("@")[0]}</p>
+          <p className="dark:text-white">{userInfo.name} {userInfo.family}</p>
           <img
-            src="/images/User.jpg"
+            src={`http://127.0.0.1:8000/storage/${userInfo.profile_photo_url}`}
             alt={title}
             className="rounded-full size-[1.5rem] "
           />
