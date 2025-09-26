@@ -10,7 +10,8 @@ class ArticleController extends Controller
     
     public function index()
     {
-        return response()->json(Article::with(['category', 'author'])->get());
+        $articles = Article::with(['category', 'author'])->get();
+        return response()->json($articles);
     }
 
    
@@ -18,6 +19,7 @@ class ArticleController extends Controller
     {
         
         $article = Article::with(['category', 'author'])->findOrFail($id);
+        $article->increment('views');
         return response()->json($article);
     }
 

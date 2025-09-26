@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('reading_time')->nullable();  
             $table->string('tags')->nullable();           
             $table->string('image')->nullable();         
-            $table->text('description');                  
+            $table->text('description');      
+            $table->integer('views')->default(0);            
             $table->timestamps();
 
             
