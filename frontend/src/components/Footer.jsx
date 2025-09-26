@@ -20,7 +20,7 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white mt-20">
+    <footer className="bg-gradient-to-r dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* لوگو */}
         <div className="flex flex-col items-center md:items-start">
@@ -39,7 +39,7 @@ export default function Footer() {
             <li key={idx}>
               <Link
                 to={link.path}
-                className="text-black px-3 py-1 hover:text-[#ffa500] duration-300"
+                className="text-black dark:text-white px-3 py-1 hover:text-[#ffa500] duration-300"
               >
                 {link.name}
               </Link>

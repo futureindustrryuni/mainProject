@@ -9,6 +9,8 @@ export default function Header() {
   const profile = useContext(IsLoginContext)[1];
   // console.log("profile : ", profile);
 
+  // document.querySelector("html").classList.add("dark")
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY >= window.innerHeight * 0.1) {
@@ -56,7 +58,7 @@ export default function Header() {
   return (
     <div
       className={`flex items-center justify-between fixed h-[5rem] z-50 w-full duration-500 ${
-        fixHeader ? "bg-white" : "bg-transparent"
+        fixHeader ? "bg-white dark:bg-dark" : "bg-transparent dark:bg-dark"
       } top-0 py-3 px-10`}
     >
       <img

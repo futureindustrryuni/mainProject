@@ -67,7 +67,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+    <div className="min-h-screen bg-white dark:bg-dark">
       {/* 🔥 هیرو سکشن */}
       {/*Header*/}
       <Header />
@@ -82,7 +82,7 @@ export default function Projects() {
           >
             <path
               d="M321.39,56.44C161.55,79.27,0,120,0,120V0H1200V27.35c-71.5,21.26-210.94,38.46-373.62,43.09C665.31,75.14,482.23,33.61,321.39,56.44Z"
-              className="fill-white"
+              className="fill-white dark:fill-dark"
             ></path>
           </svg>
         </div>

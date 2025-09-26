@@ -105,8 +105,8 @@ export default function Developer() {
   const [uploaded, setUploaded] = useState(false);
   const token = localStorage.getItem("token");
 
-  const profile = useContext(IsLoginContext)[1]
-  console.log(profile)
+  const profile = useContext(IsLoginContext)[1];
+  console.log(profile);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -125,8 +125,8 @@ export default function Developer() {
       return; // 👈 دیگه ادامه نده
     }
 
-    if(!profile.profile_completed){
-         Toast.fire({
+    if (!profile.profile_completed) {
+      Toast.fire({
         icon: "error",
         title: "قبل از ارسال رزومه لطفا پروفایلت رو کامل کنید",
       });
@@ -174,9 +174,9 @@ export default function Developer() {
   };
 
   return (
-    <div className="">
+    <div className="text-dark dark:text-white bg-white dark:bg-dark">
       <Header />
-      <div className="container mx-auto mt-30">
+      <div className="container mx-auto pt-30">
         {/*hiro*/}
         <div className="sm:flex space-y-20 sm:space-y-0">
           <div className="space-y-6  pt-10 sm:pt-24 lg:px-16 sm:flex  sm:flex-1/2 sm:flex-col  ">
@@ -197,7 +197,8 @@ export default function Developer() {
               data-aos-delay="200"
               className="text-2xl lg:text-3xl font-extrabold"
             >
-              به جمع <span className="bg-[#e7d8f1]">توسعه دهندگان </span>ما
+              به جمع{" "}
+              <span className="bg-[#e0c7f1] px-2 mx-1"> توسعه دهندگان</span> ما
               بپیوندید
             </p>
             <p
@@ -302,7 +303,7 @@ export default function Developer() {
               </div>
             </div>
           </div>
-          <div className="w-full  p-10 absolute top-0 sm:top-28 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:flex-row  font-IranYekanBold text-[20px] *:px-10 *:sm:px-3 *:py-2 *:flex *:flex-col items-start sm:*:items-center *:justify-center *:gap-5 *:rounded-3xl *:bg-white *:lg:h-48 *:lg:w-60  *:shadow">
+          <div className="w-full  p-10 **:text-black dark:**:text-white dark:*:bg-gray-800 absolute top-0 sm:top-28 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:flex-row  font-IranYekanBold text-[20px] *:px-10 *:sm:px-3 *:py-2 *:flex *:flex-col items-start sm:*:items-center *:justify-center *:gap-5 *:rounded-3xl *:bg-white *:lg:h-48 *:lg:w-60  *:shadow">
             <div
               className=""
               data-aos="zoom-in"
@@ -353,7 +354,7 @@ export default function Developer() {
               data-aos="zoom-out"
               data-aos-duration="1000"
               data-aos-delay={`${item.id}00`}
-              className={`w-full bg-[#CBCBCB] rounded-3xl border border-gray-400 ${
+              className={`w-full bg-[#CBCBCB] dark:bg-gray-800 rounded-3xl border dark:border-black border-gray-400 ${
                 isOpen === index ? "h-auto divide-y divide-gray-400" : "h-16"
               }`}
             >
@@ -408,15 +409,13 @@ export default function Developer() {
             grabCursor={true}
             loop={true}
             className="h-[30rem]"
-            >
+          >
             {developers.map((developer) => (
-              <SwiperSlide
-              className="!w-[295px] !h-[420px] !shadow rounded-2xl p-4 !flex flex-col gap-4 items-center"
-              >
+              <SwiperSlide className="!w-[295px] !h-[420px] bg-white dark:bg-gray-800/50 !shadow rounded-2xl p-4 !flex flex-col gap-4 items-center">
                 <img
-                data-aos="zoom-out"
-                data-aos-duration="1000"
-                data-aos-delay={`${developer.id}00`}
+                  data-aos="zoom-out"
+                  data-aos-duration="1000"
+                  data-aos-delay={`${developer.id}00`}
                   src={developer.img}
                   alt=""
                   className="rounded-2xl w-full h-40 object-cover font-extrabold"
@@ -436,21 +435,25 @@ export default function Developer() {
         {/*upload resume*/}
         <motion.div
           id="sendResume"
-          className="w-full my-12 py-10 px-5 md:px-10 bg-gradient-to-br from-purple-50 to-purple-50 rounded-3xl shadow-xl border border-purple-100"
+          className="w-full my-12 py-10 px-5 md:px-10 
+             bg-gradient-to-br from-purple-50 to-purple-50 
+             dark:from-gray-800 dark:to-gray-900
+             rounded-3xl shadow-xl border border-purple-100 dark:border-gray-700"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="text-center mb-8">
             <motion.h2
-              className="text-[1.3rem] md:text-[1.5rem] xl:text-[2rem] font-bold text-purple-700"
+              className="text-[1.3rem] md:text-[1.5rem] xl:text-[2rem] font-bold 
+                 text-purple-700 dark:text-purple-400"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
               رزومه‌ات رو بارگذاری کن
             </motion.h2>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
               اولین قدم برای توسعه‌دهنده شدن: نشون بده چه توانایی‌هایی داری
             </p>
           </div>
@@ -458,15 +461,22 @@ export default function Developer() {
           {/* بخش انتخاب فایل */}
           <label className="block">
             <motion.div
-              className="border-2 border-dashed border-purple-400 bg-white rounded-2xl p-10 text-center cursor-pointer hover:bg-purple-50 transition flex flex-col items-center"
+              className="border-2 border-dashed border-purple-400 
+                 bg-white dark:bg-gray-800 
+                 rounded-2xl p-10 text-center cursor-pointer 
+                 hover:bg-purple-50 dark:hover:bg-gray-700 
+                 transition flex flex-col items-center"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
             >
-              <Upload size={50} className="text-purple-600 mb-3" />
-              <p className="text-gray-700 font-medium">
+              <Upload
+                size={50}
+                className="text-purple-600 dark:text-purple-400 mb-3"
+              />
+              <p className="text-gray-700 dark:text-gray-200 font-medium">
                 فایل رزومه‌ات رو اینجا آپلود کن برامون
               </p>
-              <p className="text-gray-400 text-sm mt-1">
+              <p className="text-gray-400 dark:text-gray-400 text-sm mt-1">
                 کلیک کن برای انتخاب فایل
               </p>
               <input
@@ -480,15 +490,22 @@ export default function Developer() {
           {/* نمایش جزئیات فایل انتخاب شده */}
           {file && (
             <motion.div
-              className="mt-6 bg-white p-5 rounded-xl shadow-md flex items-center justify-between"
+              className="mt-6 bg-white dark:bg-gray-800 
+                 p-5 rounded-xl shadow-md 
+                 flex items-center justify-between"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="flex items-center gap-3">
-                <FileText size={28} className="text-purple-600" />
+                <FileText
+                  size={28}
+                  className="text-purple-600 dark:text-purple-400"
+                />
                 <div>
-                  <p className="text-gray-800 font-semibold">{file.name}</p>
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-800 dark:text-gray-200 font-semibold">
+                    {file.name}
+                  </p>
+                  <p className="text-gray-400 dark:text-gray-400 text-sm">
                     {(file.size / 1024).toFixed(1)} KB
                   </p>
                 </div>
@@ -497,7 +514,11 @@ export default function Developer() {
               {!uploading && !uploaded && (
                 <motion.button
                   onClick={handleUpload}
-                  className="px-5 py-2 cursor-pointer bg-purple-600 text-white rounded-xl hover:bg-purple-700 shadow-md"
+                  className="px-5 py-2 cursor-pointer 
+                     bg-purple-600 dark:bg-purple-500 
+                     text-white rounded-xl 
+                     hover:bg-purple-700 dark:hover:bg-purple-600 
+                     shadow-md"
                   whileTap={{ scale: 0.9 }}
                 >
                   آپلود کن
@@ -505,14 +526,14 @@ export default function Developer() {
               )}
 
               {uploading && (
-                <div className="flex items-center gap-2 text-purple-600 font-medium">
+                <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-medium">
                   <Loader2 className="animate-spin" /> در حال آپلود...
                 </div>
               )}
 
               {uploaded && (
                 <motion.div
-                  className="flex items-center gap-2 text-green-600 font-semibold text-[.8rem]"
+                  className="flex items-center gap-2 text-green-600 dark:text-green-400 font-semibold text-[.8rem]"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                 >
@@ -524,16 +545,24 @@ export default function Developer() {
         </motion.div>
       </div>
       {/*about*/}
-      <div className=" bg-[#F7EBFF] py-4">
-        <div className="w-[90%] sm:h-60 grid grid-cols-2 gap-2 mx-auto justify-items-center sm:grid-cols-4  *:bg-white *:size-48 *:rounded-2xl *:flex *:flex-col *:items-center *:justify-center *:gap-3 ">
+      <div className="bg-[#F7EBFF] py-4 dark:bg-gray-900">
+        <div
+          className="w-[90%] sm:h-60 grid grid-cols-2 gap-2 mx-auto justify-items-center sm:grid-cols-4  
+    *:bg-white *:size-48 *:rounded-2xl *:flex *:flex-col *:items-center *:justify-center *:gap-3 
+    dark:*:bg-gray-800 dark:*:text-gray-200"
+        >
           <div
             className="self-end"
             data-aos="zoom-out"
             data-aos-duration="1000"
             data-aos-delay="0"
           >
-            <p className="text-5xl font-extrabold text-[#50116D]">200+</p>
-            <p className="font-extrabold text-[22px]">پروژه فروخته شد</p>
+            <p className="text-5xl font-extrabold text-[#50116D] dark:text-purple-400">
+              200+
+            </p>
+            <p className="font-extrabold text-[22px] dark:text-gray-100">
+              پروژه فروخته شد
+            </p>
           </div>
           <div
             className=""
@@ -541,8 +570,12 @@ export default function Developer() {
             data-aos-duration="1000"
             data-aos-delay="200"
           >
-            <p className="text-5xl font-extrabold text-[#50116D]">85%</p>
-            <p className="font-extrabold text-[22px]">رضایت کاربران</p>
+            <p className="text-5xl font-extrabold text-[#50116D] dark:text-purple-400">
+              85%
+            </p>
+            <p className="font-extrabold text-[22px] dark:text-gray-100">
+              رضایت کاربران
+            </p>
           </div>
           <div
             className="self-end"
@@ -550,8 +583,12 @@ export default function Developer() {
             data-aos-duration="1000"
             data-aos-delay="400"
           >
-            <p className="text-5xl font-extrabold text-[#50116D]">500+</p>
-            <p className="font-extrabold text-[19px]">پروژه تایید شده</p>
+            <p className="text-5xl font-extrabold text-[#50116D] dark:text-purple-400">
+              500+
+            </p>
+            <p className="font-extrabold text-[19px] dark:text-gray-100">
+              پروژه تایید شده
+            </p>
           </div>
           <div
             className=""
@@ -559,10 +596,15 @@ export default function Developer() {
             data-aos-duration="1000"
             data-aos-delay="600"
           >
-            <p className="text-5xl font-extrabold  text-[#50116D]">138+</p>
-            <p className="font-extrabold text-[22px]">توسعه دهنده</p>
+            <p className="text-5xl font-extrabold  text-[#50116D] dark:text-purple-400">
+              138+
+            </p>
+            <p className="font-extrabold text-[22px] dark:text-gray-100">
+              توسعه دهنده
+            </p>
           </div>
         </div>
+
         <div
           data-aos="zoom-out"
           data-aos-duration="1000"
@@ -570,8 +612,10 @@ export default function Developer() {
           className="flex flex-col gap-5 sm:absolute sm:w-[55%] lg:w-[40%] sm:left-12 lg:left-28 p-8"
         >
           <span className="border-t border-primary w-6 h-1 bg-primary"></span>
-          <p className="text-[#50116D] font-extrabold text-2xl">درباره پروجه</p>
-          <p className="text-justify">
+          <p className="text-[#50116D] font-extrabold text-2xl dark:text-purple-400">
+            درباره پروجه
+          </p>
+          <p className="text-justify text-gray-800 dark:text-gray-200">
             ایده پروجه از جایی شروع شد که خودمون بارها با چالش های پیدا کردن
             افراد مطمئن برای انجام پروژه روبه رو شدیم . بعضی وقتا پیدا کردن
             توسعه دهنده ی متخصص سخت بود و از طرف خیلی از توسعه دهنده ها فرصت
@@ -581,24 +625,25 @@ export default function Developer() {
             مختلف ، تلاش می کنیم این مسیر رو برای همه ساده تر و مطمئن تر کنیم .
           </p>
         </div>
+
         <div
           data-aos="zoom-out"
           data-aos-duration="1000"
           data-aos-delay="500"
           className="sm:w-[90%] relative px-8 sm:mt-56 lg:mt-40 mx-auto"
         >
-          <div className="bg-[#C39DDD] w-40 h-52 mx-auto mt-10 rotate-4 rounded-2xl sm:w-52 sm:h-60 sm:mx-10 lg:mx-28 lg:h-72 lg:w-60">
-            <div className="w-40 h-52 bg-[#50116D] rotate-12 rounded-2xl sm:w-52 sm:h-60 lg:h-72 lg:w-60"></div>
+          <div className="bg-[#C39DDD] w-40 h-52 mx-auto mt-10 rotate-4 rounded-2xl sm:w-52 sm:h-60 sm:mx-10 lg:mx-28 lg:h-72 lg:w-60 dark:bg-purple-700">
+            <div className="w-40 h-52 bg-[#50116D] rotate-12 rounded-2xl sm:w-52 sm:h-60 lg:h-72 lg:w-60 dark:bg-purple-900"></div>
           </div>
           <div
             data-aos="fade-up"
             data-aos-duration="1000"
             data-aos-delay="200"
-            className="bg-white h-48 -mt-20 overflow-hidden rounded-2xl relative"
+            className="bg-white h-48 -mt-20 overflow-hidden rounded-2xl relative dark:bg-gray-800"
           >
             <img src="/images/template.png" alt="" className="lg:w-1/2 h-72" />
             <div className="absolute top-24 left-2 space-y-2 lg:flex lg:items-center lg:gap-8 lg:left-28">
-              <p className=" text-[#50116D] font-IranYekanBold">
+              <p className=" text-[#50116D] font-IranYekanBold dark:text-purple-300">
                 دنبال بهترین پروجه ها هستی؟
               </p>
               <button className="w-24 py-2 bg-primary rounded-2xl text-center text-white cursor-pointer">
@@ -613,6 +658,7 @@ export default function Developer() {
           />
         </div>
       </div>
+
       <Footer />
     </div>
   );

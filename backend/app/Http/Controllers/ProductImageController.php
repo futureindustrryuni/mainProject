@@ -12,9 +12,8 @@ class ProductImageController extends Controller
     
     public function index($productId)
     {
-        if (!$user) return response()->json(['message' => 'Unauthorized'], 401);
-
         $product = Product::find($productId);
+
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
@@ -34,15 +33,17 @@ class ProductImageController extends Controller
         $validated = $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:4096',
         ]);
+        $originalName = $request->file('image')->getClientOriginalName();
+        $path = $request->file('image')->storeAs('product_images', $originalName, 'public');
 
-        $path = $request->file('image')->store('product_images', 'public');
+        $image = $product->images()->create([
+        'path' => $path,
+        ]);
 
-        $image = new ProductImage();
-        $image->product_id = $productId;
-        $image->path = $path;
-        $image->save();
-
-        return response()->json($image, 201);
+        return response()->json([
+            'id' => $image->id,
+            'url' => asset('storage/' . $image->path),
+        ], 201);
     }
 
    
@@ -54,18 +55,12 @@ class ProductImageController extends Controller
             return response()->json(['message' => 'Image not found'], 404);
         }
 
+        
         Storage::disk('public')->delete($image->path);
 
+        
         $image->delete();
 
         return response()->json(['message' => 'Image deleted']);
-    }
-
-    public function isAuthenticated(){
-        $user = auth()->user();
-
-        if (!$user || !in_array($user->role, ['developer'])) 
-            return response()->json(['message' => 'Unauthorized: Only developer can create Project'], 403);
-            return null;
     }
 }

@@ -32,9 +32,8 @@ export default function Weblog() {
         const catRes = await fetch("http://127.0.0.1:8000/api/categories/show");
         const catJson = await catRes.json();
         setCategories(catJson.data || []);
-        console.log("Categories:", catJson);
-        
-        const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
+
+        const artRes = await fetch("http://127.0.0.1:8000/api/articles");
         const artJson = await artRes.json();
         setArticles(artJson.data || []);
         console.log("Articles:", artJson);
@@ -52,7 +51,7 @@ export default function Weblog() {
     <div className="bg-white dark:bg-dark ">
       {/* header */}
       <Header />
-      <div className="container mx-auto bg-white dark:bg-dark mt-30">
+      <div className="container mx-auto bg-white dark:bg-dark pt-30">
         {/*news*/}
         {/* <div className="flex items-center justify-between mx-3 ">
           <p className="text-[1.3rem] mb-3  text-dark dark:text-white">تکنولوژی</p>
@@ -130,8 +129,7 @@ export default function Weblog() {
           </div>
         </div> */}
 
-
-{categories.map((cat) => (
+        {categories.map((cat) => (
           <div key={cat.id} className="mb-12">
             <div
               className="flex items-center justify-between mt-7 mb-4 px-4"
@@ -157,20 +155,22 @@ export default function Weblog() {
               {articles.filter((a) => Number(a.category_id) === Number(cat.id))
                 .map((a) => (
                   <ArticleItem
-                  key={a.id} id={a.id} image={a.image} description={a.description}  category={cat.name} title={a.title}  readingTime={a.reading_time}
-                   
+                    key={a.id}
+                    id={a.id}
+                    image={a.image}
+                    description={a.description}
+                    category={cat.name}
+                    title={a.title}
+                    readingTime={a.reading_time}
                   />
                 ))}
             </div>
           </div>
         ))}
-      
-      
-
       </div>
       {/* finish */}
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }
