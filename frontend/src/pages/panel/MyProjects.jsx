@@ -121,7 +121,7 @@ export default function MyProjects() {
 
   useEffect(() => {
     fetchProjects();
-    fetchCategories()
+    fetchCategories();
   }, [profile]);
 
   // ارسال فرم پروژه جدید
@@ -176,7 +176,7 @@ export default function MyProjects() {
     }
   };
 
-  if (!resumeStatus) {
+  if (!myProjects||!resumeStatus) {
     return <Loader />;
   }
 
@@ -403,33 +403,33 @@ export default function MyProjects() {
                 )}
               </div>
             </div>
-          ) : profile?.role !== "developer" ? (
-            // وقتی توسعه‌دهنده نیست
-            <div className="h-[70vh] flex items-center justify-center flex-col text-center">
-              <img src="/images/icons8-software-developer-100.png" alt="" />
-              <p className="text-[1.1rem] md:text-[1.4rem]">
-                شما توسعه‌دهنده نیستید
-              </p>
-              <p className="text-sm md:text-base text-zinc-500">
-                اگر تمایلی برای توسعه‌دهنده شدن داری، روی دکمه زیر کلیک کن!
-              </p>
-              <Link
-                to="/developer"
-                className="flex items-center justify-center gap-2 bg-primary/80 px-4 py-2 rounded-lg mt-3 hover:bg-primary text-white"
-              >
-                توسعه‌دهنده شو <FaCode />
-              </Link>
-            </div>
           ) : (
-            resumeStatus.status && (
-              <div className="mt-5 w-[100%] md:w-[70%] mx-auto">
-                <ResumeStatusBox
-                  status={resumeStatus.status}
-                  fileName={resumeStatus.resume_url?.split("/")[5]}
-                  created_at={resumeStatus.creation_date}
-                />
+            <div className="flex items-center justify-center flex-col h-[70vh]">
+              <div className="flex items-center justify-center flex-col text-center mb-5">
+                <img src="/images/icons8-software-developer-100.png" alt="" />
+                <p className="text-[1.1rem] md:text-[1.4rem]">
+                  شما توسعه‌دهنده نیستید
+                </p>
+                <p className="text-sm md:text-base text-zinc-500">
+                  اگر تمایلی برای توسعه‌دهنده شدن داری، روی دکمه زیر کلیک کن!
+                </p>
+                <Link
+                  to="/developer"
+                  className="flex items-center justify-center gap-2 bg-primary/80 px-4 py-2 rounded-lg mt-3 hover:bg-primary text-white"
+                >
+                  توسعه‌دهنده شو <FaCode />
+                </Link>
               </div>
-            )
+              {resumeStatus.status && (
+                <div className="w-[100%] md:w-[70%] mx-auto">
+                  <ResumeStatusBox
+                    status={resumeStatus.status}
+                    fileName={resumeStatus.resume_url?.split("/")[5]}
+                    created_at={resumeStatus.creation_date}
+                  />
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
