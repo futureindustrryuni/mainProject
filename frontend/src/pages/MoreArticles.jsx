@@ -10,12 +10,12 @@ export default function MoreArticles() {
 
  useEffect(() => {
    const fetchData = async () => {
-     const catRes = await fetch("http://127.0.0.1:8000/api/categories");
+     const catRes = await fetch("http://127.0.0.1:8000/api/categories/show");
      const catJson = await catRes.json();
      setCategories(catJson.data || []);
   
    
-     const artRes = await fetch("http://127.0.0.1:8000/api/articles");
+     const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
      const artJson = await artRes.json();
  
      setArticle(artJson.data || []);

@@ -12,7 +12,7 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { IoTimeOutline } from "react-icons/io5";
 import { FiEye } from "react-icons/fi";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GoArrowLeft } from "react-icons/go";
 import ArticleItem from "../components/ArticleItem";
 import Header from "../components/Header";
@@ -29,13 +29,15 @@ export default function Weblog() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await fetch("http://127.0.0.1:8000/api/categories");
+        const catRes = await fetch("http://127.0.0.1:8000/api/categories/show");
         const catJson = await catRes.json();
         setCategories(catJson.data || []);
-       
-        const artRes = await fetch("http://127.0.0.1:8000/api/articles");
+        console.log("Categories:", catJson);
+        
+        const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
         const artJson = await artRes.json();
         setArticles(artJson.data || []);
+        console.log("Articles:", artJson);
       } catch (err) {
         console.error("خطا در دریافت دیتا:", err);
         setCategories([]);
@@ -152,8 +154,7 @@ export default function Weblog() {
             </div>
 
             <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-3 gap-7">
-              {articles
-                .filter((a) => a.category_id === cat.id)
+              {articles.filter((a) => Number(a.category_id) === Number(cat.id))
                 .map((a) => (
                   <ArticleItem
                   key={a.id} id={a.id} image={a.image} description={a.description}  category={cat.name} title={a.title}  readingTime={a.reading_time}
