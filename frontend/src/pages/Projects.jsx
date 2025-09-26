@@ -155,6 +155,7 @@ export default function Projects() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <ProjectItem
+              key={project.id}
                 id={project.id}
                 title={project.title}
                 img={
@@ -162,6 +163,7 @@ export default function Projects() {
                   `http://127.0.0.1:8000/storage/${project.images[0].path}`
                 }
                 user_id={project.user_id}
+                views={project.views}
               />
             </motion.div>
           ))}

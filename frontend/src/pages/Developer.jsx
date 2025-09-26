@@ -166,7 +166,7 @@ export default function Developer() {
       console.error("خطا در اتصال به سرور:", err);
       Toast.fire({
         icon: "error",
-        title: "ارتباط با سرور برقرار نشد!",
+        title: "لطفا در حجم و فرمت فایل رزومه دقت فرمایید \n (PDF یا image) (حداکتر 3MB)",
       });
     } finally {
       setUploading(false);

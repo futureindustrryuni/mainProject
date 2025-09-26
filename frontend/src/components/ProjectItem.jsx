@@ -7,8 +7,10 @@ import { BiBookmark } from "react-icons/bi";
 import { LuHeart } from "react-icons/lu";
 import { Toast } from "./Toast";
 
-export default function ProjectItem({ id, img, title, user_id }) {
+export default function ProjectItem({ id, img, title, user_id, views }) {
   const API_PATH = "http://127.0.0.1:8000"
+
+  console.log(title)
 
   Aos.init({
     once: true,
@@ -122,7 +124,7 @@ export default function ProjectItem({ id, img, title, user_id }) {
             <TiHeartFullOutline />
           </button>
           <button>
-            <p>5.12k</p>
+            <p>{views}</p>
             <FaEye />
           </button>
         </div>
