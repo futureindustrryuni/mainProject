@@ -2,29 +2,37 @@ import React, { useEffect, useState } from "react";
 import { FaRegCalendarAlt, FaRegEye } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdChevronLeft } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 
 export default function ArticleInfo() {
+  const { id } = useParams();
   const [articles, setArticles] = useState([]);
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
-        const artJson = await artRes.json();
-        // اگر بک‌اندت خروجی رو داخل data می‌فرسته
-        setArticles(artJson || artJson);
-      } catch (error) {
-        console.error("خطا در گرفتن مقالات:", error);
-      }
-    };
+  const [mainArticle, setMainArticle] = useState(null);
 
-    fetchArticles();
-  }, []);
-  const mainArticle = articles[0];
+  useEffect(() => {
+  const fetchArticles = async () => {
+    try {
+      const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
+      const artJson = await artRes.json();
+      setArticles(artJson || []);
+
+      const foundArticle = (artJson || []).find(
+        (article) => String(article.id) === String(id)
+      );
+
+      setMainArticle(foundArticle || null);
+    } catch (error) {
+      console.error("خطا در گرفتن مقالات:", error);
+    }
+  };
+
+  if (id) fetchArticles();
+}, [id]);
+
   return (
     <div className="bg-white dark:bg-dark pt-10">
       <div className="container mx-auto grid gap-3 grid-cols-1 xl:grid-cols-4 lg:grid-cols-4 bg-white dark:bg-dark ">
-        { mainArticle &&(
+        {mainArticle &&(
  <div className="xl:col-span-3 lg:col-span-3 col-span-4 p-5 dark:shadow-none shadow-[0_3px_15px_5px_rgba(0,0,0,0.1)] rounded-xl bg-white/2 ">
  <div className="flex items-center gap-2 mb-5 text-[.8rem] w-[50rem] text-dark dark:text-white ">
    <Link>خانه</Link> <MdChevronLeft />

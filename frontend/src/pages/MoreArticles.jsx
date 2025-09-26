@@ -44,7 +44,7 @@ export default function MoreArticles() {
                     category={cat.name}
                     image={art.image}
                     readingTime={art.reading_time}
-                    to={`/MoreArticles/${cat.id}`}
+                    to={`/ArticleInfo/${art.id}`}
                   />
                 ))}
             </div>
