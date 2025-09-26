@@ -52,6 +52,7 @@ Route::prefix('products')->group(function () {
         Route::post('/{id}/like', [ProductLikesController::class, 'toggleLike']);
         Route::delete('/{id}/delete', [ProductController::class, 'deleteProduct']);
         Route::post('/{id}/approve',[ApproveController::class,'approve']);
+        Route::post('/{id}/reject',[ApproveController::class,'reject']);
     });
     Route::get('/{id}',[ProductController::class, 'show']);
 });
