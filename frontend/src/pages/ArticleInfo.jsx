@@ -9,10 +9,10 @@ export default function ArticleInfo() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const artRes = await fetch("http://127.0.0.1:8000/api/articles");
+        const artRes = await fetch("http://127.0.0.1:8000/api/articles/show");
         const artJson = await artRes.json();
         // اگر بک‌اندت خروجی رو داخل data می‌فرسته
-        setArticles(artJson.data || artJson);
+        setArticles(artJson || artJson);
       } catch (error) {
         console.error("خطا در گرفتن مقالات:", error);
       }

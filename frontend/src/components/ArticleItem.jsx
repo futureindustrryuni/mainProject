@@ -8,6 +8,9 @@ export default function ArticleItem({id,image,description,category,title,reading
   useEffect(() => {
     Aos.init({ once: true });
   }, []);
+
+
+  const API_PATH = "http://127.0.0.1:8000"
   return (
     <div
       data-aos="fade-up"
@@ -40,7 +43,7 @@ export default function ArticleItem({id,image,description,category,title,reading
         </div>
       </div>
       <div className="flex-1/12">
-        <img src={image} alt="" className="rounded-xl" />
+        <img src={`${API_PATH}/storage/${image}`} alt="" className="rounded-xl" />
       </div>
     </div>
   );
