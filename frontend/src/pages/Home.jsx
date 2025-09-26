@@ -211,7 +211,7 @@ export default function Home() {
 
         {/* know proje */}
         <div
-          className="w-[80%] mx-auto mt-20 pt-10 text-black dark:text-white"
+          className="w-[80%] mx-auto my-20 pt-10 text-black dark:text-white"
           id="intro"
         >
           {/*header*/}
